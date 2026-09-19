@@ -3,22 +3,16 @@ import {
   defaultStreamHandler,
 } from '@tanstack/react-start/server'
 import { Hono } from 'hono'
+import api from './server/routes'
 
 const startHandler = createStartHandler(defaultStreamHandler)
 
-const app = new Hono()
+const app = new Hono().route('/api', api)
 
-const api = new Hono()
-
-api.get('/health', (c) =>
-  c.json({
-    status: 'ok',
-    timestamp: new Date().toISOString(),
-  }),
-)
-
-app.route('/api', api)
+app.all('/api/*', (c) => c.notFound() )
 
 app.all('*', (c) => startHandler(c.req.raw))
+
+export type AppType = typeof app
 
 export default app
