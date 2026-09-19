@@ -2,6 +2,7 @@ import { env } from 'cloudflare:workers'
 import { APIError, betterAuth } from 'better-auth'
 import { createAuthMiddleware } from 'better-auth/api'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
+import { username } from 'better-auth/plugins'
 import { createMiddleware } from 'hono/factory'
 import { createDb } from '#/server/db'
 import { hasAnyUser } from '#/server/services/users'
@@ -18,6 +19,7 @@ export function createAuth(bindings: Env) {
     emailAndPassword: {
       enabled: true,
     },
+    plugins: [username()],
     hooks: {
       before: createAuthMiddleware(async (ctx) => {
         if (ctx.path !== '/sign-up/email') return

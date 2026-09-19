@@ -10,14 +10,19 @@ export default function SignInForm() {
   const [formError, setFormError] = useState<string | null>(null)
 
   const form = useForm({
-    defaultValues: { email: '', password: '' },
+    defaultValues: { identifier: '', password: '' },
     onSubmit: async ({ value }) => {
       setFormError(null)
 
-      const { error } = await signIn.email({
-        email: value.email,
-        password: value.password,
-      })
+      const { error } = value.identifier.includes('@')
+        ? await signIn.email({
+            email: value.identifier,
+            password: value.password,
+          })
+        : await signIn.username({
+            username: value.identifier,
+            password: value.password,
+          })
 
       if (error) {
         setFormError(error.message ?? 'Unable to sign in')
@@ -44,16 +49,17 @@ export default function SignInForm() {
         )}
 
         <form.Field
-          name="email"
+          name="identifier"
           validators={{
-            onChange: ({ value }) => (value ? undefined : 'Email is required'),
+            onChange: ({ value }) =>
+              value ? undefined : 'Email or username is required',
           }}
         >
           {(field) => (
             <TextInput
-              label="Email"
-              placeholder="you@example.com"
-              autoComplete="email"
+              label="Email or username"
+              placeholder="you@example.com or username"
+              autoComplete="username"
               required
               value={field.state.value}
               onChange={(event) =>
