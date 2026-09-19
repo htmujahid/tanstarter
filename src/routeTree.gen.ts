@@ -16,6 +16,7 @@ import { Route as HomeRouteRouteImport } from './routes/home/route'
 import { Route as AuthSetupRouteImport } from './routes/auth/setup'
 import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
 import { Route as HomeIndexRouteImport } from './routes/home/index'
+import { Route as HomeProfileRouteImport } from './routes/home/profile'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,6 +53,11 @@ const HomeIndexRoute = HomeIndexRouteImport.update({
   path: '/',
   getParentRoute: () => HomeRouteRoute,
 } as any)
+const HomeProfileRoute = HomeProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => HomeRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -60,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/help': typeof HelpRoute
   '/auth/setup': typeof AuthSetupRoute
   '/auth/sign-in': typeof AuthSignInRoute
+  '/home/profile': typeof HomeProfileRoute
   '/home/': typeof HomeIndexRoute
 }
 export interface FileRoutesByTo {
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   '/help': typeof HelpRoute
   '/auth/setup': typeof AuthSetupRoute
   '/auth/sign-in': typeof AuthSignInRoute
+  '/home/profile': typeof HomeProfileRoute
   '/home': typeof HomeIndexRoute
 }
 export interface FileRoutesById {
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/help': typeof HelpRoute
   '/auth/setup': typeof AuthSetupRoute
   '/auth/sign-in': typeof AuthSignInRoute
+  '/home/profile': typeof HomeProfileRoute
   '/home/': typeof HomeIndexRoute
 }
 export interface FileRouteTypes {
@@ -89,9 +98,17 @@ export interface FileRouteTypes {
     | '/help'
     | '/auth/setup'
     | '/auth/sign-in'
+    | '/home/profile'
     | '/home/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/help' | '/auth/setup' | '/auth/sign-in' | '/home'
+  to:
+    | '/'
+    | '/auth'
+    | '/help'
+    | '/auth/setup'
+    | '/auth/sign-in'
+    | '/home/profile'
+    | '/home'
   id:
     | '__root__'
     | '/'
@@ -100,6 +117,7 @@ export interface FileRouteTypes {
     | '/help'
     | '/auth/setup'
     | '/auth/sign-in'
+    | '/home/profile'
     | '/home/'
   fileRoutesById: FileRoutesById
 }
@@ -161,6 +179,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HomeIndexRouteImport
       parentRoute: typeof HomeRouteRoute
     }
+    '/home/profile': {
+      id: '/home/profile'
+      path: '/profile'
+      fullPath: '/home/profile'
+      preLoaderRoute: typeof HomeProfileRouteImport
+      parentRoute: typeof HomeRouteRoute
+    }
   }
 }
 
@@ -179,10 +204,12 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 )
 
 interface HomeRouteRouteChildren {
+  HomeProfileRoute: typeof HomeProfileRoute
   HomeIndexRoute: typeof HomeIndexRoute
 }
 
 const HomeRouteRouteChildren: HomeRouteRouteChildren = {
+  HomeProfileRoute: HomeProfileRoute,
   HomeIndexRoute: HomeIndexRoute,
 }
 

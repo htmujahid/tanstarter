@@ -12,6 +12,7 @@ import {
   IconChevronDown,
   IconLogout,
   IconShoppingBag,
+  IconUserCircle,
 } from '@tabler/icons-react'
 import ThemeToggle from '#/components/ThemeToggle'
 import { signOut } from '#/lib/auth-client'
@@ -63,6 +64,14 @@ export default function DashboardHeader({
             </UnstyledButton>
           </Menu.Target>
           <Menu.Dropdown>
+            <Menu.Item
+              component={Link}
+              to="/home/profile"
+              leftSection={<IconUserCircle size={16} />}
+            >
+              Profile
+            </Menu.Item>
+            <Menu.Divider />
             <Menu.Item
               leftSection={<IconLogout size={16} />}
               onClick={() => signOut()}
