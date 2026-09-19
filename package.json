@@ -19,6 +19,7 @@
     "db:migrate:remote": "wrangler d1 migrations apply commerce-db --remote"
   },
   "dependencies": {
+    "@mantine/charts": "^9.6.1",
     "@mantine/core": "^9.6.1",
     "@mantine/hooks": "^9.6.1",
     "@tabler/icons-react": "^3.46.0",
@@ -33,6 +34,7 @@
     "hono": "^4.13.8",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "recharts": "^3.10.1",
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
