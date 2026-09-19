@@ -10,6 +10,7 @@ import {
 import {
   IconChevronDown,
   IconLogout,
+  IconShieldLock,
   IconUserCircle,
 } from '@tabler/icons-react'
 import HeaderBreadcrumbs from '#/components/dashboard/HeaderBreadcrumbs'
@@ -65,6 +66,15 @@ export default function DashboardHeader({
             >
               Profile
             </Menu.Item>
+            {session.user.role === 'admin' && (
+              <Menu.Item
+                component={Link}
+                to="/admin"
+                leftSection={<IconShieldLock size={16} />}
+              >
+                Admin panel
+              </Menu.Item>
+            )}
             <Menu.Divider />
             <Menu.Item
               leftSection={<IconLogout size={16} />}

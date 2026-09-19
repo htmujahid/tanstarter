@@ -147,6 +147,7 @@ export default function Sidebar({
                   <ActionIcon
                     component={Link}
                     to={item.to}
+                    activeOptions={{ exact: true }}
                     onClick={onNavigate}
                     variant={pathname === item.to ? 'light' : 'subtle'}
                     color={pathname === item.to ? 'blue' : 'gray'}
@@ -202,6 +203,7 @@ export default function Sidebar({
                   key={item.label}
                   component={Link}
                   to={item.to}
+                  activeOptions={{ exact: true }}
                   label={item.label}
                   leftSection={<item.icon size={18} stroke={1.75} />}
                   active={pathname === item.to}

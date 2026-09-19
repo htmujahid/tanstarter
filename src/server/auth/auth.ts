@@ -1,10 +1,11 @@
 import { env } from 'cloudflare:workers'
+import { eq } from 'drizzle-orm'
 import { APIError, betterAuth } from 'better-auth'
 import { createAuthMiddleware } from 'better-auth/api'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
-import { username } from 'better-auth/plugins'
+import { admin, username } from 'better-auth/plugins'
 import { createMiddleware } from 'hono/factory'
-import { createDb } from '#/server/db'
+import { createDb, user } from '#/server/db'
 import { hasAnyUser } from '#/server/services/users'
 
 export function createAuth(bindings: Env) {
@@ -19,7 +20,7 @@ export function createAuth(bindings: Env) {
     emailAndPassword: {
       enabled: true,
     },
-    plugins: [username()],
+    plugins: [username(), admin()],
     hooks: {
       before: createAuthMiddleware(async (ctx) => {
         if (ctx.path !== '/sign-up/email') return
@@ -29,6 +30,24 @@ export function createAuth(bindings: Env) {
             message: 'Sign up is disabled. An account already exists.',
             code: 'SIGN_UP_DISABLED',
           })
+        }
+      }),
+      after: createAuthMiddleware(async (ctx) => {
+        if (ctx.path !== '/sign-up/email') return
+
+        const newSession = ctx.context.newSession
+        if (!newSession) return
+
+        const existingUsers = await db
+          .select({ id: user.id })
+          .from(user)
+          .limit(2)
+
+        if (existingUsers.length === 1) {
+          await db
+            .update(user)
+            .set({ role: 'admin' })
+            .where(eq(user.id, newSession.user.id))
         }
       }),
     },

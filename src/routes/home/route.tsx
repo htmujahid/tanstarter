@@ -1,8 +1,15 @@
-import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
-import { AppShell } from '@mantine/core'
+import {
+  Outlet,
+  createFileRoute,
+  redirect,
+  useRouter,
+} from '@tanstack/react-router'
+import { AppShell, Button, Group, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+import { IconUserShield } from '@tabler/icons-react'
 import DashboardHeader from '#/components/dashboard/DashboardHeader'
 import Sidebar from '#/components/dashboard/Sidebar'
+import { authClient } from '#/lib/auth-client'
 
 const NAVBAR_WIDTH_EXPANDED = 260
 const NAVBAR_WIDTH_COLLAPSED = 80
@@ -21,9 +28,12 @@ export const Route = createFileRoute('/home')({
 
 function HomeLayout() {
   const { session } = Route.useRouteContext()
+  const router = useRouter()
   const [mobileOpened, { toggle: toggleMobile, close: closeMobile }] =
     useDisclosure()
   const [collapsed, { toggle: toggleCollapsed }] = useDisclosure(false)
+
+  const impersonatedBy = session.session.impersonatedBy
 
   return (
     <AppShell
@@ -53,6 +63,31 @@ function HomeLayout() {
       </AppShell.Navbar>
 
       <AppShell.Main>
+        {impersonatedBy && (
+          <Group
+            justify="center"
+            gap="xs"
+            py={6}
+            mb="md"
+            className="rounded-md bg-[var(--mantine-color-yellow-1)]"
+          >
+            <IconUserShield size={16} />
+            <Text size="sm" fw={500}>
+              Viewing as {session.user.name}
+            </Text>
+            <Button
+              size="xs"
+              variant="white"
+              onClick={async () => {
+                await authClient.admin.stopImpersonating()
+                await router.invalidate()
+                await router.navigate({ to: '/admin' })
+              }}
+            >
+              Stop impersonating
+            </Button>
+          </Group>
+        )}
         <Outlet />
       </AppShell.Main>
     </AppShell>
