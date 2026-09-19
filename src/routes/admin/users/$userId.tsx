@@ -4,6 +4,8 @@ import {
   Anchor,
   Button,
   Card,
+  Container,
+  Grid,
   Group,
   Skeleton,
   Stack,
@@ -11,9 +13,12 @@ import {
   Title,
 } from '@mantine/core'
 import { IconArrowLeft, IconUserOff } from '@tabler/icons-react'
+import DetailPageLayout from '#/components/layout/DetailPageLayout'
 import SetUserPasswordForm from '#/components/admin/SetUserPasswordForm'
+import UserActionsBar from '#/components/admin/UserActionsBar'
 import UserDetailsForm from '#/components/admin/UserDetailsForm'
 import UserRoleForm from '#/components/admin/UserRoleForm'
+import UserSessionsCard from '#/components/admin/UserSessionsCard'
 import { userQueryOptions } from '#/lib/queries/admin'
 
 export const Route = createFileRoute('/admin/users/$userId')({
@@ -46,41 +51,67 @@ function BackLink() {
 
 function UserNotFound() {
   return (
-    <Stack gap="md" maw={640}>
-      <BackLink />
-      <Card withBorder radius="md" padding="xl">
-        <Stack align="center" gap="xs" py="md">
-          <IconUserOff
-            size={32}
-            className="text-[var(--mantine-color-dimmed)]"
-          />
-          <Title order={4}>User not found</Title>
-          <Text c="dimmed" size="sm" ta="center">
-            This user may have been deleted, or the link is no longer valid.
-          </Text>
-          <Button component={Link} to="/admin/users" variant="light" mt="sm">
-            Back to users
-          </Button>
-        </Stack>
-      </Card>
-    </Stack>
+    <Container size="lg" px={0}>
+      <Stack gap="lg">
+        <BackLink />
+        <Card withBorder radius="md" padding="xl">
+          <Stack align="center" gap="xs" py="md">
+            <IconUserOff
+              size={32}
+              className="text-[var(--mantine-color-dimmed)]"
+            />
+            <Title order={4}>User not found</Title>
+            <Text c="dimmed" size="sm" ta="center">
+              This user may have been deleted, or the link is no longer valid.
+            </Text>
+            <Button component={Link} to="/admin/users" variant="light" mt="sm">
+              Back to users
+            </Button>
+          </Stack>
+        </Card>
+      </Stack>
+    </Container>
+  )
+}
+
+function CardSkeleton({ rows = 2 }: { rows?: number }) {
+  return (
+    <Card withBorder radius="md" padding="lg">
+      <Stack gap="md">
+        <Skeleton height={16} width={140} />
+        {Array.from({ length: rows }, (_, i) => (
+          <Skeleton key={i} height={36} />
+        ))}
+      </Stack>
+    </Card>
   )
 }
 
 function UserDetailPending() {
   return (
-    <Stack gap="md" maw={640}>
-      <BackLink />
-      {[0, 1, 2].map((i) => (
-        <Card key={i} withBorder radius="md" padding="lg">
-          <Stack gap="md">
-            <Skeleton height={16} width={140} />
-            <Skeleton height={36} />
-            <Skeleton height={36} />
-          </Stack>
-        </Card>
-      ))}
-    </Stack>
+    <Container size="lg" px={0}>
+      <Stack gap="lg">
+        <Group justify="space-between" align="center" wrap="wrap">
+          <BackLink />
+          <Skeleton height={36} width={260} />
+        </Group>
+
+        <Grid gap="lg">
+          <Grid.Col span={{ base: 12, md: 8 }}>
+            <Stack gap="md">
+              <CardSkeleton />
+              <CardSkeleton rows={3} />
+            </Stack>
+          </Grid.Col>
+          <Grid.Col span={{ base: 12, md: 4 }}>
+            <Stack gap="md">
+              <CardSkeleton rows={1} />
+              <CardSkeleton rows={1} />
+            </Stack>
+          </Grid.Col>
+        </Grid>
+      </Stack>
+    </Container>
   )
 }
 
@@ -95,12 +126,26 @@ function UserDetailPage() {
     queryClient.invalidateQueries({ queryKey: ['admin'] })
 
   return (
-    <Stack gap="md" maw={640}>
-      <BackLink />
-
-      <UserDetailsForm user={user} onSaved={invalidate} />
-      <UserRoleForm user={user} disabled={isSelf} onSaved={invalidate} />
-      <SetUserPasswordForm userId={user.id} />
-    </Stack>
+    <DetailPageLayout
+      backLink={<BackLink />}
+      actions={
+        <UserActionsBar user={user} isSelf={isSelf} onChanged={invalidate} />
+      }
+      main={
+        <>
+          <UserDetailsForm user={user} onSaved={invalidate} />
+          <UserSessionsCard
+            userId={user.id}
+            currentSessionToken={session.session.token}
+          />
+        </>
+      }
+      sidebar={
+        <>
+          <UserRoleForm user={user} disabled={isSelf} onSaved={invalidate} />
+          <SetUserPasswordForm userId={user.id} />
+        </>
+      }
+    />
   )
 }

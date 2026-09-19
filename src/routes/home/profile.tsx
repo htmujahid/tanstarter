@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Stack } from '@mantine/core'
+import { Container, Grid, Stack } from '@mantine/core'
 import ChangePasswordForm from '#/components/profile/ChangePasswordForm'
 import ProfileForm from '#/components/profile/ProfileForm'
 
@@ -12,9 +12,19 @@ function Profile() {
   const { session } = Route.useRouteContext()
 
   return (
-    <Stack gap="xl" maw={640}>
-      <ProfileForm user={session.user} />
-      <ChangePasswordForm />
-    </Stack>
+    <Container size="lg" px={0}>
+      <Grid gap="lg">
+        <Grid.Col span={{ base: 12, md: 6 }}>
+          <Stack gap="xl">
+            <ProfileForm user={session.user} />
+          </Stack>
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, md: 6 }}>
+          <Stack gap="xl">
+            <ChangePasswordForm />
+          </Stack>
+        </Grid.Col>
+      </Grid>
+    </Container>
   )
 }

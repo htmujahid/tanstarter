@@ -1,4 +1,5 @@
 import { queryOptions } from '@tanstack/react-query'
+import { authClient } from '#/lib/auth-client'
 import { getAdminStatsFn, getUserFn, listUsersFn } from '#/server/actions/admin'
 import type { SortableField } from '#/components/admin/UsersTableColumn'
 
@@ -40,5 +41,18 @@ export function userQueryOptions(userId: string) {
   return queryOptions({
     queryKey: ['admin', 'users', userId] as const,
     queryFn: () => getUserFn({ data: { id: userId } }),
+  })
+}
+
+export function userSessionsQueryOptions(userId: string) {
+  return queryOptions({
+    queryKey: ['admin', 'users', userId, 'sessions'] as const,
+    queryFn: async () => {
+      const { data, error } = await authClient.admin.listUserSessions({
+        userId,
+      })
+      if (error) throw new Error(error.message ?? 'Unable to load sessions')
+      return data.sessions
+    },
   })
 }

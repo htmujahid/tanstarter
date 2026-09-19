@@ -4,6 +4,7 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 import {
   Button,
   Card,
+  Container,
   Group,
   Skeleton,
   SimpleGrid,
@@ -129,21 +130,25 @@ function ManageUsersCard() {
 
 function AdminOverviewPending() {
   return (
-    <Stack gap="md">
-      <StatsSkeleton />
-      <ManageUsersCard />
-    </Stack>
+    <Container size="lg" px={0}>
+      <Stack gap="md">
+        <StatsSkeleton />
+        <ManageUsersCard />
+      </Stack>
+    </Container>
   )
 }
 
 function AdminOverview() {
   return (
-    <Stack gap="md">
-      <Suspense fallback={<StatsSkeleton />}>
-        <AdminStats />
-      </Suspense>
+    <Container size="lg" px={0}>
+      <Stack gap="md">
+        <Suspense fallback={<StatsSkeleton />}>
+          <AdminStats />
+        </Suspense>
 
-      <ManageUsersCard />
-    </Stack>
+        <ManageUsersCard />
+      </Stack>
+    </Container>
   )
 }
