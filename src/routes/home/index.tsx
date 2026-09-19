@@ -7,7 +7,6 @@ import {
   Stack,
   Text,
   ThemeIcon,
-  Title,
 } from '@mantine/core'
 import { IconPackage, IconReceipt2, IconUsers } from '@tabler/icons-react'
 
@@ -32,20 +31,8 @@ const sections = [
 ]
 
 function Home() {
-  const { session } = Route.useRouteContext()
-
   return (
     <Stack gap="xl" maw={900}>
-      <Stack gap={4}>
-        <Title order={1} className="text-3xl">
-          Welcome back, {session.user.name}
-        </Title>
-        <Text c="dimmed" size="sm">
-          This is your dashboard home. More tools for managing your store are on
-          the way.
-        </Text>
-      </Stack>
-
       <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="md">
         {sections.map((section) => (
           <Card key={section.title} withBorder radius="md" padding="lg">

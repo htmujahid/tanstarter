@@ -1,5 +1,13 @@
 import { Link, useRouterState } from '@tanstack/react-router'
-import { ActionIcon, NavLink, Stack, Tooltip } from '@mantine/core'
+import {
+  ActionIcon,
+  Anchor,
+  Group,
+  NavLink,
+  Stack,
+  Text,
+  Tooltip,
+} from '@mantine/core'
 import {
   IconChartBar,
   IconChevronLeft,
@@ -8,8 +16,10 @@ import {
   IconPackage,
   IconReceipt2,
   IconSettings,
+  IconShoppingBag,
   IconSpeakerphone,
   IconUsers,
+  IconX,
 } from '@tabler/icons-react'
 
 type NavItem = {
@@ -81,101 +91,145 @@ export default function Sidebar({
     select: (state) => state.location.pathname,
   })
 
-  if (collapsed) {
-    return (
-      <Stack justify="space-between" h="100%" align="center">
-        <Stack gap={4} align="center">
-          {navItems.map((item) =>
-            item.to ? (
-              <Tooltip
-                key={item.label}
-                label={item.label}
-                position="right"
-                withArrow
-              >
-                <ActionIcon
-                  component={Link}
-                  to={item.to}
-                  onClick={onNavigate}
-                  variant={pathname === item.to ? 'light' : 'subtle'}
-                  color={pathname === item.to ? 'blue' : 'gray'}
-                  size={40}
-                  radius="md"
-                >
-                  <item.icon size={18} stroke={1.75} />
-                </ActionIcon>
-              </Tooltip>
-            ) : (
-              <Tooltip
-                key={item.label}
-                label={item.label}
-                position="right"
-                withArrow
-              >
-                <ActionIcon
-                  variant="subtle"
-                  color="gray"
-                  size={40}
-                  radius="md"
-                  disabled
-                >
-                  <item.icon size={18} stroke={1.75} />
-                </ActionIcon>
-              </Tooltip>
-            ),
-          )}
-        </Stack>
+  return (
+    <Stack h="100%" gap={0}>
+      <Group
+        h={60}
+        px={collapsed ? 'xs' : 'md'}
+        justify={collapsed ? 'center' : 'space-between'}
+        wrap="nowrap"
+        className="border-b border-[var(--mantine-color-default-border)]"
+      >
+        <Anchor
+          component={Link}
+          to="/home"
+          underline="never"
+          c="inherit"
+          onClick={onNavigate}
+        >
+          <Group gap={8} wrap="nowrap">
+            <IconShoppingBag size={22} stroke={1.75} />
+            {!collapsed && <Text fw={700}>Commerce</Text>}
+          </Group>
+        </Anchor>
 
-        <Tooltip label="Expand sidebar" position="right" withArrow>
+        {!collapsed && (
           <ActionIcon
             variant="subtle"
             color="gray"
-            size={36}
+            size={32}
             radius="md"
-            onClick={onToggleCollapse}
+            hiddenFrom="sm"
+            onClick={onNavigate}
+            aria-label="Close sidebar"
           >
-            <IconChevronRight size={18} stroke={1.75} />
+            <IconX size={18} stroke={1.75} />
           </ActionIcon>
-        </Tooltip>
-      </Stack>
-    )
-  }
-
-  return (
-    <Stack justify="space-between" h="100%">
-      <Stack gap={4}>
-        {navItems.map((item) =>
-          item.to ? (
-            <NavLink
-              key={item.label}
-              component={Link}
-              to={item.to}
-              label={item.label}
-              leftSection={<item.icon size={18} stroke={1.75} />}
-              active={pathname === item.to}
-              variant="light"
-              onClick={onNavigate}
-            />
-          ) : (
-            <NavLink
-              key={item.label}
-              label={item.label}
-              leftSection={<item.icon size={18} stroke={1.75} />}
-            >
-              {item.children?.map((child) => (
-                <NavLink key={child.label} label={child.label} disabled />
-              ))}
-            </NavLink>
-          ),
         )}
-      </Stack>
+      </Group>
 
-      <NavLink
-        label="Collapse sidebar"
-        leftSection={<IconChevronLeft size={18} stroke={1.75} />}
-        onClick={onToggleCollapse}
-        visibleFrom="sm"
-      />
+      {collapsed ? (
+        <Stack
+          justify="space-between"
+          align="center"
+          p="xs"
+          style={{ flex: 1, overflow: 'auto' }}
+        >
+          <Stack gap={4} align="center">
+            {navItems.map((item) =>
+              item.to ? (
+                <Tooltip
+                  key={item.label}
+                  label={item.label}
+                  position="right"
+                  withArrow
+                >
+                  <ActionIcon
+                    component={Link}
+                    to={item.to}
+                    onClick={onNavigate}
+                    variant={pathname === item.to ? 'light' : 'subtle'}
+                    color={pathname === item.to ? 'blue' : 'gray'}
+                    size={40}
+                    radius="md"
+                  >
+                    <item.icon size={18} stroke={1.75} />
+                  </ActionIcon>
+                </Tooltip>
+              ) : (
+                <Tooltip
+                  key={item.label}
+                  label={item.label}
+                  position="right"
+                  withArrow
+                >
+                  <ActionIcon
+                    variant="subtle"
+                    color="gray"
+                    size={40}
+                    radius="md"
+                    disabled
+                  >
+                    <item.icon size={18} stroke={1.75} />
+                  </ActionIcon>
+                </Tooltip>
+              ),
+            )}
+          </Stack>
+
+          <Tooltip label="Expand sidebar" position="right" withArrow>
+            <ActionIcon
+              variant="subtle"
+              color="gray"
+              size={36}
+              radius="md"
+              onClick={onToggleCollapse}
+            >
+              <IconChevronRight size={18} stroke={1.75} />
+            </ActionIcon>
+          </Tooltip>
+        </Stack>
+      ) : (
+        <Stack
+          justify="space-between"
+          p="md"
+          style={{ flex: 1, overflow: 'auto' }}
+        >
+          <Stack gap={4}>
+            {navItems.map((item) =>
+              item.to ? (
+                <NavLink
+                  key={item.label}
+                  component={Link}
+                  to={item.to}
+                  label={item.label}
+                  leftSection={<item.icon size={18} stroke={1.75} />}
+                  active={pathname === item.to}
+                  variant="light"
+                  onClick={onNavigate}
+                />
+              ) : (
+                <NavLink
+                  key={item.label}
+                  label={item.label}
+                  leftSection={<item.icon size={18} stroke={1.75} />}
+                >
+                  {item.children?.map((child) => (
+                    <NavLink key={child.label} label={child.label} disabled />
+                  ))}
+                </NavLink>
+              ),
+            )}
+          </Stack>
+
+          <NavLink
+            label="Collapse sidebar"
+            leftSection={<IconChevronLeft size={18} stroke={1.75} />}
+            onClick={onToggleCollapse}
+            visibleFrom="sm"
+          />
+        </Stack>
+      )}
     </Stack>
   )
 }

@@ -1,6 +1,5 @@
 import { Link } from '@tanstack/react-router'
 import {
-  Anchor,
   Avatar,
   Burger,
   Group,
@@ -11,9 +10,9 @@ import {
 import {
   IconChevronDown,
   IconLogout,
-  IconShoppingBag,
   IconUserCircle,
 } from '@tabler/icons-react'
+import HeaderBreadcrumbs from '#/components/dashboard/HeaderBreadcrumbs'
 import ThemeToggle from '#/components/ThemeToggle'
 import { signOut } from '#/lib/auth-client'
 import type { Session } from '#/server/auth/auth'
@@ -29,19 +28,14 @@ export default function DashboardHeader({
 }) {
   return (
     <Group h="100%" px="md" justify="space-between" wrap="nowrap">
-      <Group gap="sm" wrap="nowrap">
+      <Group gap="sm" wrap="nowrap" style={{ minWidth: 0 }}>
         <Burger
           opened={navbarOpened}
           onClick={onBurgerClick}
           hiddenFrom="sm"
           size="sm"
         />
-        <Anchor component={Link} to="/home" underline="never" c="inherit">
-          <Group gap={8} wrap="nowrap">
-            <IconShoppingBag size={22} stroke={1.75} />
-            <Text fw={700}>Commerce</Text>
-          </Group>
-        </Anchor>
+        <HeaderBreadcrumbs />
       </Group>
 
       <Group gap="xs" wrap="nowrap">

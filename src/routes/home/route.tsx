@@ -15,6 +15,7 @@ export const Route = createFileRoute('/home')({
 
     return { session: context.session }
   },
+  staticData: { breadcrumb: 'Home' },
   component: HomeLayout,
 })
 
@@ -26,6 +27,7 @@ function HomeLayout() {
 
   return (
     <AppShell
+      layout="alt"
       header={{ height: 60 }}
       navbar={{
         width: collapsed ? NAVBAR_WIDTH_COLLAPSED : NAVBAR_WIDTH_EXPANDED,
@@ -42,7 +44,7 @@ function HomeLayout() {
         />
       </AppShell.Header>
 
-      <AppShell.Navbar p={collapsed ? 'xs' : 'md'}>
+      <AppShell.Navbar>
         <Sidebar
           collapsed={collapsed}
           onToggleCollapse={toggleCollapsed}
