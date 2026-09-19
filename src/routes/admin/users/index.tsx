@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { createFileRoute, useNavigate, useRouter } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import {
   Button,
   Group,
@@ -11,11 +12,10 @@ import {
 import { IconPlus, IconSearch } from '@tabler/icons-react'
 import CreateUserForm from '#/components/admin/CreateUserForm'
 import UsersTable from '#/components/admin/UsersTable'
+import UsersTableSkeleton from '#/components/admin/UsersTableSkeleton'
 import { SORTABLE_FIELDS } from '#/components/admin/UsersTableColumn'
 import type { SortableField } from '#/components/admin/UsersTableColumn'
-import { listUsersFn } from '#/server/actions/admin'
-
-const PAGE_SIZE = 10
+import { USERS_PAGE_SIZE, usersQueryOptions } from '#/lib/queries/admin'
 
 type UsersSearch = {
   q?: string
@@ -48,31 +48,32 @@ export const Route = createFileRoute('/admin/users/')({
     sortDirection: search.sortDirection,
     page: search.page,
   }),
-  loader: ({ deps }) =>
-    listUsersFn({
-      data: {
-        searchValue: deps.q,
-        role: deps.role,
-        sortBy: deps.sortBy,
-        sortDirection: deps.sortDirection,
-        limit: PAGE_SIZE,
-        offset: (deps.page - 1) * PAGE_SIZE,
-      },
+  loader: ({ context, deps }) =>
+    context.queryClient.query({
+      ...usersQueryOptions(deps),
+      staleTime: 'static',
     }),
+  pendingComponent: () => <UsersTableSkeleton />,
   staticData: { breadcrumb: 'Users' },
   component: UsersPage,
 })
 
 function UsersPage() {
-  const { users, total } = Route.useLoaderData()
   const { q, role, sortBy, sortDirection, page } = Route.useSearch()
+  const {
+    data: { users, total },
+  } = useSuspenseQuery(
+    usersQueryOptions({ q, role, sortBy, sortDirection, page }),
+  )
   const navigate = useNavigate({ from: Route.fullPath })
-  const router = useRouter()
+  const queryClient = useQueryClient()
   const { session } = Route.useRouteContext()
   const [search, setSearch] = useState(q ?? '')
   const [createOpened, setCreateOpened] = useState(false)
 
-  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
+  const totalPages = Math.max(1, Math.ceil(total / USERS_PAGE_SIZE))
+  const invalidate = () =>
+    queryClient.invalidateQueries({ queryKey: ['admin'] })
 
   return (
     <Stack gap="md">
@@ -149,7 +150,7 @@ function UsersPage() {
             },
           })
         }
-        onChanged={() => router.invalidate()}
+        onChanged={invalidate}
       />
 
       {totalPages > 1 && (
@@ -171,7 +172,7 @@ function UsersPage() {
         onClose={() => setCreateOpened(false)}
         onCreated={() => {
           setCreateOpened(false)
-          void router.invalidate()
+          void invalidate()
         }}
       />
     </Stack>

@@ -1,8 +1,11 @@
+import { Suspense } from 'react'
 import { Link, createFileRoute } from '@tanstack/react-router'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import {
   Button,
   Card,
   Group,
+  Skeleton,
   SimpleGrid,
   Stack,
   Text,
@@ -15,10 +18,18 @@ import {
   IconUsers,
 } from '@tabler/icons-react'
 import type { Icon } from '@tabler/icons-react'
-import { getAdminStatsFn } from '#/server/actions/admin'
+import { adminStatsQueryOptions } from '#/lib/queries/admin'
 
 export const Route = createFileRoute('/admin/')({
-  loader: () => getAdminStatsFn(),
+  loader: ({ context }) => {
+    // Fire-and-forget: the overview shell renders immediately and the stat
+    // cards stream in via the <Suspense> boundary below instead of blocking
+    // navigation on this query.
+    void context.queryClient
+      .query(adminStatsQueryOptions())
+      .catch(() => undefined)
+  },
+  pendingComponent: AdminOverviewPending,
   component: AdminOverview,
 })
 
@@ -51,49 +62,88 @@ function OverviewCard({
   )
 }
 
-function AdminOverview() {
-  const stats = Route.useLoaderData()
+function StatsSkeleton() {
+  return (
+    <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="md">
+      {[0, 1, 2].map((i) => (
+        <Card key={i} withBorder radius="md" padding="lg">
+          <Group justify="space-between" mb="xs">
+            <Skeleton height={14} width={90} />
+            <Skeleton height={32} width={32} radius="md" circle />
+          </Group>
+          <Skeleton height={28} width={60} />
+        </Card>
+      ))}
+    </SimpleGrid>
+  )
+}
+
+function AdminStats() {
+  const { data: stats } = useSuspenseQuery(adminStatsQueryOptions())
 
   return (
-    <Stack gap="md">
-      <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="md">
-        <OverviewCard
-          label="Total users"
-          value={stats.total}
-          icon={IconUsers}
-          color="blue"
-        />
-        <OverviewCard
-          label="Admins"
-          value={stats.admins}
-          icon={IconShieldLock}
-          color="grape"
-        />
-        <OverviewCard
-          label="Banned"
-          value={stats.banned}
-          icon={IconUserOff}
-          color="red"
-        />
-      </SimpleGrid>
+    <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="md">
+      <OverviewCard
+        label="Total users"
+        value={stats.total}
+        icon={IconUsers}
+        color="blue"
+      />
+      <OverviewCard
+        label="Admins"
+        value={stats.admins}
+        icon={IconShieldLock}
+        color="grape"
+      />
+      <OverviewCard
+        label="Banned"
+        value={stats.banned}
+        icon={IconUserOff}
+        color="red"
+      />
+    </SimpleGrid>
+  )
+}
 
-      <Card withBorder radius="md" padding="lg">
-        <Group justify="space-between">
-          <div>
-            <Text fw={600}>Manage users</Text>
-            <Text size="sm" c="dimmed">
-              Create accounts, change roles, and ban or remove users.
-            </Text>
-          </div>
-          <Button
-            component={Link}
-            to="/admin/users"
-            rightSection={<IconArrowRight size={16} />}
-          >
-            Go to users
-          </Button>
-        </Group>
-      </Card>
+function ManageUsersCard() {
+  return (
+    <Card withBorder radius="md" padding="lg">
+      <Group justify="space-between">
+        <div>
+          <Text fw={600}>Manage users</Text>
+          <Text size="sm" c="dimmed">
+            Create accounts, change roles, and ban or remove users.
+          </Text>
+        </div>
+        <Button
+          component={Link}
+          to="/admin/users"
+          rightSection={<IconArrowRight size={16} />}
+        >
+          Go to users
+        </Button>
+      </Group>
+    </Card>
+  )
+}
+
+function AdminOverviewPending() {
+  return (
+    <Stack gap="md">
+      <StatsSkeleton />
+      <ManageUsersCard />
+    </Stack>
+  )
+}
+
+function AdminOverview() {
+  return (
+    <Stack gap="md">
+      <Suspense fallback={<StatsSkeleton />}>
+        <AdminStats />
+      </Suspense>
+
+      <ManageUsersCard />
     </Stack>
   )
 }
