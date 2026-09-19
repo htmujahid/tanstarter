@@ -1,4 +1,6 @@
 import { Hono } from 'hono'
+import { requireAuth } from '#/server/auth/auth'
+import type { AuthEnv } from '#/server/auth/auth'
 import { createDb } from '#/server/db'
 import {
   createNote,
@@ -8,7 +10,9 @@ import {
   updateNote,
 } from '#/server/services/notes'
 
-const app = new Hono<{ Bindings: Env }>()
+const app = new Hono<AuthEnv>()
+
+app.use(requireAuth)
 
 function parseId(idParam: string) {
   const id = Number(idParam)
