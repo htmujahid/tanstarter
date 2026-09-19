@@ -1,9 +1,16 @@
-import { Link, Outlet, createFileRoute } from '@tanstack/react-router'
+import { Link, Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 import { Group, Stack, Text, Title } from '@mantine/core'
 import { IconShoppingBag } from '@tabler/icons-react'
 import { features } from '#/lib/features'
 
-export const Route = createFileRoute('/auth')({ component: AuthLayout })
+export const Route = createFileRoute('/auth')({
+  beforeLoad: ({ context }) => {
+    if (context.session) {
+      throw redirect({ to: '/home' })
+    }
+  },
+  component: AuthLayout,
+})
 
 function AuthLayout() {
   return (

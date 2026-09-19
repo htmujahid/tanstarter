@@ -10,8 +10,13 @@ import {
 import mantineCss from '@mantine/core/styles.css?url'
 import appCss from '../styles.css?url'
 import { theme } from '../theme'
+import { getSessionFn } from '#/server/actions/session'
 
 export const Route = createRootRoute({
+  beforeLoad: async () => {
+    const session = await getSessionFn()
+    return { session }
+  },
   head: () => ({
     meta: [
       {
