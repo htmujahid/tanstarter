@@ -13,7 +13,10 @@
     "lint": "eslint",
     "format": "prettier --write . && eslint --fix",
     "check": "prettier --check .",
-    "deploy": "npm run build && wrangler deploy"
+    "deploy": "npm run build && wrangler deploy",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate:local": "wrangler d1 migrations apply commerce-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply commerce-db --remote"
   },
   "dependencies": {
     "@mantine/core": "^9.6.1",
@@ -24,6 +27,7 @@
     "@tanstack/react-router": "latest",
     "@tanstack/react-router-devtools": "latest",
     "@tanstack/react-start": "latest",
+    "drizzle-orm": "^0.45.2",
     "hono": "^4.13.8",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
@@ -39,6 +43,7 @@
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^6.0.1",
+    "drizzle-kit": "^0.31.10",
     "eslint": "^9.20.0",
     "postcss": "^8.5.28",
     "postcss-preset-mantine": "^1.18.0",

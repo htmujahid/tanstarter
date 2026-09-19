@@ -7,7 +7,7 @@ import api from './server/routes'
 
 const startHandler = createStartHandler(defaultStreamHandler)
 
-const app = new Hono().route('/api', api)
+const app = new Hono<{ Bindings: Env }>().route('/api', api)
 
 app.all('/api/*', (c) => c.notFound() )
 
