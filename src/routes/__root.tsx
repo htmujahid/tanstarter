@@ -1,7 +1,11 @@
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
-import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from '@mantine/core'
+import {
+  ColorSchemeScript,
+  MantineProvider,
+  mantineHtmlProps,
+} from '@mantine/core'
 
 import mantineCss from '@mantine/core/styles.css?url'
 import appCss from '../styles.css?url'
@@ -18,7 +22,16 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: 'Commerce | Sell online without the overhead',
+      },
+      {
+        name: 'description',
+        content:
+          'Launch a fast, secure storefront your customers will love. Built to get out of your way, so you can focus on selling.',
+      },
+      {
+        name: 'theme-color',
+        content: '#228be6',
       },
     ],
     links: [

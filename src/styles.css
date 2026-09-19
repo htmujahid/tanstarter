@@ -1,3 +1,38 @@
-
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin "@tailwindcss/typography";
+
+.bg-grid-pattern {
+  background-image: radial-gradient(
+    var(--mantine-color-default-border) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+  mask-image: radial-gradient(
+    ellipse 60% 55% at 50% 45%,
+    black 45%,
+    transparent 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 60% 55% at 50% 45%,
+    black 45%,
+    transparent 100%
+  );
+}
+
+.bg-grid-pattern-light {
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.35) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+  mask-image: radial-gradient(
+    ellipse 70% 60% at 50% 40%,
+    black 40%,
+    transparent 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 70% 60% at 50% 40%,
+    black 40%,
+    transparent 100%
+  );
+}
