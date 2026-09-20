@@ -4,11 +4,16 @@ import { APIError, betterAuth } from 'better-auth'
 import { createAuthMiddleware } from 'better-auth/api'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { admin as adminPlugin, username } from 'better-auth/plugins'
+import { apiKey } from '@better-auth/api-key'
 import { passkey } from '@better-auth/passkey'
 import { createMiddleware } from 'hono/factory'
 import { createDb, user } from '#/server/db'
 import { hasAnyUser } from '#/server/services/users'
-import { ac, admin as adminRole, user as userRole } from '#/server/auth/permissions'
+import {
+  ac,
+  admin as adminRole,
+  user as userRole,
+} from '#/server/auth/permissions'
 
 export function createAuth(bindings: Env) {
   const db = createDb(bindings.DB)
@@ -29,6 +34,14 @@ export function createAuth(bindings: Env) {
         roles: { admin: adminRole, user: userRole },
       }),
       passkey({ rpName: 'Commerce' }),
+      apiKey({
+        enableSessionForAPIKeys: true,
+        requireName: true,
+        defaultPrefix: 'commerce_',
+        // `defaultPrefix` is 9 chars; capture past it so `start` actually
+        // distinguishes keys instead of just echoing the shared prefix.
+        startingCharactersConfig: { charactersLength: 15 },
+      }),
     ],
     hooks: {
       before: createAuthMiddleware(async (ctx) => {

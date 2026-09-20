@@ -9,6 +9,7 @@ import {
 } from '@mantine/core'
 import {
   IconChevronDown,
+  IconKey,
   IconLogout,
   IconShieldLock,
   IconUserCircle,
@@ -67,6 +68,13 @@ export function DashboardHeader({
               leftSection={<IconUserCircle size={16} />}
             >
               Profile
+            </Menu.Item>
+            <Menu.Item
+              component={Link}
+              to="/home/api-keys"
+              leftSection={<IconKey size={16} />}
+            >
+              API Keys
             </Menu.Item>
             {session.user.role === 'admin' && (
               <Menu.Item

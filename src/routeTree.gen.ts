@@ -18,6 +18,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AuthSetupRouteImport } from './routes/auth/setup'
 import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
 import { Route as HomeIndexRouteImport } from './routes/home/index'
+import { Route as HomeApiKeysRouteImport } from './routes/home/api-keys'
 import { Route as HomeProfileRouteImport } from './routes/home/profile'
 import { Route as AdminUsersIndexRouteImport } from './routes/admin/users/index'
 import { Route as AdminUsersUserIdRouteImport } from './routes/admin/users/$userId'
@@ -69,6 +70,11 @@ const HomeIndexRoute = HomeIndexRouteImport.update({
   path: '/',
   getParentRoute: () => HomeRouteRoute,
 } as any)
+const HomeApiKeysRoute = HomeApiKeysRouteImport.update({
+  id: '/api-keys',
+  path: '/api-keys',
+  getParentRoute: () => HomeRouteRoute,
+} as any)
 const HomeProfileRoute = HomeProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -103,6 +109,7 @@ export interface FileRoutesByFullPath {
   '/help': typeof HelpRoute
   '/auth/setup': typeof AuthSetupRoute
   '/auth/sign-in': typeof AuthSignInRoute
+  '/home/api-keys': typeof HomeApiKeysRoute
   '/home/profile': typeof HomeProfileRoute
   '/admin/': typeof AdminIndexRoute
   '/home/': typeof HomeIndexRoute
@@ -117,6 +124,7 @@ export interface FileRoutesByTo {
   '/help': typeof HelpRoute
   '/auth/setup': typeof AuthSetupRoute
   '/auth/sign-in': typeof AuthSignInRoute
+  '/home/api-keys': typeof HomeApiKeysRoute
   '/home/profile': typeof HomeProfileRoute
   '/admin': typeof AdminIndexRoute
   '/home': typeof HomeIndexRoute
@@ -134,6 +142,7 @@ export interface FileRoutesById {
   '/help': typeof HelpRoute
   '/auth/setup': typeof AuthSetupRoute
   '/auth/sign-in': typeof AuthSignInRoute
+  '/home/api-keys': typeof HomeApiKeysRoute
   '/home/profile': typeof HomeProfileRoute
   '/admin/': typeof AdminIndexRoute
   '/home/': typeof HomeIndexRoute
@@ -152,6 +161,7 @@ export interface FileRouteTypes {
     | '/help'
     | '/auth/setup'
     | '/auth/sign-in'
+    | '/home/api-keys'
     | '/home/profile'
     | '/admin/'
     | '/home/'
@@ -166,6 +176,7 @@ export interface FileRouteTypes {
     | '/help'
     | '/auth/setup'
     | '/auth/sign-in'
+    | '/home/api-keys'
     | '/home/profile'
     | '/admin'
     | '/home'
@@ -182,6 +193,7 @@ export interface FileRouteTypes {
     | '/help'
     | '/auth/setup'
     | '/auth/sign-in'
+    | '/home/api-keys'
     | '/home/profile'
     | '/admin/'
     | '/home/'
@@ -264,6 +276,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HomeIndexRouteImport
       parentRoute: typeof HomeRouteRoute
     }
+    '/home/api-keys': {
+      id: '/home/api-keys'
+      path: '/api-keys'
+      fullPath: '/home/api-keys'
+      preLoaderRoute: typeof HomeApiKeysRouteImport
+      parentRoute: typeof HomeRouteRoute
+    }
     '/home/profile': {
       id: '/home/profile'
       path: '/profile'
@@ -333,6 +352,7 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 )
 
 interface HomeRouteRouteChildren {
+  HomeApiKeysRoute: typeof HomeApiKeysRoute
   HomeProfileRoute: typeof HomeProfileRoute
   HomeIndexRoute: typeof HomeIndexRoute
   HomeNotesNoteIdRoute: typeof HomeNotesNoteIdRoute
@@ -340,6 +360,7 @@ interface HomeRouteRouteChildren {
 }
 
 const HomeRouteRouteChildren: HomeRouteRouteChildren = {
+  HomeApiKeysRoute: HomeApiKeysRoute,
   HomeProfileRoute: HomeProfileRoute,
   HomeIndexRoute: HomeIndexRoute,
   HomeNotesNoteIdRoute: HomeNotesNoteIdRoute,

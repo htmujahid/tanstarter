@@ -43,6 +43,13 @@
       "when": 1789873208989,
       "tag": "0005_glamorous_jack_murdock",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1789878190167,
+      "tag": "0006_panoramic_colossus",
+      "breakpoints": true
     }
   ]
 }
