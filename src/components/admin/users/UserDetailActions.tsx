@@ -9,8 +9,8 @@ import {
   IconUserShield,
 } from '@tabler/icons-react'
 import { authClient } from '#/lib/auth-client'
-import BanUserModal from '#/components/admin/BanUserModal'
-import type { AdminUser } from '#/components/admin/UsersTableColumn'
+import BanUserModal from '#/components/admin/users/BanUserModal'
+import type { AdminUser } from '#/components/admin/users/UsersTableColumn'
 
 export default function UserDetailActions({
   user,

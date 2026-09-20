@@ -10,11 +10,11 @@ import {
   TextInput,
 } from '@mantine/core'
 import { IconPlus, IconSearch } from '@tabler/icons-react'
-import CreateUserForm from '#/components/admin/CreateUserForm'
-import UsersTable from '#/components/admin/UsersTable'
-import UsersTableSkeleton from '#/components/admin/UsersTableSkeleton'
-import { SORTABLE_FIELDS } from '#/components/admin/UsersTableColumn'
-import type { SortableField } from '#/components/admin/UsersTableColumn'
+import CreateUserForm from '#/components/admin/users/CreateUserForm'
+import UsersTable from '#/components/admin/users/UsersTable'
+import UsersTableSkeleton from '#/components/admin/users/UsersTableSkeleton'
+import { SORTABLE_FIELDS } from '#/components/admin/users/UsersTableColumn'
+import type { SortableField } from '#/components/admin/users/UsersTableColumn'
 import { USERS_PAGE_SIZE, usersQueryOptions } from '#/lib/queries/admin'
 
 type UsersSearch = {
