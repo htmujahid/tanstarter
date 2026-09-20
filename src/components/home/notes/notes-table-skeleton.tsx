@@ -1,6 +1,9 @@
 import { Skeleton, Table } from '@mantine/core'
+import { useTranslation } from 'react-i18next'
 
 export function NotesTableSkeleton({ rows = 5 }: { rows?: number }) {
+  const { t } = useTranslation('home')
+
   return (
     <Table.ScrollContainer minWidth={640}>
       <Table verticalSpacing="sm">
@@ -9,9 +12,9 @@ export function NotesTableSkeleton({ rows = 5 }: { rows?: number }) {
             <Table.Th>
               <Skeleton height={18} width={18} radius="sm" />
             </Table.Th>
-            <Table.Th>Title</Table.Th>
-            <Table.Th>Created</Table.Th>
-            <Table.Th>Updated</Table.Th>
+            <Table.Th>{t('notes.table.titleColumn')}</Table.Th>
+            <Table.Th>{t('notes.table.createdColumn')}</Table.Th>
+            <Table.Th>{t('notes.table.updatedColumn')}</Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>

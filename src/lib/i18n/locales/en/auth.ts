@@ -1,0 +1,45 @@
+import type { AuthTranslations } from '#/lib/i18n/locales/types'
+
+export const auth: AuthTranslations = {
+  layout: {
+    title: 'Everything you need to sell online.',
+    subtitle: 'Launch a fast, secure storefront and manage it all from one place.',
+    copyright: '© {{year}} Commerce',
+  },
+  signIn: {
+    title: 'Welcome back',
+    subtitle: 'Sign in to your account to continue',
+    identifierLabel: 'Email or username',
+    identifierPlaceholder: 'you@example.com or username',
+    identifierRequired: 'Email or username is required',
+    passwordLabel: 'Password',
+    passwordPlaceholder: 'Your password',
+    passwordRequired: 'Password is required',
+    submit: 'Sign in',
+    genericError: 'Unable to sign in',
+  },
+  setup: {
+    title: 'Get started',
+    subtitle: 'Create the first account to set up your store',
+    nameLabel: 'Name',
+    namePlaceholder: 'Jane Doe',
+    nameRequired: 'Name is required',
+    emailLabel: 'Email',
+    emailPlaceholder: 'you@example.com',
+    emailRequired: 'Email is required',
+    passwordLabel: 'Password',
+    passwordPlaceholder: 'At least 8 characters',
+    passwordTooShort: 'Password must be at least 8 characters',
+    confirmPasswordLabel: 'Confirm password',
+    confirmPasswordPlaceholder: 'Re-enter your password',
+    confirmPasswordRequired: 'Confirm your password',
+    passwordMismatch: 'Passwords do not match',
+    submit: 'Create account',
+    genericError: 'Unable to create the first user',
+  },
+  passkey: {
+    divider: 'or',
+    submit: 'Sign in with a passkey',
+    genericError: 'Unable to sign in with passkey',
+  },
+}

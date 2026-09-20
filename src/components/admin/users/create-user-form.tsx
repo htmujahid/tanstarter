@@ -11,6 +11,7 @@ import {
   TextInput,
 } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { authClient } from '#/lib/auth-client'
 
 export function CreateUserForm({
@@ -22,6 +23,8 @@ export function CreateUserForm({
   onClose: () => void
   onCreated: () => void
 }) {
+  const { t } = useTranslation('admin')
+  const { t: tCommon } = useTranslation('common')
   const [formError, setFormError] = useState<string | null>(null)
 
   const form = useForm({
@@ -37,7 +40,7 @@ export function CreateUserForm({
       })
 
       if (error) {
-        setFormError(error.message ?? 'Unable to create user')
+        setFormError(error.message ?? t('users.createForm.genericError'))
         return
       }
 
@@ -54,7 +57,7 @@ export function CreateUserForm({
         setFormError(null)
         onClose()
       }}
-      title="Add user"
+      title={t('users.createForm.title')}
     >
       <form
         onSubmit={(event) => {
@@ -73,13 +76,14 @@ export function CreateUserForm({
           <form.Field
             name="name"
             validators={{
-              onChange: ({ value }) => (value ? undefined : 'Name is required'),
+              onChange: ({ value }) =>
+                value ? undefined : t('users.createForm.nameRequired'),
             }}
           >
             {(field) => (
               <TextInput
-                label="Name"
-                placeholder="Jane Doe"
+                label={t('users.createForm.nameLabel')}
+                placeholder={t('users.createForm.namePlaceholder')}
                 autoComplete="off"
                 required
                 value={field.state.value}
@@ -96,13 +100,13 @@ export function CreateUserForm({
             name="email"
             validators={{
               onChange: ({ value }) =>
-                value ? undefined : 'Email is required',
+                value ? undefined : t('users.createForm.emailRequired'),
             }}
           >
             {(field) => (
               <TextInput
-                label="Email"
-                placeholder="you@example.com"
+                label={t('users.createForm.emailLabel')}
+                placeholder={t('users.createForm.emailPlaceholder')}
                 autoComplete="off"
                 required
                 value={field.state.value}
@@ -121,13 +125,13 @@ export function CreateUserForm({
               onChange: ({ value }) =>
                 value.length >= 8
                   ? undefined
-                  : 'Password must be at least 8 characters',
+                  : t('users.createForm.passwordTooShort'),
             }}
           >
             {(field) => (
               <PasswordInput
-                label="Password"
-                placeholder="At least 8 characters"
+                label={t('users.createForm.passwordLabel')}
+                placeholder={t('users.createForm.passwordPlaceholder')}
                 autoComplete="new-password"
                 required
                 value={field.state.value}
@@ -143,10 +147,10 @@ export function CreateUserForm({
           <form.Field name="role">
             {(field) => (
               <Select
-                label="Role"
+                label={t('users.createForm.roleLabel')}
                 data={[
-                  { value: 'user', label: 'User' },
-                  { value: 'admin', label: 'Admin' },
+                  { value: 'user', label: t('users.roles.user') },
+                  { value: 'admin', label: t('users.roles.admin') },
                 ]}
                 value={field.state.value}
                 onChange={(value) => field.handleChange(value ?? 'user')}
@@ -157,7 +161,7 @@ export function CreateUserForm({
 
           <Group justify="flex-end">
             <Button variant="subtle" onClick={onClose}>
-              Cancel
+              {tCommon('actions.cancel')}
             </Button>
             <form.Subscribe
               selector={(state) =>
@@ -170,7 +174,7 @@ export function CreateUserForm({
                   loading={isSubmitting}
                   disabled={!canSubmit}
                 >
-                  Create user
+                  {t('users.createForm.submitButton')}
                 </Button>
               )}
             </form.Subscribe>

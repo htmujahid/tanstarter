@@ -22,6 +22,7 @@ import {
   IconUsers,
   IconX,
 } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 
 type NavItem = {
   label: string
@@ -30,55 +31,68 @@ type NavItem = {
   children?: Array<{ label: string }>
 }
 
-const navItems: NavItem[] = [
-  { label: 'Dashboard', icon: IconLayoutDashboard, to: '/home' },
-  { label: 'Notes', icon: IconNotes, to: '/home/notes' },
-  {
-    label: 'Orders',
-    icon: IconReceipt2,
-    children: [
-      { label: 'All orders' },
-      { label: 'Drafts' },
-      { label: 'Abandoned checkouts' },
-    ],
-  },
-  {
-    label: 'Products',
-    icon: IconPackage,
-    children: [
-      { label: 'All products' },
-      { label: 'Collections' },
-      { label: 'Inventory' },
-      { label: 'Categories' },
-    ],
-  },
-  {
-    label: 'Customers',
-    icon: IconUsers,
-    children: [{ label: 'All customers' }, { label: 'Segments' }],
-  },
-  {
-    label: 'Marketing',
-    icon: IconSpeakerphone,
-    children: [{ label: 'Discounts' }, { label: 'Campaigns' }],
-  },
-  {
-    label: 'Analytics',
-    icon: IconChartBar,
-    children: [{ label: 'Reports' }, { label: 'Live view' }],
-  },
-  {
-    label: 'Settings',
-    icon: IconSettings,
-    children: [
-      { label: 'General' },
-      { label: 'Payments' },
-      { label: 'Shipping' },
-      { label: 'Team & permissions' },
-      { label: 'Domains' },
-    ],
-  },
-]
+function useNavItems(): NavItem[] {
+  const { t } = useTranslation('home')
+
+  return [
+    { label: t('sidebar.dashboard'), icon: IconLayoutDashboard, to: '/home' },
+    { label: t('sidebar.notes'), icon: IconNotes, to: '/home/notes' },
+    {
+      label: t('sidebar.orders.label'),
+      icon: IconReceipt2,
+      children: [
+        { label: t('sidebar.orders.allOrders') },
+        { label: t('sidebar.orders.drafts') },
+        { label: t('sidebar.orders.abandonedCheckouts') },
+      ],
+    },
+    {
+      label: t('sidebar.products.label'),
+      icon: IconPackage,
+      children: [
+        { label: t('sidebar.products.allProducts') },
+        { label: t('sidebar.products.collections') },
+        { label: t('sidebar.products.inventory') },
+        { label: t('sidebar.products.categories') },
+      ],
+    },
+    {
+      label: t('sidebar.customers.label'),
+      icon: IconUsers,
+      children: [
+        { label: t('sidebar.customers.allCustomers') },
+        { label: t('sidebar.customers.segments') },
+      ],
+    },
+    {
+      label: t('sidebar.marketing.label'),
+      icon: IconSpeakerphone,
+      children: [
+        { label: t('sidebar.marketing.discounts') },
+        { label: t('sidebar.marketing.campaigns') },
+      ],
+    },
+    {
+      label: t('sidebar.analytics.label'),
+      icon: IconChartBar,
+      children: [
+        { label: t('sidebar.analytics.reports') },
+        { label: t('sidebar.analytics.liveView') },
+      ],
+    },
+    {
+      label: t('sidebar.settings.label'),
+      icon: IconSettings,
+      children: [
+        { label: t('sidebar.settings.general') },
+        { label: t('sidebar.settings.payments') },
+        { label: t('sidebar.settings.shipping') },
+        { label: t('sidebar.settings.teamPermissions') },
+        { label: t('sidebar.settings.domains') },
+      ],
+    },
+  ]
+}
 
 export function Sidebar({
   collapsed,
@@ -89,6 +103,8 @@ export function Sidebar({
   onToggleCollapse: () => void
   onNavigate?: () => void
 }) {
+  const { t: tCommon } = useTranslation('common')
+  const navItems = useNavItems()
   const pathname = useRouterState({
     select: (state) => state.location.pathname,
   })
@@ -111,7 +127,7 @@ export function Sidebar({
         >
           <Group gap={8} wrap="nowrap">
             <IconShoppingBag size={22} stroke={1.75} />
-            {!collapsed && <Text fw={700}>Commerce</Text>}
+            {!collapsed && <Text fw={700}>{tCommon('app.name')}</Text>}
           </Group>
         </Anchor>
 
@@ -123,7 +139,7 @@ export function Sidebar({
             radius="md"
             hiddenFrom="sm"
             onClick={onNavigate}
-            aria-label="Close sidebar"
+            aria-label={tCommon('sidebar.close')}
           >
             <IconX size={18} stroke={1.75} />
           </ActionIcon>
@@ -180,7 +196,11 @@ export function Sidebar({
             )}
           </Stack>
 
-          <Tooltip label="Expand sidebar" position="right" withArrow>
+          <Tooltip
+            label={tCommon('sidebar.expand')}
+            position="right"
+            withArrow
+          >
             <ActionIcon
               variant="subtle"
               color="gray"
@@ -188,7 +208,7 @@ export function Sidebar({
               radius="md"
               onClick={onToggleCollapse}
             >
-              <IconChevronRight size={18} stroke={1.75} />
+              <IconChevronRight size={18} stroke={1.75} className="icon-rtl-flip" />
             </ActionIcon>
           </Tooltip>
         </Stack>
@@ -217,6 +237,7 @@ export function Sidebar({
                   key={item.label}
                   label={item.label}
                   leftSection={<item.icon size={18} stroke={1.75} />}
+                  rightSection={<IconChevronRight size={16} stroke={1.75} />}
                 >
                   {item.children?.map((child) => (
                     <NavLink key={child.label} label={child.label} disabled />
@@ -227,8 +248,10 @@ export function Sidebar({
           </Stack>
 
           <NavLink
-            label="Collapse sidebar"
-            leftSection={<IconChevronLeft size={18} stroke={1.75} />}
+            label={tCommon('sidebar.collapse')}
+            leftSection={
+              <IconChevronLeft size={18} stroke={1.75} className="icon-rtl-flip" />
+            }
             onClick={onToggleCollapse}
             visibleFrom="sm"
           />

@@ -1,5 +1,6 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { Stack, Text, Title } from '@mantine/core'
+import { useTranslation } from 'react-i18next'
 import { SetupForm } from '#/components/auth/setup-form'
 import { getSetupStatusFn } from '#/server/actions/setup'
 
@@ -14,12 +15,14 @@ export const Route = createFileRoute('/auth/setup')({
 })
 
 function Setup() {
+  const { t } = useTranslation('auth')
+
   return (
     <Stack gap="xl">
       <Stack gap={4}>
-        <Title order={2}>Get started</Title>
+        <Title order={2}>{t('setup.title')}</Title>
         <Text c="dimmed" size="sm">
-          Create the first account to set up your store
+          {t('setup.subtitle')}
         </Text>
       </Stack>
 

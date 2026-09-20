@@ -14,12 +14,17 @@ import {
   Tooltip,
 } from '@mantine/core'
 import { IconAlertCircle, IconDeviceDesktop, IconX } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
+import type { TFunction } from 'i18next'
 import { authClient } from '#/lib/auth-client'
 import { formatDateTime } from '#/lib/format-date'
 import { userSessionsQueryOptions } from '#/lib/queries/admin'
 
-function describeUserAgent(userAgent?: string | null) {
-  if (!userAgent) return 'Unknown device'
+function describeUserAgent(
+  t: TFunction<'admin'>,
+  userAgent?: string | null,
+) {
+  if (!userAgent) return t('users.detail.sessions.unknownDevice')
 
   const browser = /edg\//i.test(userAgent)
     ? 'Edge'
@@ -29,7 +34,7 @@ function describeUserAgent(userAgent?: string | null) {
         ? 'Firefox'
         : /safari\//i.test(userAgent)
           ? 'Safari'
-          : 'Unknown browser'
+          : t('users.detail.sessions.unknownBrowser')
 
   const os = /windows/i.test(userAgent)
     ? 'Windows'
@@ -41,9 +46,9 @@ function describeUserAgent(userAgent?: string | null) {
           ? 'iOS'
           : /linux/i.test(userAgent)
             ? 'Linux'
-            : 'Unknown OS'
+            : t('users.detail.sessions.unknownOs')
 
-  return `${browser} on ${os}`
+  return t('users.detail.sessions.deviceTemplate', { browser, os })
 }
 
 export function UserSessionsCard({
@@ -53,6 +58,7 @@ export function UserSessionsCard({
   userId: string
   currentSessionToken?: string
 }) {
+  const { t } = useTranslation('admin')
   const queryClient = useQueryClient()
   const { data: sessions } = useSuspenseQuery(userSessionsQueryOptions(userId))
 
@@ -74,7 +80,7 @@ export function UserSessionsCard({
     setPendingToken(null)
 
     if (error) {
-      setActionError(error.message ?? 'Unable to revoke session')
+      setActionError(error.message ?? t('users.detail.sessions.genericRevokeError'))
       return
     }
 
@@ -88,7 +94,9 @@ export function UserSessionsCard({
     setRevokingAll(false)
 
     if (error) {
-      setActionError(error.message ?? 'Unable to revoke sessions')
+      setActionError(
+        error.message ?? t('users.detail.sessions.genericRevokeAllError'),
+      )
       return
     }
 
@@ -100,9 +108,9 @@ export function UserSessionsCard({
       <Stack gap="md">
         <Group justify="space-between" align="flex-start">
           <Stack gap={2}>
-            <Title order={4}>Sessions</Title>
+            <Title order={4}>{t('users.detail.sessions.title')}</Title>
             <Text c="dimmed" size="sm">
-              Active sessions for this user across all devices.
+              {t('users.detail.sessions.description')}
             </Text>
           </Stack>
 
@@ -114,7 +122,7 @@ export function UserSessionsCard({
               loading={revokingAll}
               onClick={handleRevokeAll}
             >
-              Revoke all
+              {t('users.detail.sessions.revokeAllButton')}
             </Button>
           )}
         </Group>
@@ -132,16 +140,16 @@ export function UserSessionsCard({
 
         {sessions.length === 0 ? (
           <Text size="sm" c="dimmed">
-            No active sessions.
+            {t('users.detail.sessions.emptyState')}
           </Text>
         ) : (
           <Table.ScrollContainer minWidth={480}>
             <Table verticalSpacing="sm">
               <Table.Thead>
                 <Table.Tr>
-                  <Table.Th>Device</Table.Th>
-                  <Table.Th>IP address</Table.Th>
-                  <Table.Th>Expires</Table.Th>
+                  <Table.Th>{t('users.detail.sessions.deviceColumn')}</Table.Th>
+                  <Table.Th>{t('users.detail.sessions.ipColumn')}</Table.Th>
+                  <Table.Th>{t('users.detail.sessions.expiresColumn')}</Table.Th>
                   <Table.Th />
                 </Table.Tr>
               </Table.Thead>
@@ -158,11 +166,11 @@ export function UserSessionsCard({
                           />
                           <div>
                             <Text size="sm">
-                              {describeUserAgent(session.userAgent)}
+                              {describeUserAgent(t, session.userAgent)}
                             </Text>
                             {isCurrent && (
                               <Badge color="teal" variant="light" size="xs">
-                                Current session
+                                {t('users.detail.sessions.currentBadge')}
                               </Badge>
                             )}
                           </div>
@@ -170,7 +178,7 @@ export function UserSessionsCard({
                       </Table.Td>
                       <Table.Td>
                         <Text size="sm" c="dimmed">
-                          {session.ipAddress || 'Unknown'}
+                          {session.ipAddress || t('users.detail.sessions.unknownIp')}
                         </Text>
                       </Table.Td>
                       <Table.Td>
@@ -179,7 +187,7 @@ export function UserSessionsCard({
                         </Text>
                       </Table.Td>
                       <Table.Td ta="right">
-                        <Tooltip label="Revoke session">
+                        <Tooltip label={t('users.detail.sessions.revokeTooltip')}>
                           <ActionIcon
                             variant="subtle"
                             color="red"

@@ -1,0 +1,43 @@
+import type { TranslationDictionary } from '@better-auth/i18n'
+
+// `@better-auth/i18n`'s bundled `locales` export ships 22 languages but not
+// Urdu, so this covers the same base error codes those dictionaries define.
+export const ur: TranslationDictionary = {
+  USER_NOT_FOUND: 'صارف نہیں ملا',
+  FAILED_TO_CREATE_USER: 'صارف بنانے میں ناکامی',
+  FAILED_TO_CREATE_SESSION: 'سیشن بنانے میں ناکامی',
+  FAILED_TO_UPDATE_USER: 'صارف کو اپ ڈیٹ کرنے میں ناکامی',
+  FAILED_TO_GET_SESSION: 'سیشن حاصل کرنے میں ناکامی',
+  INVALID_PASSWORD: 'غلط پاس ورڈ',
+  INVALID_EMAIL: 'غلط ای میل',
+  INVALID_EMAIL_OR_PASSWORD: 'غلط ای میل یا پاس ورڈ',
+  INVALID_USER: 'غلط صارف',
+  SOCIAL_ACCOUNT_ALREADY_LINKED: 'سوشل اکاؤنٹ پہلے ہی منسلک ہے',
+  PROVIDER_NOT_FOUND: 'پرووائیڈر نہیں ملا',
+  INVALID_TOKEN: 'غلط ٹوکن',
+  TOKEN_EXPIRED: 'ٹوکن کی میعاد ختم ہو گئی',
+  FAILED_TO_GET_USER_INFO: 'صارف کی معلومات حاصل کرنے میں ناکامی',
+  USER_EMAIL_NOT_FOUND: 'صارف کا ای میل نہیں ملا',
+  EMAIL_NOT_VERIFIED: 'ای میل کی تصدیق نہیں ہوئی',
+  PASSWORD_TOO_SHORT: 'پاس ورڈ بہت چھوٹا ہے',
+  PASSWORD_TOO_LONG: 'پاس ورڈ بہت لمبا ہے',
+  USER_ALREADY_EXISTS: 'صارف پہلے سے موجود ہے',
+  USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL:
+    'صارف پہلے سے موجود ہے۔ کوئی دوسرا ای میل استعمال کریں۔',
+  EMAIL_CAN_NOT_BE_UPDATED: 'ای میل کو اپ ڈیٹ نہیں کیا جا سکتا',
+  CREDENTIAL_ACCOUNT_NOT_FOUND: 'کریڈینشل اکاؤنٹ نہیں ملا',
+  SESSION_EXPIRED:
+    'سیشن ختم ہو گیا۔ یہ عمل انجام دینے کے لیے دوبارہ تصدیق کریں۔',
+  FAILED_TO_UNLINK_LAST_ACCOUNT: 'آپ اپنا آخری اکاؤنٹ منقطع نہیں کر سکتے',
+  ACCOUNT_NOT_FOUND: 'اکاؤنٹ نہیں ملا',
+  USER_ALREADY_HAS_PASSWORD:
+    'صارف کے پاس پہلے سے پاس ورڈ موجود ہے۔ اکاؤنٹ حذف کرنے کے لیے وہ فراہم کریں۔',
+  VERIFICATION_EMAIL_NOT_ENABLED: 'تصدیقی ای میل فعال نہیں ہے',
+  EMAIL_ALREADY_VERIFIED: 'ای میل پہلے سے تصدیق شدہ ہے',
+  EMAIL_MISMATCH: 'ای میل مماثل نہیں ہیں',
+  SESSION_NOT_FRESH: 'سیشن تازہ نہیں ہے',
+  LINKED_ACCOUNT_ALREADY_EXISTS: 'منسلک اکاؤنٹ پہلے سے موجود ہے',
+  VALIDATION_ERROR: 'توثیق میں خرابی',
+  MISSING_FIELD: 'یہ خانہ درکار ہے',
+  PASSWORD_ALREADY_SET: 'صارف کا پاس ورڈ پہلے سے سیٹ ہے',
+}

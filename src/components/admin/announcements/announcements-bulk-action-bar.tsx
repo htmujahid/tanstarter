@@ -9,6 +9,7 @@ import {
   Text,
 } from '@mantine/core'
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { deleteAnnouncementFn } from '#/server/actions/announcements'
 import type { Announcement } from '#/server/db'
 
@@ -21,6 +22,8 @@ export function AnnouncementsBulkActionBar({
   onClearSelection: () => void
   onChanged: () => void
 }) {
+  const { t } = useTranslation('admin')
+  const { t: tCommon } = useTranslation('common')
   const [actionError, setActionError] = useState<string | null>(null)
   const [deleteAnnouncements, setDeleteAnnouncements] = useState<
     Announcement[]
@@ -45,7 +48,7 @@ export function AnnouncementsBulkActionBar({
       setActionError(
         failed.reason instanceof Error
           ? failed.reason.message
-          : 'Something went wrong',
+          : tCommon('messages.somethingWentWrong'),
       )
       return
     }
@@ -70,7 +73,7 @@ export function AnnouncementsBulkActionBar({
 
       <ActionBar opened={announcements.length > 0} onClose={onClearSelection}>
         <Text size="sm" fw={500} visibleFrom="xs">
-          {announcements.length} selected
+          {tCommon('table.rowsSelected', { count: announcements.length })}
         </Text>
         <ActionBar.Divider visibleFrom="xs" />
 
@@ -81,7 +84,7 @@ export function AnnouncementsBulkActionBar({
           leftSection={<IconTrash size={14} />}
           onClick={() => setDeleteAnnouncements(announcements)}
         >
-          Delete
+          {tCommon('actions.delete')}
         </Button>
 
         <ActionBar.CloseButton />
@@ -92,26 +95,30 @@ export function AnnouncementsBulkActionBar({
         onClose={() => setDeleteAnnouncements([])}
         title={
           deleteAnnouncements.length === 1
-            ? `Delete announcement`
-            : `Delete ${deleteAnnouncements.length} announcements`
+            ? t('announcements.deleteModal.title')
+            : t('announcements.deleteModal.titleBulk', {
+                count: deleteAnnouncements.length,
+              })
         }
       >
         <Stack gap="md">
           <Text size="sm">
-            Permanently delete{' '}
+            {t('announcements.deleteModal.confirmPrefix')}{' '}
             {deleteAnnouncements.length === 1 ? (
               <strong>{deleteAnnouncements[0].title}</strong>
             ) : (
-              `${deleteAnnouncements.length} announcements`
+              t('announcements.deleteModal.itemsCount', {
+                count: deleteAnnouncements.length,
+              })
             )}
-            ? This cannot be undone.
+            {t('announcements.deleteModal.confirmSuffix')}
           </Text>
           <Group justify="flex-end">
             <Button variant="subtle" onClick={() => setDeleteAnnouncements([])}>
-              Cancel
+              {tCommon('actions.cancel')}
             </Button>
             <Button color="red" loading={pending} onClick={handleBulkDelete}>
-              Delete
+              {tCommon('actions.delete')}
             </Button>
           </Group>
         </Stack>

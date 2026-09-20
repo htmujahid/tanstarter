@@ -1,5 +1,6 @@
 import { Card, Group, Text, ThemeIcon } from '@mantine/core'
 import { IconArrowDownRight, IconArrowUpRight } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import type { Icon } from '@tabler/icons-react'
 
 export function StatCard({
@@ -13,6 +14,7 @@ export function StatCard({
   change: number
   icon: Icon
 }) {
+  const { t } = useTranslation('common')
   const isPositive = change >= 0
 
   return (
@@ -47,7 +49,7 @@ export function StatCard({
           {change}%
         </Text>
         <Text size="xs" c="dimmed">
-          vs last period
+          {t('statCard.vsLastPeriod')}
         </Text>
       </Group>
     </Card>

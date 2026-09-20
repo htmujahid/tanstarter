@@ -11,6 +11,7 @@ import {
   IconChevronUp,
   IconSelector,
 } from '@tabler/icons-react'
+import type { TFunction } from 'i18next'
 import type { listFeedback } from '#/server/services/feedback'
 
 export const SORTABLE_FIELDS = ['createdAt', 'updatedAt'] as const
@@ -42,6 +43,32 @@ const STATUS_COLORS: Record<string, string> = {
   new: 'blue',
   reviewed: 'yellow',
   resolved: 'teal',
+}
+
+// `category`/`status` come from a free-text DB column, so they're typed as
+// `string` rather than the narrower `FeedbackCategory`/`FeedbackStatus`
+// unions — switch on the known values to translate, falling back to the raw
+// value for anything unexpected.
+export function categoryLabel(t: TFunction<'admin'>, category: string) {
+  switch (category) {
+    case 'bug':
+    case 'feature':
+    case 'general':
+      return t(`feedback.categories.${category}`)
+    default:
+      return category
+  }
+}
+
+function statusLabel(t: TFunction<'admin'>, status: string) {
+  switch (status) {
+    case 'new':
+    case 'reviewed':
+    case 'resolved':
+      return t(`feedback.statuses.${status}`)
+    default:
+      return status
+  }
 }
 
 function SortableHeader({
@@ -76,13 +103,13 @@ function SortableHeader({
   )
 }
 
-export function getFeedbackTableColumns() {
+export function getFeedbackTableColumns(t: TFunction<'admin'>) {
   return columnHelper.columns([
     columnHelper.display({
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          aria-label="Select all feedback"
+          aria-label={t('feedback.table.selectAllAria')}
           checked={table.getIsAllPageRowsSelected()}
           indeterminate={
             !table.getIsAllPageRowsSelected() &&
@@ -94,7 +121,9 @@ export function getFeedbackTableColumns() {
       enableSorting: false,
       cell: ({ row }) => (
         <Checkbox
-          aria-label={`Select feedback from ${row.original.submitterName}`}
+          aria-label={t('feedback.table.selectRowAria', {
+            name: row.original.submitterName,
+          })}
           checked={row.getIsSelected()}
           disabled={!row.getCanSelect()}
           onChange={row.getToggleSelectedHandler()}
@@ -103,7 +132,7 @@ export function getFeedbackTableColumns() {
     }),
     columnHelper.display({
       id: 'submitter',
-      header: 'Submitter',
+      header: t('feedback.table.submitterColumn'),
       cell: ({ row }) => (
         <div>
           <Link
@@ -120,7 +149,7 @@ export function getFeedbackTableColumns() {
       ),
     }),
     columnHelper.accessor('category', {
-      header: 'Category',
+      header: t('feedback.table.categoryColumn'),
       enableSorting: false,
       cell: ({ getValue }) => (
         <Badge
@@ -128,12 +157,12 @@ export function getFeedbackTableColumns() {
           variant="light"
           size="sm"
         >
-          {getValue()}
+          {categoryLabel(t, getValue())}
         </Badge>
       ),
     }),
     columnHelper.accessor('message', {
-      header: 'Message',
+      header: t('feedback.table.messageColumn'),
       enableSorting: false,
       cell: ({ getValue }) => (
         <Text size="sm" lineClamp={1} maw={320}>
@@ -142,7 +171,7 @@ export function getFeedbackTableColumns() {
       ),
     }),
     columnHelper.accessor('status', {
-      header: 'Status',
+      header: t('feedback.table.statusColumn'),
       enableSorting: false,
       cell: ({ getValue }) => (
         <Badge
@@ -150,13 +179,16 @@ export function getFeedbackTableColumns() {
           variant="light"
           size="sm"
         >
-          {getValue()}
+          {statusLabel(t, getValue())}
         </Badge>
       ),
     }),
     columnHelper.accessor('createdAt', {
       header: ({ column }) => (
-        <SortableHeader label="Submitted" column={column} />
+        <SortableHeader
+          label={t('feedback.table.submittedColumn')}
+          column={column}
+        />
       ),
       cell: ({ getValue }) => (
         <Text size="sm" c="dimmed">

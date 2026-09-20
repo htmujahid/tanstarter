@@ -11,6 +11,7 @@ import {
   Table,
 } from '@mantine/core'
 import { IconNotes, IconPlus } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { NotesBulkActionBar } from '#/components/home/notes/notes-bulk-action-bar'
 import {
   getNotesTableColumns,
@@ -40,6 +41,8 @@ export function NotesTable({
   onClearFilters: () => void
   onPageChange: (page: number) => void
 }) {
+  const { t } = useTranslation('home')
+  const { t: tCommon } = useTranslation('common')
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   const {
@@ -48,7 +51,7 @@ export function NotesTable({
   const totalPages = Math.max(1, Math.ceil(total / NOTES_PAGE_SIZE))
   const hasFilters = Boolean(q)
 
-  const columns = useMemo(() => getNotesTableColumns(), [])
+  const columns = useMemo(() => getNotesTableColumns(t), [t])
 
   const sorting: SortingState = sortBy
     ? [{ id: sortBy, desc: sortDirection === 'desc' }]
@@ -103,24 +106,28 @@ export function NotesTable({
                   <EmptyState
                     icon={<IconNotes size={28} />}
                     withIndicatorBackground
-                    title={hasFilters ? 'No notes found' : 'No notes yet'}
+                    title={
+                      hasFilters
+                        ? t('notes.table.searchEmptyTitle')
+                        : t('notes.table.emptyTitle')
+                    }
                     description={
                       hasFilters
-                        ? 'Try adjusting your search to find what you are looking for.'
-                        : 'Get started by adding your first note.'
+                        ? t('notes.table.searchEmptyDescription')
+                        : t('notes.table.emptyDescription')
                     }
                   >
                     <EmptyState.Actions>
                       {hasFilters ? (
                         <Button variant="default" onClick={onClearFilters}>
-                          Clear filters
+                          {tCommon('actions.clear')}
                         </Button>
                       ) : (
                         <Button
                           leftSection={<IconPlus size={16} />}
                           onClick={onAddNote}
                         >
-                          Add note
+                          {t('notes.addButton')}
                         </Button>
                       )}
                     </EmptyState.Actions>

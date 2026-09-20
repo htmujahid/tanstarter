@@ -13,6 +13,7 @@ import {
   Title,
 } from '@mantine/core'
 import { IconArrowLeft, IconUserOff } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { DetailPageLayout } from '#/components/layout/detail-page-layout'
 import { SetUserPasswordForm } from '#/components/admin/users/set-user-password-form'
 import { UserDetailActions } from '#/components/admin/users/user-detail-actions'
@@ -44,17 +45,19 @@ export const Route = createFileRoute('/admin/users/$userId')({
 })
 
 function BackLink() {
+  const { t } = useTranslation('admin')
   return (
     <Anchor component={Link} to="/admin/users" size="sm" c="dimmed">
       <Group gap={4} wrap="nowrap">
-        <IconArrowLeft size={14} />
-        Back to users
+        <IconArrowLeft size={14} className="icon-rtl-flip" />
+        {t('users.detail.backLink')}
       </Group>
     </Anchor>
   )
 }
 
 function UserNotFound() {
+  const { t } = useTranslation('admin')
   return (
     <Container size="lg" px={0}>
       <Stack gap="lg">
@@ -65,12 +68,12 @@ function UserNotFound() {
               size={32}
               className="text-[var(--mantine-color-dimmed)]"
             />
-            <Title order={4}>User not found</Title>
+            <Title order={4}>{t('users.detail.notFound.title')}</Title>
             <Text c="dimmed" size="sm" ta="center">
-              This user may have been deleted, or the link is no longer valid.
+              {t('users.detail.notFound.description')}
             </Text>
             <Button component={Link} to="/admin/users" variant="light" mt="sm">
-              Back to users
+              {t('users.detail.backLink')}
             </Button>
           </Stack>
         </Card>

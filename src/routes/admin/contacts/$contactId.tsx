@@ -13,6 +13,7 @@ import {
   Title,
 } from '@mantine/core'
 import { IconArrowLeft, IconMailOff } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { DetailPageLayout } from '#/components/layout/detail-page-layout'
 import { ContactDetailActions } from '#/components/admin/contacts/contact-detail-actions'
 import { contactQueryOptions } from '#/lib/queries/contact'
@@ -40,17 +41,21 @@ export const Route = createFileRoute('/admin/contacts/$contactId')({
 })
 
 function BackLink() {
+  const { t } = useTranslation('admin')
+
   return (
     <Anchor component={Link} to="/admin/contacts" size="sm" c="dimmed">
       <Group gap={4} wrap="nowrap">
-        <IconArrowLeft size={14} />
-        Back to contact submissions
+        <IconArrowLeft size={14} className="icon-rtl-flip" />
+        {t('contacts.backToList')}
       </Group>
     </Anchor>
   )
 }
 
 function ContactNotFound() {
+  const { t } = useTranslation('admin')
+
   return (
     <Container size="lg" px={0}>
       <Stack gap="lg">
@@ -61,10 +66,9 @@ function ContactNotFound() {
               size={32}
               className="text-[var(--mantine-color-dimmed)]"
             />
-            <Title order={4}>Submission not found</Title>
+            <Title order={4}>{t('contacts.notFoundTitle')}</Title>
             <Text c="dimmed" size="sm" ta="center">
-              This submission may have been deleted, or the link is no longer
-              valid.
+              {t('contacts.notFoundDescription')}
             </Text>
             <Button
               component={Link}
@@ -72,7 +76,7 @@ function ContactNotFound() {
               variant="light"
               mt="sm"
             >
-              Back to contact submissions
+              {t('contacts.backToList')}
             </Button>
           </Stack>
         </Card>
@@ -106,6 +110,7 @@ function ContactDetailPending() {
 }
 
 function ContactDetailPage() {
+  const { t } = useTranslation('admin')
   const { contactId } = Route.useParams()
   const { data: contact } = useSuspenseQuery(
     contactQueryOptions(Number(contactId)),
@@ -128,7 +133,7 @@ function ContactDetailPage() {
             <Text style={{ whiteSpace: 'pre-wrap' }}>{contact.message}</Text>
 
             <Text c="dimmed" size="sm">
-              Submitted{' '}
+              {t('contacts.detail.submittedLabel')}{' '}
               {new Date(
                 contact.createdAt.replace(' ', 'T') + 'Z',
               ).toLocaleString()}

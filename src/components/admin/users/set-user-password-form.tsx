@@ -11,9 +11,11 @@ import {
   Title,
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { authClient } from '#/lib/auth-client'
 
 export function SetUserPasswordForm({ userId }: { userId: string }) {
+  const { t } = useTranslation('admin')
   const [formError, setFormError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 
@@ -24,7 +26,7 @@ export function SetUserPasswordForm({ userId }: { userId: string }) {
       setSuccess(false)
 
       if (value.newPassword !== value.confirmPassword) {
-        setFormError('Passwords do not match')
+        setFormError(t('users.detail.passwordForm.mismatchError'))
         return
       }
 
@@ -34,7 +36,7 @@ export function SetUserPasswordForm({ userId }: { userId: string }) {
       })
 
       if (error) {
-        setFormError(error.message ?? 'Unable to update password')
+        setFormError(error.message ?? t('users.detail.passwordForm.genericError'))
         return
       }
 
@@ -54,9 +56,9 @@ export function SetUserPasswordForm({ userId }: { userId: string }) {
       >
         <Stack gap="md">
           <Stack gap={2}>
-            <Title order={4}>Password</Title>
+            <Title order={4}>{t('users.detail.passwordForm.title')}</Title>
             <Text c="dimmed" size="sm">
-              Set a new password for this user.
+              {t('users.detail.passwordForm.description')}
             </Text>
           </Stack>
 
@@ -68,7 +70,7 @@ export function SetUserPasswordForm({ userId }: { userId: string }) {
 
           {success && (
             <Alert color="green" icon={<IconCircleCheck size={16} />}>
-              Password updated successfully
+              {t('users.detail.passwordForm.successMessage')}
             </Alert>
           )}
 
@@ -78,13 +80,13 @@ export function SetUserPasswordForm({ userId }: { userId: string }) {
               onChange: ({ value }) =>
                 value.length >= 8
                   ? undefined
-                  : 'Password must be at least 8 characters',
+                  : t('users.detail.passwordForm.newPasswordTooShort'),
             }}
           >
             {(field) => (
               <PasswordInput
-                label="New password"
-                placeholder="At least 8 characters"
+                label={t('users.detail.passwordForm.newPasswordLabel')}
+                placeholder={t('users.detail.passwordForm.newPasswordPlaceholder')}
                 autoComplete="new-password"
                 required
                 value={field.state.value}
@@ -102,12 +104,14 @@ export function SetUserPasswordForm({ userId }: { userId: string }) {
             name="confirmPassword"
             validators={{
               onChange: ({ value }) =>
-                value ? undefined : 'Confirm the new password',
+                value
+                  ? undefined
+                  : t('users.detail.passwordForm.confirmPasswordRequired'),
             }}
           >
             {(field) => (
               <PasswordInput
-                label="Confirm new password"
+                label={t('users.detail.passwordForm.confirmPasswordLabel')}
                 autoComplete="new-password"
                 required
                 value={field.state.value}
@@ -133,7 +137,7 @@ export function SetUserPasswordForm({ userId }: { userId: string }) {
                   loading={isSubmitting}
                   disabled={!canSubmit}
                 >
-                  Update password
+                  {t('users.detail.passwordForm.submitButton')}
                 </Button>
               )}
             </form.Subscribe>

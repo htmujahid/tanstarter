@@ -18,6 +18,7 @@ import {
   IconPlus,
   IconTrash,
 } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { authClient } from '#/lib/auth-client'
 import { apiKeysQueryOptions } from '#/lib/queries/api-key'
 
@@ -28,6 +29,7 @@ export function ApiKeysTable({
   onAddKey: () => void
   onChanged: () => void
 }) {
+  const { t } = useTranslation('home')
   const { data: apiKeys } = useSuspenseQuery(apiKeysQueryOptions())
 
   const [actionError, setActionError] = useState<string | null>(null)
@@ -40,7 +42,7 @@ export function ApiKeysTable({
     setPendingId(null)
 
     if (error) {
-      setActionError(error.message ?? 'Unable to delete API key')
+      setActionError(error.message ?? t('apiKeys.table.deleteError'))
       return
     }
 
@@ -64,11 +66,11 @@ export function ApiKeysTable({
         <Table verticalSpacing="sm" withTableBorder highlightOnHover>
           <Table.Thead>
             <Table.Tr>
-              <Table.Th>Name</Table.Th>
-              <Table.Th>Key</Table.Th>
-              <Table.Th>Created</Table.Th>
-              <Table.Th>Expires</Table.Th>
-              <Table.Th>Last used</Table.Th>
+              <Table.Th>{t('apiKeys.table.nameColumn')}</Table.Th>
+              <Table.Th>{t('apiKeys.table.keyColumn')}</Table.Th>
+              <Table.Th>{t('apiKeys.table.createdColumn')}</Table.Th>
+              <Table.Th>{t('apiKeys.table.expiresColumn')}</Table.Th>
+              <Table.Th>{t('apiKeys.table.lastUsedColumn')}</Table.Th>
               <Table.Th />
             </Table.Tr>
           </Table.Thead>
@@ -79,15 +81,15 @@ export function ApiKeysTable({
                   <EmptyState
                     icon={<IconKey size={28} />}
                     withIndicatorBackground
-                    title="No API keys yet"
-                    description="Create a key to access the API programmatically."
+                    title={t('apiKeys.empty.title')}
+                    description={t('apiKeys.empty.description')}
                   >
                     <EmptyState.Actions>
                       <Button
                         leftSection={<IconPlus size={16} />}
                         onClick={onAddKey}
                       >
-                        Create key
+                        {t('apiKeys.createButton')}
                       </Button>
                     </EmptyState.Actions>
                   </EmptyState>
@@ -102,10 +104,12 @@ export function ApiKeysTable({
                         size={16}
                         className="text-[var(--mantine-color-dimmed)]"
                       />
-                      <Text size="sm">{apiKey.name || 'Untitled key'}</Text>
+                      <Text size="sm">
+                        {apiKey.name || t('apiKeys.table.untitledKey')}
+                      </Text>
                       {!apiKey.enabled && (
                         <Badge color="gray" variant="light" size="xs">
-                          Disabled
+                          {t('apiKeys.table.disabledBadge')}
                         </Badge>
                       )}
                     </Group>
@@ -124,18 +128,18 @@ export function ApiKeysTable({
                     <Text size="sm" c="dimmed">
                       {apiKey.expiresAt
                         ? new Date(apiKey.expiresAt).toLocaleDateString()
-                        : 'Never'}
+                        : t('apiKeys.table.never')}
                     </Text>
                   </Table.Td>
                   <Table.Td>
                     <Text size="sm" c="dimmed">
                       {apiKey.lastRequest
                         ? new Date(apiKey.lastRequest).toLocaleDateString()
-                        : 'Never'}
+                        : t('apiKeys.table.never')}
                     </Text>
                   </Table.Td>
                   <Table.Td ta="right">
-                    <Tooltip label="Delete key">
+                    <Tooltip label={t('apiKeys.table.deleteTooltip')}>
                       <ActionIcon
                         variant="subtle"
                         color="red"

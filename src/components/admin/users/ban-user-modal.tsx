@@ -9,6 +9,7 @@ import {
   Textarea,
 } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { authClient } from '#/lib/auth-client'
 import type { AdminUser } from '#/components/admin/users/users-table-column'
 
@@ -21,6 +22,8 @@ export function BanUserModal({
   onClose: () => void
   onChanged: () => void
 }) {
+  const { t } = useTranslation('admin')
+  const { t: tCommon } = useTranslation('common')
   const [reason, setReason] = useState('')
   const [days, setDays] = useState<number | string>('')
   const [error, setError] = useState<string | null>(null)
@@ -42,8 +45,8 @@ export function BanUserModal({
       onClose={onClose}
       title={
         users.length === 1
-          ? `Ban ${users[0].name}`
-          : `Ban ${users.length} users`
+          ? t('users.banModal.titleSingle', { name: users[0].name })
+          : t('users.banModal.titleMultiple', { count: users.length })
       }
     >
       <Stack gap="md">
@@ -54,16 +57,16 @@ export function BanUserModal({
         )}
 
         <Textarea
-          label="Reason"
-          placeholder="Optional"
+          label={t('users.banModal.reasonLabel')}
+          placeholder={t('users.banModal.reasonPlaceholder')}
           value={reason}
           onChange={(event) => setReason(event.currentTarget.value)}
         />
 
         <NumberInput
-          label="Ban duration (days)"
-          description="Leave blank to ban permanently"
-          placeholder="Permanent"
+          label={t('users.banModal.durationLabel')}
+          description={t('users.banModal.durationDescription')}
+          placeholder={t('users.banModal.durationPlaceholder')}
           min={1}
           value={days}
           onChange={setDays}
@@ -71,7 +74,7 @@ export function BanUserModal({
 
         <Group justify="flex-end">
           <Button variant="subtle" onClick={onClose}>
-            Cancel
+            {tCommon('actions.cancel')}
           </Button>
           <Button
             color="red"
@@ -92,14 +95,16 @@ export function BanUserModal({
 
               const failed = results.find((result) => result.error)
               if (failed?.error) {
-                setError(failed.error.message ?? 'Unable to ban user')
+                setError(failed.error.message ?? t('users.banModal.genericError'))
                 return
               }
 
               onChanged()
             }}
           >
-            {users.length === 1 ? 'Ban user' : `Ban ${users.length} users`}
+            {users.length === 1
+              ? t('users.banModal.confirmButtonSingle')
+              : t('users.banModal.confirmButtonMultiple', { count: users.length })}
           </Button>
         </Group>
       </Stack>

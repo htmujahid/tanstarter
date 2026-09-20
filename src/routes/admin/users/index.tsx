@@ -3,6 +3,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
 import { Button, Group, Select, Stack, TextInput } from '@mantine/core'
 import { IconPlus, IconSearch } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { CreateUserForm } from '#/components/admin/users/create-user-form'
 import { UsersTable } from '#/components/admin/users/users-table'
 import { UsersTableSkeleton } from '#/components/admin/users/users-table-skeleton'
@@ -52,6 +53,7 @@ export const Route = createFileRoute('/admin/users/')({
 })
 
 function UsersPage() {
+  const { t } = useTranslation('admin')
   const { q, role, sortBy, sortDirection, page } = Route.useSearch()
   const navigate = useNavigate({ from: Route.fullPath })
   const queryClient = useQueryClient()
@@ -83,7 +85,7 @@ function UsersPage() {
           >
             <TextInput
               name="q"
-              placeholder="Search by name or email"
+              placeholder={t('users.list.searchPlaceholder')}
               leftSection={<IconSearch size={16} />}
               defaultValue={q ?? ''}
               w={{ base: '100%', sm: 320 }}
@@ -91,10 +93,10 @@ function UsersPage() {
           </form>
 
           <Select
-            placeholder="All roles"
+            placeholder={t('users.list.roleFilterPlaceholder')}
             data={[
-              { value: 'admin', label: 'Admin' },
-              { value: 'user', label: 'User' },
+              { value: 'admin', label: t('users.roles.admin') },
+              { value: 'user', label: t('users.roles.user') },
             ]}
             value={role ?? null}
             onChange={(value) =>
@@ -118,7 +120,7 @@ function UsersPage() {
           leftSection={<IconPlus size={16} />}
           onClick={() => setCreateOpened(true)}
         >
-          Add user
+          {t('users.list.addUserButton')}
         </Button>
       </Group>
 

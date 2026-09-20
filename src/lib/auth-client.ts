@@ -2,6 +2,7 @@ import { createAuthClient } from 'better-auth/react'
 import { adminClient, usernameClient } from 'better-auth/client/plugins'
 import { apiKeyClient } from '@better-auth/api-key/client'
 import { passkeyClient } from '@better-auth/passkey/client'
+import { i18nClient } from '@better-auth/i18n/client'
 import {
   ac,
   admin as adminRole,
@@ -17,6 +18,7 @@ export const authClient = createAuthClient({
     }),
     passkeyClient(),
     apiKeyClient(),
+    i18nClient(),
   ],
 })
 

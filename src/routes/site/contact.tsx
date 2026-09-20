@@ -1,5 +1,6 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { Anchor, Container, Stack, Text, Title } from '@mantine/core'
+import { useTranslation } from 'react-i18next'
 import { ContactForm } from '#/components/site/contact/contact-form'
 
 export const Route = createFileRoute('/site/contact')({
@@ -7,27 +8,28 @@ export const Route = createFileRoute('/site/contact')({
 })
 
 function ContactPage() {
+  const { t } = useTranslation('site')
+
   return (
     <Container size="xs" py="xl">
       <Stack gap="xl">
         <Stack gap={4}>
           <Title order={1} className="text-3xl">
-            Contact us
+            {t('contact.title')}
           </Title>
           <Text c="dimmed" size="sm">
-            Have a question or need help? Send us a message and we&apos;ll get
-            back to you.
+            {t('contact.subtitle')}
           </Text>
         </Stack>
 
         <ContactForm />
 
         <Text size="sm" c="dimmed">
-          Looking for answers first? Check our{' '}
+          {t('contact.helpPrompt')}{' '}
           <Anchor component={Link} to="/help">
-            help &amp; FAQ
+            {t('contact.helpLink')}
           </Anchor>
-          .
+          {t('contact.helpEnd')}
         </Text>
       </Stack>
     </Container>

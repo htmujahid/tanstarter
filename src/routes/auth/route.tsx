@@ -1,6 +1,7 @@
 import { Link, Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 import { Group, Stack, Text, Title } from '@mantine/core'
 import { IconShoppingBag } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { features } from '#/lib/features'
 
 export const Route = createFileRoute('/auth')({
@@ -13,6 +14,9 @@ export const Route = createFileRoute('/auth')({
 })
 
 function AuthLayout() {
+  const { t } = useTranslation('auth')
+  const { t: tCommon } = useTranslation('common')
+
   return (
     <div className="grid min-h-dvh lg:grid-cols-2">
       <div className="relative hidden flex-col justify-between overflow-hidden bg-gradient-to-br from-blue-700 to-cyan-600 p-10 text-white lg:flex">
@@ -32,24 +36,22 @@ function AuthLayout() {
         <Link to="/" className="relative inline-flex w-fit items-center gap-2">
           <IconShoppingBag size={28} stroke={1.5} />
           <Text fw={700} size="lg" c="white">
-            Commerce
+            {tCommon('app.name')}
           </Text>
         </Link>
 
         <Stack gap="xl" className="relative max-w-md">
           <Stack gap={4}>
             <Title order={2} c="white">
-              Everything you need to sell online.
+              {t('layout.title')}
             </Title>
-            <Text c="gray.2">
-              Launch a fast, secure storefront and manage it all from one place.
-            </Text>
+            <Text c="gray.2">{t('layout.subtitle')}</Text>
           </Stack>
 
           <Stack gap="md">
             {features.map((feature) => (
               <Group
-                key={feature.title}
+                key={feature.id}
                 gap="sm"
                 wrap="nowrap"
                 align="flex-start"
@@ -59,10 +61,10 @@ function AuthLayout() {
                 </div>
                 <Stack gap={0}>
                   <Text fw={600} size="sm" c="white">
-                    {feature.title}
+                    {tCommon(`features.${feature.id}.title`)}
                   </Text>
                   <Text size="xs" c="gray.3">
-                    {feature.description}
+                    {tCommon(`features.${feature.id}.description`)}
                   </Text>
                 </Stack>
               </Group>
@@ -71,7 +73,7 @@ function AuthLayout() {
         </Stack>
 
         <Text size="sm" c="gray.3" className="relative">
-          © {new Date().getFullYear()} Commerce
+          {t('layout.copyright', { year: new Date().getFullYear() })}
         </Text>
       </div>
 
@@ -80,7 +82,7 @@ function AuthLayout() {
           <div className="mb-8 flex items-center gap-2 lg:hidden">
             <IconShoppingBag size={24} stroke={1.75} />
             <Text fw={700} size="lg">
-              Commerce
+              {tCommon('app.name')}
             </Text>
           </div>
 

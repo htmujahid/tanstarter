@@ -13,6 +13,7 @@ import {
   Title,
 } from '@mantine/core'
 import { IconArrowLeft, IconMessageOff } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { DetailPageLayout } from '#/components/layout/detail-page-layout'
 import { FeedbackDetailActions } from '#/components/admin/feedback/feedback-detail-actions'
 import { FeedbackDetailForm } from '#/components/admin/feedback/feedback-detail-form'
@@ -41,17 +42,21 @@ export const Route = createFileRoute('/admin/feedback/$feedbackId')({
 })
 
 function BackLink() {
+  const { t } = useTranslation('admin')
+
   return (
     <Anchor component={Link} to="/admin/feedback" size="sm" c="dimmed">
       <Group gap={4} wrap="nowrap">
-        <IconArrowLeft size={14} />
-        Back to feedback
+        <IconArrowLeft size={14} className="icon-rtl-flip" />
+        {t('feedback.backToList')}
       </Group>
     </Anchor>
   )
 }
 
 function FeedbackNotFound() {
+  const { t } = useTranslation('admin')
+
   return (
     <Container size="lg" px={0}>
       <Stack gap="lg">
@@ -62,10 +67,9 @@ function FeedbackNotFound() {
               size={32}
               className="text-[var(--mantine-color-dimmed)]"
             />
-            <Title order={4}>Feedback not found</Title>
+            <Title order={4}>{t('feedback.notFoundTitle')}</Title>
             <Text c="dimmed" size="sm" ta="center">
-              This feedback may have been deleted, or the link is no longer
-              valid.
+              {t('feedback.notFoundDescription')}
             </Text>
             <Button
               component={Link}
@@ -73,7 +77,7 @@ function FeedbackNotFound() {
               variant="light"
               mt="sm"
             >
-              Back to feedback
+              {t('feedback.backToList')}
             </Button>
           </Stack>
         </Card>

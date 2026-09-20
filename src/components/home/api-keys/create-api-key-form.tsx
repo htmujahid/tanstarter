@@ -10,14 +10,8 @@ import {
   TextInput,
 } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { authClient } from '#/lib/auth-client'
-
-const EXPIRATION_OPTIONS = [
-  { value: 'never', label: 'Never' },
-  { value: String(30 * 24 * 60 * 60), label: '30 days' },
-  { value: String(90 * 24 * 60 * 60), label: '90 days' },
-  { value: String(365 * 24 * 60 * 60), label: '1 year' },
-]
 
 export function CreateApiKeyForm({
   opened,
@@ -28,7 +22,25 @@ export function CreateApiKeyForm({
   onClose: () => void
   onCreated: (key: string) => void
 }) {
+  const { t } = useTranslation('home')
+  const { t: tCommon } = useTranslation('common')
   const [formError, setFormError] = useState<string | null>(null)
+
+  const EXPIRATION_OPTIONS = [
+    { value: 'never', label: t('apiKeys.createForm.expirationNever') },
+    {
+      value: String(30 * 24 * 60 * 60),
+      label: t('apiKeys.createForm.expiration30Days'),
+    },
+    {
+      value: String(90 * 24 * 60 * 60),
+      label: t('apiKeys.createForm.expiration90Days'),
+    },
+    {
+      value: String(365 * 24 * 60 * 60),
+      label: t('apiKeys.createForm.expiration1Year'),
+    },
+  ]
 
   const form = useForm({
     defaultValues: { name: '', expiration: 'never' },
@@ -42,7 +54,7 @@ export function CreateApiKeyForm({
       })
 
       if (error) {
-        setFormError(error.message ?? 'Unable to create API key')
+        setFormError(error.message ?? t('apiKeys.createForm.genericError'))
         return
       }
 
@@ -59,7 +71,7 @@ export function CreateApiKeyForm({
         setFormError(null)
         onClose()
       }}
-      title="Create an API key"
+      title={t('apiKeys.createForm.title')}
     >
       <form
         onSubmit={(event) => {
@@ -78,13 +90,14 @@ export function CreateApiKeyForm({
           <form.Field
             name="name"
             validators={{
-              onChange: ({ value }) => (value ? undefined : 'Name is required'),
+              onChange: ({ value }) =>
+                value ? undefined : t('apiKeys.createForm.nameRequired'),
             }}
           >
             {(field) => (
               <TextInput
-                label="Name"
-                placeholder="e.g. CI pipeline"
+                label={t('apiKeys.createForm.nameLabel')}
+                placeholder={t('apiKeys.createForm.namePlaceholder')}
                 autoComplete="off"
                 required
                 value={field.state.value}
@@ -100,7 +113,7 @@ export function CreateApiKeyForm({
           <form.Field name="expiration">
             {(field) => (
               <Select
-                label="Expiration"
+                label={t('apiKeys.createForm.expirationLabel')}
                 data={EXPIRATION_OPTIONS}
                 value={field.state.value}
                 onChange={(value) => field.handleChange(value ?? 'never')}
@@ -111,7 +124,7 @@ export function CreateApiKeyForm({
 
           <Group justify="flex-end">
             <Button variant="subtle" onClick={onClose}>
-              Cancel
+              {tCommon('actions.cancel')}
             </Button>
             <form.Subscribe
               selector={(state) =>
@@ -124,7 +137,7 @@ export function CreateApiKeyForm({
                   loading={isSubmitting}
                   disabled={!canSubmit}
                 >
-                  Create key
+                  {t('apiKeys.createForm.submit')}
                 </Button>
               )}
             </form.Subscribe>

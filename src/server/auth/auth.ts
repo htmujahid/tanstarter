@@ -6,9 +6,12 @@ import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { admin as adminPlugin, openAPI, username } from 'better-auth/plugins'
 import { apiKey } from '@better-auth/api-key'
 import { passkey } from '@better-auth/passkey'
+import { i18n, locales } from '@better-auth/i18n'
 import { createMiddleware } from 'hono/factory'
 import { createDb, user } from '#/server/db'
 import { hasAnyUser } from '#/server/services/users'
+import { LOCALE_COOKIE_NAME } from '#/lib/i18n/config'
+import { ur } from '#/server/auth/locales/ur'
 import {
   ac,
   admin as adminRole,
@@ -43,6 +46,12 @@ export function createAuth(bindings: Env) {
         startingCharactersConfig: { charactersLength: 15 },
       }),
       openAPI(),
+      i18n({
+        translations: { en: locales.en, ur },
+        defaultLocale: 'en',
+        detection: ['cookie', 'header'],
+        localeCookie: LOCALE_COOKIE_NAME,
+      }),
     ],
     hooks: {
       before: createAuthMiddleware(async (ctx) => {

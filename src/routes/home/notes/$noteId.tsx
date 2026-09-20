@@ -13,6 +13,7 @@ import {
   Title,
 } from '@mantine/core'
 import { IconArrowLeft, IconNoteOff } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { DetailPageLayout } from '#/components/layout/detail-page-layout'
 import { NoteDetailActions } from '#/components/home/notes/note-detail-actions'
 import { NoteDetailsForm } from '#/components/home/notes/note-details-form'
@@ -41,17 +42,21 @@ export const Route = createFileRoute('/home/notes/$noteId')({
 })
 
 function BackLink() {
+  const { t } = useTranslation('home')
+
   return (
     <Anchor component={Link} to="/home/notes" size="sm" c="dimmed">
       <Group gap={4} wrap="nowrap">
-        <IconArrowLeft size={14} />
-        Back to notes
+        <IconArrowLeft size={14} className="icon-rtl-flip" />
+        {t('notes.backToNotes')}
       </Group>
     </Anchor>
   )
 }
 
 function NoteNotFound() {
+  const { t } = useTranslation('home')
+
   return (
     <Container size="lg" px={0}>
       <Stack gap="lg">
@@ -62,12 +67,12 @@ function NoteNotFound() {
               size={32}
               className="text-[var(--mantine-color-dimmed)]"
             />
-            <Title order={4}>Note not found</Title>
+            <Title order={4}>{t('notes.notFound.title')}</Title>
             <Text c="dimmed" size="sm" ta="center">
-              This note may have been deleted, or the link is no longer valid.
+              {t('notes.notFound.description')}
             </Text>
             <Button component={Link} to="/home/notes" variant="light" mt="sm">
-              Back to notes
+              {t('notes.backToNotes')}
             </Button>
           </Stack>
         </Card>

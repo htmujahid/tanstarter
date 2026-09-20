@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
 import { Group, Select, Stack, TextInput } from '@mantine/core'
 import { IconSearch } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { FeedbackTable } from '#/components/admin/feedback/feedback-table'
 import { FeedbackTableSkeleton } from '#/components/admin/feedback/feedback-table-skeleton'
 import { feedbackListQueryOptions } from '#/lib/queries/feedback'
@@ -55,6 +56,7 @@ export const Route = createFileRoute('/admin/feedback/')({
 })
 
 function FeedbackPage() {
+  const { t } = useTranslation('admin')
   const { q, category, status, sortBy, sortDirection, page } = Route.useSearch()
   const navigate = useNavigate({ from: Route.fullPath })
   const queryClient = useQueryClient()
@@ -86,7 +88,7 @@ function FeedbackPage() {
           >
             <TextInput
               name="q"
-              placeholder="Search by message"
+              placeholder={t('feedback.searchPlaceholder')}
               leftSection={<IconSearch size={16} />}
               defaultValue={q ?? ''}
               w={{ base: '100%', sm: 280 }}
@@ -94,8 +96,11 @@ function FeedbackPage() {
           </form>
 
           <Select
-            placeholder="All categories"
-            data={FEEDBACK_CATEGORIES.map((value) => ({ value, label: value }))}
+            placeholder={t('feedback.categoryFilterPlaceholder')}
+            data={FEEDBACK_CATEGORIES.map((value) => ({
+              value,
+              label: t(`feedback.categories.${value}`),
+            }))}
             value={category ?? null}
             onChange={(value) =>
               void navigate({
@@ -118,8 +123,11 @@ function FeedbackPage() {
           />
 
           <Select
-            placeholder="All statuses"
-            data={FEEDBACK_STATUSES.map((value) => ({ value, label: value }))}
+            placeholder={t('feedback.statusFilterPlaceholder')}
+            data={FEEDBACK_STATUSES.map((value) => ({
+              value,
+              label: t(`feedback.statuses.${value}`),
+            }))}
             value={status ?? null}
             onChange={(value) =>
               void navigate({

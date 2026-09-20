@@ -11,6 +11,7 @@ import {
   IconChevronUp,
   IconSelector,
 } from '@tabler/icons-react'
+import type { TFunction } from 'i18next'
 import type { Announcement } from '#/server/db'
 
 export const SORTABLE_FIELDS = ['title', 'createdAt', 'updatedAt'] as const
@@ -62,13 +63,13 @@ function SortableHeader({
   )
 }
 
-export function getAnnouncementsTableColumns() {
+export function getAnnouncementsTableColumns(t: TFunction<'admin'>) {
   return columnHelper.columns([
     columnHelper.display({
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          aria-label="Select all announcements"
+          aria-label={t('announcements.table.selectAllAria')}
           checked={table.getIsAllPageRowsSelected()}
           indeterminate={
             !table.getIsAllPageRowsSelected() &&
@@ -80,7 +81,9 @@ export function getAnnouncementsTableColumns() {
       enableSorting: false,
       cell: ({ row }) => (
         <Checkbox
-          aria-label={`Select ${row.original.title}`}
+          aria-label={t('announcements.table.selectRowAria', {
+            title: row.original.title,
+          })}
           checked={row.getIsSelected()}
           disabled={!row.getCanSelect()}
           onChange={row.getToggleSelectedHandler()}
@@ -88,7 +91,12 @@ export function getAnnouncementsTableColumns() {
       ),
     }),
     columnHelper.accessor('title', {
-      header: ({ column }) => <SortableHeader label="Title" column={column} />,
+      header: ({ column }) => (
+        <SortableHeader
+          label={t('announcements.table.titleColumn')}
+          column={column}
+        />
+      ),
       cell: ({ row }) => (
         <div>
           <Link
@@ -107,17 +115,22 @@ export function getAnnouncementsTableColumns() {
       ),
     }),
     columnHelper.accessor('published', {
-      header: 'Status',
+      header: t('announcements.table.statusColumn'),
       enableSorting: false,
       cell: ({ getValue }) => (
         <Badge color={getValue() ? 'teal' : 'gray'} variant="light" size="sm">
-          {getValue() ? 'Published' : 'Draft'}
+          {getValue()
+            ? t('announcements.statusPublished')
+            : t('announcements.statusDraft')}
         </Badge>
       ),
     }),
     columnHelper.accessor('createdAt', {
       header: ({ column }) => (
-        <SortableHeader label="Created" column={column} />
+        <SortableHeader
+          label={t('announcements.table.createdColumn')}
+          column={column}
+        />
       ),
       cell: ({ getValue }) => (
         <Text size="sm" c="dimmed">
@@ -127,7 +140,10 @@ export function getAnnouncementsTableColumns() {
     }),
     columnHelper.accessor('updatedAt', {
       header: ({ column }) => (
-        <SortableHeader label="Updated" column={column} />
+        <SortableHeader
+          label={t('announcements.table.updatedColumn')}
+          column={column}
+        />
       ),
       cell: ({ getValue }) => (
         <Text size="sm" c="dimmed">

@@ -1,22 +1,16 @@
 import { Link, useRouter } from '@tanstack/react-router'
+import { Avatar, Burger, Group, Menu, Text } from '@mantine/core'
 import {
-  Avatar,
-  Burger,
-  Group,
-  Menu,
-  Text,
-  UnstyledButton,
-} from '@mantine/core'
-import {
-  IconChevronDown,
   IconHome,
   IconKey,
   IconLogout,
   IconShieldLock,
   IconUserCircle,
 } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { HeaderBreadcrumbs } from '#/components/dashboard/header-breadcrumbs'
 import { ThemeToggle } from '#/components/theme-toggle'
+import { LocaleToggle } from '#/components/locale-toggle'
 import { signOut } from '#/lib/auth-client'
 import type { Session } from '#/server/auth/auth'
 
@@ -29,6 +23,7 @@ export function DashboardHeader({
   navbarOpened?: boolean
   onBurgerClick?: () => void
 }) {
+  const { t } = useTranslation()
   const router = useRouter()
 
   return (
@@ -46,45 +41,48 @@ export function DashboardHeader({
       </Group>
 
       <Group gap="xs" wrap="nowrap">
+        <LocaleToggle />
         <ThemeToggle />
-        <Menu position="bottom-end" shadow="md" width={180}>
+        <Menu position="bottom-end" shadow="md" width={240}>
           <Menu.Target>
-            <UnstyledButton className="rounded-md px-2 py-1 hover:bg-[var(--mantine-color-default-hover)]">
-              <Group gap={8} wrap="nowrap">
-                <Avatar
-                  size={28}
-                  radius="xl"
-                  name={session.user.name}
-                  color="initials"
-                />
-                <Text size="sm" fw={500} visibleFrom="xs">
-                  {session.user.name}
-                </Text>
-                <IconChevronDown size={14} />
-              </Group>
-            </UnstyledButton>
+            <Avatar
+              size={32}
+              radius="xl"
+              name={session.user.name}
+              color="initials"
+              style={{ cursor: 'pointer' }}
+            />
           </Menu.Target>
           <Menu.Dropdown>
+            <div className="px-3 py-2">
+              <Text size="sm" fw={500} truncate>
+                {session.user.name}
+              </Text>
+              <Text size="xs" c="dimmed" truncate>
+                {session.user.email}
+              </Text>
+            </div>
+            <Menu.Divider />
             <Menu.Item
               component={Link}
               to="/home"
               leftSection={<IconHome size={16} />}
             >
-              Home
+              {t('nav.home')}
             </Menu.Item>
             <Menu.Item
               component={Link}
               to="/home/profile"
               leftSection={<IconUserCircle size={16} />}
             >
-              Profile
+              {t('nav.profile')}
             </Menu.Item>
             <Menu.Item
               component={Link}
               to="/home/api-keys"
               leftSection={<IconKey size={16} />}
             >
-              API Keys
+              {t('nav.apiKeys')}
             </Menu.Item>
             {session.user.role === 'admin' && (
               <Menu.Item
@@ -92,7 +90,7 @@ export function DashboardHeader({
                 to="/admin"
                 leftSection={<IconShieldLock size={16} />}
               >
-                Admin panel
+                {t('nav.adminPanel')}
               </Menu.Item>
             )}
             <Menu.Divider />
@@ -103,7 +101,7 @@ export function DashboardHeader({
                 await router.invalidate()
               }}
             >
-              Sign out
+              {t('actions.signOut')}
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>

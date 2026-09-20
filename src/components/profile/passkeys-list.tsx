@@ -20,10 +20,13 @@ import {
   IconFingerprint,
   IconTrash,
 } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { authClient } from '#/lib/auth-client'
 import { passkeysQueryOptions } from '#/lib/queries/passkey'
 
 export function PasskeysList() {
+  const { t } = useTranslation('profile')
+  const { t: tCommon } = useTranslation('common')
   const queryClient = useQueryClient()
   const { data: passkeys } = useSuspenseQuery(passkeysQueryOptions())
 
@@ -45,7 +48,7 @@ export function PasskeysList() {
     setAdding(false)
 
     if (error) {
-      setActionError(error.message ?? 'Unable to add passkey')
+      setActionError(error.message ?? t('passkeys.addError'))
       return
     }
 
@@ -61,7 +64,7 @@ export function PasskeysList() {
     setPendingId(null)
 
     if (error) {
-      setActionError(error.message ?? 'Unable to remove passkey')
+      setActionError(error.message ?? t('passkeys.deleteError'))
       return
     }
 
@@ -73,10 +76,9 @@ export function PasskeysList() {
       <Stack gap="md">
         <Group justify="space-between" align="flex-start">
           <Stack gap={2}>
-            <Title order={3}>Passkeys</Title>
+            <Title order={3}>{t('passkeys.title')}</Title>
             <Text c="dimmed" size="sm">
-              Sign in with Face ID, Touch ID, Windows Hello, or a security key
-              instead of a password.
+              {t('passkeys.subtitle')}
             </Text>
           </Stack>
 
@@ -86,7 +88,7 @@ export function PasskeysList() {
             leftSection={<IconFingerprint size={16} />}
             onClick={() => setAddOpened(true)}
           >
-            Add passkey
+            {t('passkeys.addButton')}
           </Button>
         </Group>
 
@@ -103,16 +105,16 @@ export function PasskeysList() {
 
         {passkeys.length === 0 ? (
           <Text size="sm" c="dimmed">
-            No passkeys registered yet.
+            {t('passkeys.emptyState')}
           </Text>
         ) : (
           <Table.ScrollContainer minWidth={480}>
             <Table verticalSpacing="sm">
               <Table.Thead>
                 <Table.Tr>
-                  <Table.Th>Name</Table.Th>
-                  <Table.Th>Type</Table.Th>
-                  <Table.Th>Added</Table.Th>
+                  <Table.Th>{t('passkeys.nameColumn')}</Table.Th>
+                  <Table.Th>{t('passkeys.typeColumn')}</Table.Th>
+                  <Table.Th>{t('passkeys.addedColumn')}</Table.Th>
                   <Table.Th />
                 </Table.Tr>
               </Table.Thead>
@@ -125,12 +127,16 @@ export function PasskeysList() {
                           size={16}
                           className="text-[var(--mantine-color-dimmed)]"
                         />
-                        <Text size="sm">{passkey.name || 'Passkey'}</Text>
+                        <Text size="sm">
+                          {passkey.name || t('passkeys.defaultName')}
+                        </Text>
                       </Group>
                     </Table.Td>
                     <Table.Td>
                       <Badge color="gray" variant="light" size="xs">
-                        {passkey.backedUp ? 'Synced' : 'Device-only'}
+                        {passkey.backedUp
+                          ? t('passkeys.synced')
+                          : t('passkeys.deviceOnly')}
                       </Badge>
                     </Table.Td>
                     <Table.Td>
@@ -139,7 +145,7 @@ export function PasskeysList() {
                       </Text>
                     </Table.Td>
                     <Table.Td ta="right">
-                      <Tooltip label="Remove passkey">
+                      <Tooltip label={t('passkeys.removeTooltip')}>
                         <ActionIcon
                           variant="subtle"
                           color="red"
@@ -161,27 +167,26 @@ export function PasskeysList() {
       <Modal
         opened={addOpened}
         onClose={() => setAddOpened(false)}
-        title="Add a passkey"
+        title={t('passkeys.modalTitle')}
       >
         <Stack gap="md">
           <Text size="sm" c="dimmed">
-            You&apos;ll be prompted by your browser or device to complete
-            registration.
+            {t('passkeys.modalDescription')}
           </Text>
 
           <TextInput
-            label="Name"
-            placeholder="e.g. MacBook Touch ID"
+            label={t('passkeys.nameFieldLabel')}
+            placeholder={t('passkeys.nameFieldPlaceholder')}
             value={newName}
             onChange={(event) => setNewName(event.currentTarget.value)}
           />
 
           <Group justify="flex-end">
             <Button variant="subtle" onClick={() => setAddOpened(false)}>
-              Cancel
+              {tCommon('actions.cancel')}
             </Button>
             <Button loading={adding} onClick={handleAdd}>
-              Continue
+              {t('passkeys.continue')}
             </Button>
           </Group>
         </Stack>

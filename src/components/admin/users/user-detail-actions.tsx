@@ -9,6 +9,7 @@ import {
   IconUserCheck,
   IconUserShield,
 } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { authClient } from '#/lib/auth-client'
 import { BanUserModal } from '#/components/admin/users/ban-user-modal'
 import { useSession } from '#/hooks/use-session'
@@ -21,6 +22,8 @@ export function UserDetailActions({
   userId: string
   onChanged: () => void
 }) {
+  const { t } = useTranslation('admin')
+  const { t: tCommon } = useTranslation('common')
   const { data: user } = useSuspenseQuery(userQueryOptions(userId))
   const session = useSession()
   const isSelf = user.id === session?.user.id
@@ -45,7 +48,8 @@ export function UserDetailActions({
 
     if (error) {
       setActionError(
-        (error as { message?: string }).message ?? 'Something went wrong',
+        (error as { message?: string }).message ??
+          tCommon('messages.somethingWentWrong'),
       )
       return false
     }
@@ -85,7 +89,7 @@ export function UserDetailActions({
           loading={pending === 'impersonate'}
           onClick={handleImpersonate}
         >
-          Impersonate
+          {t('users.actions.impersonateButton')}
         </Button>
 
         {isBanned ? (
@@ -96,7 +100,7 @@ export function UserDetailActions({
             loading={pending === 'unban'}
             onClick={handleUnban}
           >
-            Unban
+            {t('users.actions.unbanButton')}
           </Button>
         ) : (
           <Button
@@ -105,7 +109,7 @@ export function UserDetailActions({
             leftSection={<IconBan size={16} />}
             onClick={() => setBanModalOpen(true)}
           >
-            Ban
+            {t('users.actions.banButton')}
           </Button>
         )}
 
@@ -115,7 +119,7 @@ export function UserDetailActions({
           leftSection={<IconTrash size={16} />}
           onClick={() => setDeleteModalOpen(true)}
         >
-          Delete
+          {tCommon('actions.delete')}
         </Button>
       </Group>
 
@@ -143,23 +147,20 @@ export function UserDetailActions({
       <Modal
         opened={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
-        title="Delete user"
+        title={tCommon('confirmDelete.title', { item: user.name })}
       >
         <Stack gap="md">
-          <Text size="sm">
-            Permanently delete <strong>{user.name}</strong>? This cannot be
-            undone.
-          </Text>
+          <Text size="sm">{tCommon('confirmDelete.description')}</Text>
           <Group justify="flex-end">
             <Button variant="subtle" onClick={() => setDeleteModalOpen(false)}>
-              Cancel
+              {tCommon('actions.cancel')}
             </Button>
             <Button
               color="red"
               loading={pending === 'delete'}
               onClick={handleDelete}
             >
-              Delete
+              {tCommon('actions.delete')}
             </Button>
           </Group>
         </Stack>

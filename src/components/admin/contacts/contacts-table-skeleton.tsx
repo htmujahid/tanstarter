@@ -1,6 +1,9 @@
 import { Skeleton, Table } from '@mantine/core'
+import { useTranslation } from 'react-i18next'
 
 export function ContactsTableSkeleton({ rows = 5 }: { rows?: number }) {
+  const { t } = useTranslation('admin')
+
   return (
     <Table.ScrollContainer minWidth={640}>
       <Table verticalSpacing="sm">
@@ -9,9 +12,9 @@ export function ContactsTableSkeleton({ rows = 5 }: { rows?: number }) {
             <Table.Th>
               <Skeleton height={18} width={18} radius="sm" />
             </Table.Th>
-            <Table.Th>Name</Table.Th>
-            <Table.Th>Message</Table.Th>
-            <Table.Th>Submitted</Table.Th>
+            <Table.Th>{t('contacts.table.nameColumn')}</Table.Th>
+            <Table.Th>{t('contacts.table.messageColumn')}</Table.Th>
+            <Table.Th>{t('contacts.table.submittedColumn')}</Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>

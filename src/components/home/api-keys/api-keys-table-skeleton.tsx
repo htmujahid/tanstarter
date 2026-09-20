@@ -1,16 +1,19 @@
 import { Skeleton, Table } from '@mantine/core'
+import { useTranslation } from 'react-i18next'
 
 export function ApiKeysTableSkeleton({ rows = 3 }: { rows?: number }) {
+  const { t } = useTranslation('home')
+
   return (
     <Table.ScrollContainer minWidth={720}>
       <Table verticalSpacing="sm" withTableBorder>
         <Table.Thead>
           <Table.Tr>
-            <Table.Th>Name</Table.Th>
-            <Table.Th>Key</Table.Th>
-            <Table.Th>Created</Table.Th>
-            <Table.Th>Expires</Table.Th>
-            <Table.Th>Last used</Table.Th>
+            <Table.Th>{t('apiKeys.table.nameColumn')}</Table.Th>
+            <Table.Th>{t('apiKeys.table.keyColumn')}</Table.Th>
+            <Table.Th>{t('apiKeys.table.createdColumn')}</Table.Th>
+            <Table.Th>{t('apiKeys.table.expiresColumn')}</Table.Th>
+            <Table.Th>{t('apiKeys.table.lastUsedColumn')}</Table.Th>
             <Table.Th />
           </Table.Tr>
         </Table.Thead>

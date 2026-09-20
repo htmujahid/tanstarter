@@ -11,6 +11,7 @@ import {
   Table,
 } from '@mantine/core'
 import { IconPlus, IconSpeakerphone } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { AnnouncementsBulkActionBar } from '#/components/admin/announcements/announcements-bulk-action-bar'
 import {
   getAnnouncementsTableColumns,
@@ -45,6 +46,7 @@ export function AnnouncementsTable({
   onClearFilters: () => void
   onPageChange: (page: number) => void
 }) {
+  const { t } = useTranslation('admin')
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   const {
@@ -55,7 +57,7 @@ export function AnnouncementsTable({
   const totalPages = Math.max(1, Math.ceil(total / ANNOUNCEMENTS_PAGE_SIZE))
   const hasFilters = Boolean(q || published !== undefined)
 
-  const columns = useMemo(() => getAnnouncementsTableColumns(), [])
+  const columns = useMemo(() => getAnnouncementsTableColumns(t), [t])
 
   const sorting: SortingState = sortBy
     ? [{ id: sortBy, desc: sortDirection === 'desc' }]
@@ -114,26 +116,26 @@ export function AnnouncementsTable({
                     withIndicatorBackground
                     title={
                       hasFilters
-                        ? 'No announcements found'
-                        : 'No announcements yet'
+                        ? t('announcements.table.emptyTitleFiltered')
+                        : t('announcements.table.emptyTitle')
                     }
                     description={
                       hasFilters
-                        ? 'Try adjusting your search to find what you are looking for.'
-                        : 'Get started by adding your first announcement.'
+                        ? t('announcements.table.emptyDescriptionFiltered')
+                        : t('announcements.table.emptyDescription')
                     }
                   >
                     <EmptyState.Actions>
                       {hasFilters ? (
                         <Button variant="default" onClick={onClearFilters}>
-                          Clear filters
+                          {t('announcements.table.clearFilters')}
                         </Button>
                       ) : (
                         <Button
                           leftSection={<IconPlus size={16} />}
                           onClick={onAddAnnouncement}
                         >
-                          Add announcement
+                          {t('announcements.addAnnouncement')}
                         </Button>
                       )}
                     </EmptyState.Actions>

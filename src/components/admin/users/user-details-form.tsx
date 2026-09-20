@@ -12,6 +12,7 @@ import {
   Title,
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { authClient } from '#/lib/auth-client'
 import { userQueryOptions } from '#/lib/queries/admin'
 
@@ -22,6 +23,7 @@ export function UserDetailsForm({
   userId: string
   onSaved: () => void
 }) {
+  const { t } = useTranslation('admin')
   const { data: user } = useSuspenseQuery(userQueryOptions(userId))
   const [formError, setFormError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
@@ -46,7 +48,7 @@ export function UserDetailsForm({
       })
 
       if (error) {
-        setFormError(error.message ?? 'Unable to update user')
+        setFormError(error.message ?? t('users.detail.detailsForm.genericError'))
         return
       }
 
@@ -66,9 +68,9 @@ export function UserDetailsForm({
       >
         <Stack gap="md">
           <Stack gap={2}>
-            <Title order={4}>User details</Title>
+            <Title order={4}>{t('users.detail.detailsForm.title')}</Title>
             <Text c="dimmed" size="sm">
-              Update this user&apos;s name, email, and username.
+              {t('users.detail.detailsForm.description')}
             </Text>
           </Stack>
 
@@ -80,19 +82,20 @@ export function UserDetailsForm({
 
           {success && (
             <Alert color="green" icon={<IconCircleCheck size={16} />}>
-              User updated successfully
+              {t('users.detail.detailsForm.successMessage')}
             </Alert>
           )}
 
           <form.Field
             name="name"
             validators={{
-              onChange: ({ value }) => (value ? undefined : 'Name is required'),
+              onChange: ({ value }) =>
+                value ? undefined : t('users.detail.detailsForm.nameRequired'),
             }}
           >
             {(field) => (
               <TextInput
-                label="Name"
+                label={t('users.detail.detailsForm.nameLabel')}
                 required
                 value={field.state.value}
                 onChange={(event) => {
@@ -109,12 +112,12 @@ export function UserDetailsForm({
             name="email"
             validators={{
               onChange: ({ value }) =>
-                value ? undefined : 'Email is required',
+                value ? undefined : t('users.detail.detailsForm.emailRequired'),
             }}
           >
             {(field) => (
               <TextInput
-                label="Email"
+                label={t('users.detail.detailsForm.emailLabel')}
                 required
                 value={field.state.value}
                 onChange={(event) => {
@@ -130,8 +133,8 @@ export function UserDetailsForm({
           <form.Field name="username">
             {(field) => (
               <TextInput
-                label="Username"
-                placeholder="Optional"
+                label={t('users.detail.detailsForm.usernameLabel')}
+                placeholder={t('users.detail.detailsForm.usernamePlaceholder')}
                 value={field.state.value}
                 onChange={(event) => {
                   setSuccess(false)
@@ -154,7 +157,7 @@ export function UserDetailsForm({
                   loading={isSubmitting}
                   disabled={!canSubmit}
                 >
-                  Save changes
+                  {t('users.detail.detailsForm.submitButton')}
                 </Button>
               )}
             </form.Subscribe>

@@ -11,6 +11,7 @@ import {
   TextInput,
 } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { createAnnouncementFn } from '#/server/actions/announcements'
 
 export function CreateAnnouncementForm({
@@ -22,6 +23,8 @@ export function CreateAnnouncementForm({
   onClose: () => void
   onCreated: () => void
 }) {
+  const { t } = useTranslation('admin')
+  const { t: tCommon } = useTranslation('common')
   const [formError, setFormError] = useState<string | null>(null)
 
   const form = useForm({
@@ -41,7 +44,7 @@ export function CreateAnnouncementForm({
         setFormError(
           error instanceof Error
             ? error.message
-            : 'Unable to create announcement',
+            : t('announcements.createForm.createError'),
         )
         return
       }
@@ -59,7 +62,7 @@ export function CreateAnnouncementForm({
         setFormError(null)
         onClose()
       }}
-      title="Add announcement"
+      title={t('announcements.addAnnouncement')}
     >
       <form
         onSubmit={(event) => {
@@ -79,13 +82,13 @@ export function CreateAnnouncementForm({
             name="title"
             validators={{
               onChange: ({ value }) =>
-                value ? undefined : 'Title is required',
+                value ? undefined : t('announcements.fields.titleRequired'),
             }}
           >
             {(field) => (
               <TextInput
-                label="Title"
-                placeholder="Announcement title"
+                label={t('announcements.fields.titleLabel')}
+                placeholder={t('announcements.fields.titlePlaceholder')}
                 autoComplete="off"
                 required
                 value={field.state.value}
@@ -101,8 +104,8 @@ export function CreateAnnouncementForm({
           <form.Field name="body">
             {(field) => (
               <Textarea
-                label="Body"
-                placeholder="Optional"
+                label={t('announcements.fields.bodyLabel')}
+                placeholder={t('announcements.fields.bodyPlaceholder')}
                 autosize
                 minRows={3}
                 value={field.state.value}
@@ -117,8 +120,8 @@ export function CreateAnnouncementForm({
           <form.Field name="published">
             {(field) => (
               <Switch
-                label="Published"
-                description="Visible to everyone. Leave off to save as a draft."
+                label={t('announcements.statusPublished')}
+                description={t('announcements.fields.publishedDescription')}
                 checked={field.state.value}
                 onChange={(event) =>
                   field.handleChange(event.currentTarget.checked)
@@ -129,7 +132,7 @@ export function CreateAnnouncementForm({
 
           <Group justify="flex-end">
             <Button variant="subtle" onClick={onClose}>
-              Cancel
+              {tCommon('actions.cancel')}
             </Button>
             <form.Subscribe
               selector={(state) =>
@@ -142,7 +145,7 @@ export function CreateAnnouncementForm({
                   loading={isSubmitting}
                   disabled={!canSubmit}
                 >
-                  Create announcement
+                  {t('announcements.createForm.submitButton')}
                 </Button>
               )}
             </form.Subscribe>

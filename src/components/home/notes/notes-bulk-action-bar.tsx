@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ActionBar, Alert, Button, Group, Modal, Stack, Text } from '@mantine/core'
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { deleteNoteFn } from '#/server/actions/notes'
 import type { Note } from '#/server/db'
 
@@ -13,6 +14,8 @@ export function NotesBulkActionBar({
   onClearSelection: () => void
   onChanged: () => void
 }) {
+  const { t } = useTranslation('home')
+  const { t: tCommon } = useTranslation('common')
   const [actionError, setActionError] = useState<string | null>(null)
   const [deleteNotes, setDeleteNotes] = useState<Note[]>([])
   const [pending, setPending] = useState(false)
@@ -33,7 +36,7 @@ export function NotesBulkActionBar({
       setActionError(
         failed.reason instanceof Error
           ? failed.reason.message
-          : 'Something went wrong',
+          : tCommon('messages.somethingWentWrong'),
       )
       return
     }
@@ -58,7 +61,7 @@ export function NotesBulkActionBar({
 
       <ActionBar opened={notes.length > 0} onClose={onClearSelection}>
         <Text size="sm" fw={500} visibleFrom="xs">
-          {notes.length} selected
+          {tCommon('table.rowsSelected', { count: notes.length })}
         </Text>
         <ActionBar.Divider visibleFrom="xs" />
 
@@ -69,7 +72,7 @@ export function NotesBulkActionBar({
           leftSection={<IconTrash size={14} />}
           onClick={() => setDeleteNotes(notes)}
         >
-          Delete
+          {t('notes.bulkActions.deleteButton')}
         </Button>
 
         <ActionBar.CloseButton />
@@ -78,26 +81,23 @@ export function NotesBulkActionBar({
       <Modal
         opened={deleteNotes.length > 0}
         onClose={() => setDeleteNotes([])}
-        title={
-          deleteNotes.length === 1 ? `Delete note` : `Delete ${deleteNotes.length} notes`
-        }
+        title={tCommon('confirmDelete.title', {
+          item:
+            deleteNotes.length === 1
+              ? deleteNotes[0].title
+              : t('notes.bulkActions.notesCount', {
+                  count: deleteNotes.length,
+                }),
+        })}
       >
         <Stack gap="md">
-          <Text size="sm">
-            Permanently delete{' '}
-            {deleteNotes.length === 1 ? (
-              <strong>{deleteNotes[0].title}</strong>
-            ) : (
-              `${deleteNotes.length} notes`
-            )}
-            ? This cannot be undone.
-          </Text>
+          <Text size="sm">{tCommon('confirmDelete.description')}</Text>
           <Group justify="flex-end">
             <Button variant="subtle" onClick={() => setDeleteNotes([])}>
-              Cancel
+              {tCommon('actions.cancel')}
             </Button>
             <Button color="red" loading={pending} onClick={handleBulkDelete}>
-              Delete
+              {tCommon('actions.delete')}
             </Button>
           </Group>
         </Stack>

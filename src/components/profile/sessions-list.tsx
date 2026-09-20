@@ -14,12 +14,17 @@ import {
   Tooltip,
 } from '@mantine/core'
 import { IconAlertCircle, IconDeviceDesktop, IconX } from '@tabler/icons-react'
+import type { TFunction } from 'i18next'
+import { useTranslation } from 'react-i18next'
 import { authClient } from '#/lib/auth-client'
 import { formatDateTime } from '#/lib/format-date'
 import { sessionsQueryOptions } from '#/lib/queries/session'
 
-function describeUserAgent(userAgent?: string | null) {
-  if (!userAgent) return 'Unknown device'
+function describeUserAgent(
+  t: TFunction<'profile'>,
+  userAgent?: string | null,
+) {
+  if (!userAgent) return t('sessions.unknownDevice')
 
   const browser = /edg\//i.test(userAgent)
     ? 'Edge'
@@ -29,7 +34,7 @@ function describeUserAgent(userAgent?: string | null) {
         ? 'Firefox'
         : /safari\//i.test(userAgent)
           ? 'Safari'
-          : 'Unknown browser'
+          : t('sessions.unknownBrowser')
 
   const os = /windows/i.test(userAgent)
     ? 'Windows'
@@ -41,9 +46,9 @@ function describeUserAgent(userAgent?: string | null) {
           ? 'iOS'
           : /linux/i.test(userAgent)
             ? 'Linux'
-            : 'Unknown OS'
+            : t('sessions.unknownOs')
 
-  return `${browser} on ${os}`
+  return t('sessions.deviceOn', { browser, os })
 }
 
 export function SessionsList({
@@ -51,6 +56,7 @@ export function SessionsList({
 }: {
   currentSessionToken?: string
 }) {
+  const { t } = useTranslation('profile')
   const queryClient = useQueryClient()
   const { data: sessions } = useSuspenseQuery(sessionsQueryOptions())
 
@@ -68,7 +74,7 @@ export function SessionsList({
     setPendingToken(null)
 
     if (error) {
-      setActionError(error.message ?? 'Unable to revoke session')
+      setActionError(error.message ?? t('sessions.revokeError'))
       return
     }
 
@@ -82,7 +88,7 @@ export function SessionsList({
     setRevokingOthers(false)
 
     if (error) {
-      setActionError(error.message ?? 'Unable to revoke sessions')
+      setActionError(error.message ?? t('sessions.revokeOthersError'))
       return
     }
 
@@ -98,9 +104,9 @@ export function SessionsList({
       <Stack gap="md">
         <Group justify="space-between" align="flex-start">
           <Stack gap={2}>
-            <Title order={3}>Sessions</Title>
+            <Title order={3}>{t('sessions.title')}</Title>
             <Text c="dimmed" size="sm">
-              Devices currently signed in to your account.
+              {t('sessions.subtitle')}
             </Text>
           </Stack>
 
@@ -112,7 +118,7 @@ export function SessionsList({
               loading={revokingOthers}
               onClick={handleRevokeOthers}
             >
-              Sign out other sessions
+              {t('sessions.signOutOthers')}
             </Button>
           )}
         </Group>
@@ -130,16 +136,16 @@ export function SessionsList({
 
         {sessions.length === 0 ? (
           <Text size="sm" c="dimmed">
-            No active sessions.
+            {t('sessions.emptyState')}
           </Text>
         ) : (
           <Table.ScrollContainer minWidth={480}>
             <Table verticalSpacing="sm">
               <Table.Thead>
                 <Table.Tr>
-                  <Table.Th>Device</Table.Th>
-                  <Table.Th>IP address</Table.Th>
-                  <Table.Th>Expires</Table.Th>
+                  <Table.Th>{t('sessions.deviceColumn')}</Table.Th>
+                  <Table.Th>{t('sessions.ipColumn')}</Table.Th>
+                  <Table.Th>{t('sessions.expiresColumn')}</Table.Th>
                   <Table.Th />
                 </Table.Tr>
               </Table.Thead>
@@ -156,11 +162,11 @@ export function SessionsList({
                           />
                           <div>
                             <Text size="sm">
-                              {describeUserAgent(session.userAgent)}
+                              {describeUserAgent(t, session.userAgent)}
                             </Text>
                             {isCurrent && (
                               <Badge color="teal" variant="light" size="xs">
-                                Current session
+                                {t('sessions.currentSession')}
                               </Badge>
                             )}
                           </div>
@@ -168,7 +174,7 @@ export function SessionsList({
                       </Table.Td>
                       <Table.Td>
                         <Text size="sm" c="dimmed">
-                          {session.ipAddress || 'Unknown'}
+                          {session.ipAddress || t('sessions.unknownIp')}
                         </Text>
                       </Table.Td>
                       <Table.Td>
@@ -178,7 +184,7 @@ export function SessionsList({
                       </Table.Td>
                       <Table.Td ta="right">
                         {!isCurrent && (
-                          <Tooltip label="Revoke session">
+                          <Tooltip label={t('sessions.revokeTooltip')}>
                             <ActionIcon
                               variant="subtle"
                               color="red"

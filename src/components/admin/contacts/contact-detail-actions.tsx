@@ -2,9 +2,12 @@ import { useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { Alert, Button, Group, Modal, Stack, Text } from '@mantine/core'
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { deleteContactSubmissionFn } from '#/server/actions/contact'
 
 export function ContactDetailActions({ contactId }: { contactId: number }) {
+  const { t } = useTranslation('admin')
+  const { t: tCommon } = useTranslation('common')
   const navigate = useNavigate()
   const [actionError, setActionError] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
@@ -19,7 +22,9 @@ export function ContactDetailActions({ contactId }: { contactId: number }) {
     } catch (error) {
       setPending(false)
       setActionError(
-        error instanceof Error ? error.message : 'Something went wrong',
+        error instanceof Error
+          ? error.message
+          : tCommon('messages.somethingWentWrong'),
       )
       return
     }
@@ -37,7 +42,7 @@ export function ContactDetailActions({ contactId }: { contactId: number }) {
           leftSection={<IconTrash size={16} />}
           onClick={() => setDeleteModalOpen(true)}
         >
-          Delete
+          {tCommon('actions.delete')}
         </Button>
       </Group>
 
@@ -56,18 +61,16 @@ export function ContactDetailActions({ contactId }: { contactId: number }) {
       <Modal
         opened={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
-        title="Delete submission"
+        title={t('contacts.deleteModal.title')}
       >
         <Stack gap="md">
-          <Text size="sm">
-            Permanently delete this contact submission? This cannot be undone.
-          </Text>
+          <Text size="sm">{t('contacts.deleteModal.confirmMessage')}</Text>
           <Group justify="flex-end">
             <Button variant="subtle" onClick={() => setDeleteModalOpen(false)}>
-              Cancel
+              {tCommon('actions.cancel')}
             </Button>
             <Button color="red" loading={pending} onClick={handleDelete}>
-              Delete
+              {tCommon('actions.delete')}
             </Button>
           </Group>
         </Stack>

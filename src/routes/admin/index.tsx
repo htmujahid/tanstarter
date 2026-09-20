@@ -18,6 +18,7 @@ import {
   IconUserOff,
   IconUsers,
 } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import type { Icon } from '@tabler/icons-react'
 import { adminStatsQueryOptions } from '#/lib/queries/admin'
 
@@ -80,24 +81,25 @@ function StatsSkeleton() {
 }
 
 function AdminStats() {
+  const { t } = useTranslation('admin')
   const { data: stats } = useSuspenseQuery(adminStatsQueryOptions())
 
   return (
     <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="md">
       <OverviewCard
-        label="Total users"
+        label={t('overview.statTotalUsers')}
         value={stats.total}
         icon={IconUsers}
         color="blue"
       />
       <OverviewCard
-        label="Admins"
+        label={t('overview.statAdmins')}
         value={stats.admins}
         icon={IconShieldLock}
         color="grape"
       />
       <OverviewCard
-        label="Banned"
+        label={t('overview.statBanned')}
         value={stats.banned}
         icon={IconUserOff}
         color="red"
@@ -107,21 +109,23 @@ function AdminStats() {
 }
 
 function ManageUsersCard() {
+  const { t } = useTranslation('admin')
+
   return (
     <Card withBorder radius="md" padding="lg">
       <Group justify="space-between">
         <div>
-          <Text fw={600}>Manage users</Text>
+          <Text fw={600}>{t('overview.manageUsersTitle')}</Text>
           <Text size="sm" c="dimmed">
-            Create accounts, change roles, and ban or remove users.
+            {t('overview.manageUsersDescription')}
           </Text>
         </div>
         <Button
           component={Link}
           to="/admin/users"
-          rightSection={<IconArrowRight size={16} />}
+          rightSection={<IconArrowRight size={16} className="icon-rtl-flip" />}
         >
-          Go to users
+          {t('overview.goToUsers')}
         </Button>
       </Group>
     </Card>

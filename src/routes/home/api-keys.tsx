@@ -3,6 +3,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
 import { Button, Group, Stack } from '@mantine/core'
 import { IconPlus } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { ApiKeysTable } from '#/components/home/api-keys/api-keys-table'
 import { ApiKeysTableSkeleton } from '#/components/home/api-keys/api-keys-table-skeleton'
 import { CreateApiKeyForm } from '#/components/home/api-keys/create-api-key-form'
@@ -21,6 +22,7 @@ export const Route = createFileRoute('/home/api-keys')({
 })
 
 function ApiKeysPage() {
+  const { t } = useTranslation('home')
   const queryClient = useQueryClient()
   const [createOpened, setCreateOpened] = useState(false)
   const [revealedKey, setRevealedKey] = useState<string | null>(null)
@@ -35,7 +37,7 @@ function ApiKeysPage() {
           leftSection={<IconPlus size={16} />}
           onClick={() => setCreateOpened(true)}
         >
-          Create key
+          {t('apiKeys.createButton')}
         </Button>
       </Group>
 

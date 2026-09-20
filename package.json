@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@better-auth/api-key": "^1.7.5",
+    "@better-auth/i18n": "^1.7.5",
     "@better-auth/passkey": "^1.7.5",
     "@hono/zod-openapi": "^1.6.3",
     "@mantine/charts": "^9.6.1",
@@ -41,8 +42,10 @@
     "better-auth": "^1.7.5",
     "drizzle-orm": "^0.45.2",
     "hono": "^4.13.8",
+    "i18next": "^26.4.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-i18next": "^17.0.14",
     "recharts": "^3.10.1",
     "tailwindcss": "^4.1.18",
     "zod": "^4.6.5"
@@ -75,6 +78,9 @@
       "lightningcss",
       "sharp",
       "workerd"
-    ]
+    ],
+    "overrides": {
+      "better-call": "1.4.0"
+    }
   }
 }

@@ -3,6 +3,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { Alert, Button, Group, Modal, Stack, Text } from '@mantine/core'
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { deleteAnnouncementFn } from '#/server/actions/announcements'
 import { announcementQueryOptions } from '#/lib/queries/announcements'
 
@@ -11,6 +12,8 @@ export function AnnouncementDetailActions({
 }: {
   announcementId: number
 }) {
+  const { t } = useTranslation('admin')
+  const { t: tCommon } = useTranslation('common')
   const { data: announcement } = useSuspenseQuery(
     announcementQueryOptions(announcementId),
   )
@@ -28,7 +31,9 @@ export function AnnouncementDetailActions({
     } catch (error) {
       setPending(false)
       setActionError(
-        error instanceof Error ? error.message : 'Something went wrong',
+        error instanceof Error
+          ? error.message
+          : tCommon('messages.somethingWentWrong'),
       )
       return
     }
@@ -46,7 +51,7 @@ export function AnnouncementDetailActions({
           leftSection={<IconTrash size={16} />}
           onClick={() => setDeleteModalOpen(true)}
         >
-          Delete
+          {tCommon('actions.delete')}
         </Button>
       </Group>
 
@@ -65,19 +70,20 @@ export function AnnouncementDetailActions({
       <Modal
         opened={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
-        title="Delete announcement"
+        title={t('announcements.deleteModal.title')}
       >
         <Stack gap="md">
           <Text size="sm">
-            Permanently delete <strong>{announcement.title}</strong>? This
-            cannot be undone.
+            {t('announcements.deleteModal.confirmPrefix')}{' '}
+            <strong>{announcement.title}</strong>
+            {t('announcements.deleteModal.confirmSuffix')}
           </Text>
           <Group justify="flex-end">
             <Button variant="subtle" onClick={() => setDeleteModalOpen(false)}>
-              Cancel
+              {tCommon('actions.cancel')}
             </Button>
             <Button color="red" loading={pending} onClick={handleDelete}>
-              Delete
+              {tCommon('actions.delete')}
             </Button>
           </Group>
         </Stack>

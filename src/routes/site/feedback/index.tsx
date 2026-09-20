@@ -3,6 +3,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
 import { Button, Container, Group, Stack, Text, Title } from '@mantine/core'
 import { IconPlus } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { CreateFeedbackForm } from '#/components/site/feedback/create-feedback-form'
 import { FeedbackList } from '#/components/site/feedback/feedback-list'
 import { feedbackListQueryOptions } from '#/lib/queries/feedback'
@@ -18,6 +19,7 @@ export const Route = createFileRoute('/site/feedback/')({
 })
 
 function FeedbackPage() {
+  const { t } = useTranslation('site')
   const queryClient = useQueryClient()
   const [createOpened, setCreateOpened] = useState(false)
 
@@ -30,10 +32,10 @@ function FeedbackPage() {
         <Group justify="space-between" align="flex-start" wrap="wrap">
           <Stack gap={4}>
             <Title order={1} className="text-3xl">
-              Feedback
+              {t('feedback.title')}
             </Title>
             <Text c="dimmed" size="sm">
-              Your past submissions, and a place to send a new one.
+              {t('feedback.subtitle')}
             </Text>
           </Stack>
 
@@ -41,7 +43,7 @@ function FeedbackPage() {
             leftSection={<IconPlus size={16} />}
             onClick={() => setCreateOpened(true)}
           >
-            Send feedback
+            {t('feedback.sendFeedback')}
           </Button>
         </Group>
 

@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { Link, useRouterState } from '@tanstack/react-router'
 import {
   ActionIcon,
@@ -21,6 +22,7 @@ import {
   IconUsers,
   IconX,
 } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 
 type AdminPath =
   | '/admin'
@@ -39,32 +41,6 @@ type NavItem =
   | NavLeaf
   | { label: string; icon: typeof IconLayoutDashboard; children: NavLeaf[] }
 
-const navItems: NavItem[] = [
-  { label: 'Overview', icon: IconLayoutDashboard, to: '/admin' },
-  { label: 'Users', icon: IconUsers, to: '/admin/users' },
-  {
-    label: 'Communications',
-    icon: IconSpeakerphone,
-    children: [
-      {
-        label: 'Announcements',
-        icon: IconBellRinging,
-        to: '/admin/announcements',
-      },
-      { label: 'Feedback', icon: IconMessageCircle, to: '/admin/feedback' },
-      {
-        label: 'Contact submissions',
-        icon: IconMailbox,
-        to: '/admin/contacts',
-      },
-    ],
-  },
-]
-
-const collapsedItems: NavLeaf[] = navItems.flatMap((item) =>
-  'children' in item ? item.children : [item],
-)
-
 export function AdminSidebar({
   collapsed,
   onToggleCollapse,
@@ -74,9 +50,48 @@ export function AdminSidebar({
   onToggleCollapse: () => void
   onNavigate?: () => void
 }) {
+  const { t } = useTranslation('admin')
+  const { t: tCommon } = useTranslation('common')
   const pathname = useRouterState({
     select: (state) => state.location.pathname,
   })
+
+  const navItems: NavItem[] = useMemo(
+    () => [
+      {
+        label: t('sidebar.overview'),
+        icon: IconLayoutDashboard,
+        to: '/admin',
+      },
+      { label: t('sidebar.users'), icon: IconUsers, to: '/admin/users' },
+      {
+        label: t('sidebar.communications'),
+        icon: IconSpeakerphone,
+        children: [
+          {
+            label: t('sidebar.announcements'),
+            icon: IconBellRinging,
+            to: '/admin/announcements',
+          },
+          {
+            label: t('sidebar.feedback'),
+            icon: IconMessageCircle,
+            to: '/admin/feedback',
+          },
+          {
+            label: t('sidebar.contactSubmissions'),
+            icon: IconMailbox,
+            to: '/admin/contacts',
+          },
+        ],
+      },
+    ],
+    [t],
+  )
+
+  const collapsedItems: NavLeaf[] = navItems.flatMap((item) =>
+    'children' in item ? item.children : [item],
+  )
 
   return (
     <Stack h="100%" gap={0}>
@@ -96,7 +111,7 @@ export function AdminSidebar({
         >
           <Group gap={8} wrap="nowrap">
             <IconShieldLock size={22} stroke={1.75} />
-            {!collapsed && <Text fw={700}>Admin</Text>}
+            {!collapsed && <Text fw={700}>{t('sidebar.brand')}</Text>}
           </Group>
         </Anchor>
 
@@ -108,7 +123,7 @@ export function AdminSidebar({
             radius="md"
             hiddenFrom="sm"
             onClick={onNavigate}
-            aria-label="Close sidebar"
+            aria-label={tCommon('sidebar.close')}
           >
             <IconX size={18} stroke={1.75} />
           </ActionIcon>
@@ -147,7 +162,11 @@ export function AdminSidebar({
           </Stack>
 
           <Stack gap={4} align="center">
-            <Tooltip label="Back to store" position="right" withArrow>
+            <Tooltip
+              label={tCommon('sidebar.backToStore')}
+              position="right"
+              withArrow
+            >
               <ActionIcon
                 component={Link}
                 to="/home"
@@ -157,11 +176,15 @@ export function AdminSidebar({
                 size={40}
                 radius="md"
               >
-                <IconArrowLeft size={18} stroke={1.75} />
+                <IconArrowLeft size={18} stroke={1.75} className="icon-rtl-flip" />
               </ActionIcon>
             </Tooltip>
 
-            <Tooltip label="Expand sidebar" position="right" withArrow>
+            <Tooltip
+              label={tCommon('sidebar.expand')}
+              position="right"
+              withArrow
+            >
               <ActionIcon
                 variant="subtle"
                 color="gray"
@@ -169,7 +192,7 @@ export function AdminSidebar({
                 radius="md"
                 onClick={onToggleCollapse}
               >
-                <IconChevronRight size={18} stroke={1.75} />
+                <IconChevronRight size={18} stroke={1.75} className="icon-rtl-flip" />
               </ActionIcon>
             </Tooltip>
           </Stack>
@@ -190,6 +213,7 @@ export function AdminSidebar({
                   defaultOpened={item.children.some(
                     (child) => child.to === pathname,
                   )}
+                  rightSection={<IconChevronRight size={16} stroke={1.75} />}
                 >
                   {item.children.map((child) => (
                     <NavLink
@@ -225,13 +249,17 @@ export function AdminSidebar({
             <NavLink
               component={Link}
               to="/home"
-              label="Back to store"
-              leftSection={<IconArrowLeft size={18} stroke={1.75} />}
+              label={tCommon('sidebar.backToStore')}
+              leftSection={
+                <IconArrowLeft size={18} stroke={1.75} className="icon-rtl-flip" />
+              }
               onClick={onNavigate}
             />
             <NavLink
-              label="Collapse sidebar"
-              leftSection={<IconChevronLeft size={18} stroke={1.75} />}
+              label={tCommon('sidebar.collapse')}
+              leftSection={
+                <IconChevronLeft size={18} stroke={1.75} className="icon-rtl-flip" />
+              }
               onClick={onToggleCollapse}
               visibleFrom="sm"
             />

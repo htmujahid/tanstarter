@@ -9,6 +9,7 @@ import {
   Text,
 } from '@mantine/core'
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { deleteFeedbackFn } from '#/server/actions/feedback'
 import type { listFeedback } from '#/server/services/feedback'
 
@@ -23,6 +24,8 @@ export function FeedbackBulkActionBar({
   onClearSelection: () => void
   onChanged: () => void
 }) {
+  const { t } = useTranslation('admin')
+  const { t: tCommon } = useTranslation('common')
   const [actionError, setActionError] = useState<string | null>(null)
   const [deleteRows, setDeleteRows] = useState<FeedbackRow[]>([])
   const [pending, setPending] = useState(false)
@@ -43,7 +46,7 @@ export function FeedbackBulkActionBar({
       setActionError(
         failed.reason instanceof Error
           ? failed.reason.message
-          : 'Something went wrong',
+          : tCommon('messages.somethingWentWrong'),
       )
       return
     }
@@ -68,7 +71,7 @@ export function FeedbackBulkActionBar({
 
       <ActionBar opened={feedback.length > 0} onClose={onClearSelection}>
         <Text size="sm" fw={500} visibleFrom="xs">
-          {feedback.length} selected
+          {tCommon('table.rowsSelected', { count: feedback.length })}
         </Text>
         <ActionBar.Divider visibleFrom="xs" />
 
@@ -79,7 +82,7 @@ export function FeedbackBulkActionBar({
           leftSection={<IconTrash size={14} />}
           onClick={() => setDeleteRows(feedback)}
         >
-          Delete
+          {tCommon('actions.delete')}
         </Button>
 
         <ActionBar.CloseButton />
@@ -90,24 +93,26 @@ export function FeedbackBulkActionBar({
         onClose={() => setDeleteRows([])}
         title={
           deleteRows.length === 1
-            ? 'Delete feedback'
-            : `Delete ${deleteRows.length} feedback entries`
+            ? t('feedback.deleteModal.title')
+            : t('feedback.deleteModal.titleBulk', {
+                count: deleteRows.length,
+              })
         }
       >
         <Stack gap="md">
           <Text size="sm">
-            Permanently delete{' '}
             {deleteRows.length === 1
-              ? 'this feedback entry'
-              : `${deleteRows.length} feedback entries`}
-            ? This cannot be undone.
+              ? t('feedback.deleteModal.confirmSingle')
+              : t('feedback.deleteModal.confirmBulk', {
+                  count: deleteRows.length,
+                })}
           </Text>
           <Group justify="flex-end">
             <Button variant="subtle" onClick={() => setDeleteRows([])}>
-              Cancel
+              {tCommon('actions.cancel')}
             </Button>
             <Button color="red" loading={pending} onClick={handleBulkDelete}>
-              Delete
+              {tCommon('actions.delete')}
             </Button>
           </Group>
         </Stack>

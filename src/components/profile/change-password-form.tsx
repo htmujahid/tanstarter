@@ -12,9 +12,11 @@ import {
   Title,
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { authClient } from '#/lib/auth-client'
 
 export function ChangePasswordForm() {
+  const { t } = useTranslation('profile')
   const [formError, setFormError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 
@@ -30,7 +32,7 @@ export function ChangePasswordForm() {
       setSuccess(false)
 
       if (value.newPassword !== value.confirmPassword) {
-        setFormError('New passwords do not match')
+        setFormError(t('changePasswordForm.passwordMismatch'))
         return
       }
 
@@ -41,7 +43,7 @@ export function ChangePasswordForm() {
       })
 
       if (error) {
-        setFormError(error.message ?? 'Unable to change password')
+        setFormError(error.message ?? t('changePasswordForm.genericError'))
         return
       }
 
@@ -61,9 +63,9 @@ export function ChangePasswordForm() {
       >
         <Stack gap="md">
           <Stack gap={2}>
-            <Title order={3}>Change password</Title>
+            <Title order={3}>{t('changePasswordForm.title')}</Title>
             <Text c="dimmed" size="sm">
-              Choose a strong password you don&apos;t use elsewhere.
+              {t('changePasswordForm.subtitle')}
             </Text>
           </Stack>
 
@@ -75,7 +77,7 @@ export function ChangePasswordForm() {
 
           {success && (
             <Alert color="green" icon={<IconCircleCheck size={16} />}>
-              Password changed successfully
+              {t('changePasswordForm.successMessage')}
             </Alert>
           )}
 
@@ -83,12 +85,12 @@ export function ChangePasswordForm() {
             name="currentPassword"
             validators={{
               onChange: ({ value }) =>
-                value ? undefined : 'Current password is required',
+                value ? undefined : t('changePasswordForm.currentPasswordRequired'),
             }}
           >
             {(field) => (
               <PasswordInput
-                label="Current password"
+                label={t('changePasswordForm.currentPasswordLabel')}
                 autoComplete="current-password"
                 required
                 value={field.state.value}
@@ -108,13 +110,13 @@ export function ChangePasswordForm() {
               onChange: ({ value }) =>
                 value.length >= 8
                   ? undefined
-                  : 'Password must be at least 8 characters',
+                  : t('changePasswordForm.newPasswordTooShort'),
             }}
           >
             {(field) => (
               <PasswordInput
-                label="New password"
-                placeholder="At least 8 characters"
+                label={t('changePasswordForm.newPasswordLabel')}
+                placeholder={t('changePasswordForm.newPasswordPlaceholder')}
                 autoComplete="new-password"
                 required
                 value={field.state.value}
@@ -132,13 +134,13 @@ export function ChangePasswordForm() {
             name="confirmPassword"
             validators={{
               onChange: ({ value }) =>
-                value ? undefined : 'Confirm your new password',
+                value ? undefined : t('changePasswordForm.confirmPasswordRequired'),
             }}
           >
             {(field) => (
               <PasswordInput
-                label="Confirm new password"
-                placeholder="Re-enter your new password"
+                label={t('changePasswordForm.confirmPasswordLabel')}
+                placeholder={t('changePasswordForm.confirmPasswordPlaceholder')}
                 autoComplete="new-password"
                 required
                 value={field.state.value}
@@ -155,7 +157,7 @@ export function ChangePasswordForm() {
           <form.Field name="revokeOtherSessions">
             {(field) => (
               <Checkbox
-                label="Sign out of all other devices"
+                label={t('changePasswordForm.revokeOtherSessionsLabel')}
                 checked={field.state.value}
                 onChange={(event) =>
                   field.handleChange(event.currentTarget.checked)
@@ -176,7 +178,7 @@ export function ChangePasswordForm() {
                   loading={isSubmitting}
                   disabled={!canSubmit}
                 >
-                  Update password
+                  {t('changePasswordForm.submit')}
                 </Button>
               )}
             </form.Subscribe>

@@ -13,6 +13,7 @@ import {
   Title,
 } from '@mantine/core'
 import { IconArrowLeft, IconBellOff } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { DetailPageLayout } from '#/components/layout/detail-page-layout'
 import { AnnouncementDetailActions } from '#/components/admin/announcements/announcement-detail-actions'
 import { AnnouncementDetailsForm } from '#/components/admin/announcements/announcement-details-form'
@@ -41,17 +42,21 @@ export const Route = createFileRoute('/admin/announcements/$announcementId')({
 })
 
 function BackLink() {
+  const { t } = useTranslation('admin')
+
   return (
     <Anchor component={Link} to="/admin/announcements" size="sm" c="dimmed">
       <Group gap={4} wrap="nowrap">
-        <IconArrowLeft size={14} />
-        Back to announcements
+        <IconArrowLeft size={14} className="icon-rtl-flip" />
+        {t('announcements.backToList')}
       </Group>
     </Anchor>
   )
 }
 
 function AnnouncementNotFound() {
+  const { t } = useTranslation('admin')
+
   return (
     <Container size="lg" px={0}>
       <Stack gap="lg">
@@ -62,10 +67,9 @@ function AnnouncementNotFound() {
               size={32}
               className="text-[var(--mantine-color-dimmed)]"
             />
-            <Title order={4}>Announcement not found</Title>
+            <Title order={4}>{t('announcements.notFoundTitle')}</Title>
             <Text c="dimmed" size="sm" ta="center">
-              This announcement may have been deleted, or the link is no longer
-              valid.
+              {t('announcements.notFoundDescription')}
             </Text>
             <Button
               component={Link}
@@ -73,7 +77,7 @@ function AnnouncementNotFound() {
               variant="light"
               mt="sm"
             >
-              Back to announcements
+              {t('announcements.backToList')}
             </Button>
           </Stack>
         </Card>

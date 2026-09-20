@@ -19,6 +19,7 @@ import {
   IconTrendingUp,
   IconUsers,
 } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { StatCard } from '#/components/dashboard/stat-card'
 import {
   formatCurrency,
@@ -52,6 +53,22 @@ const STATUS_COLORS: Record<OrderStatus, string> = {
 }
 
 function Home() {
+  const { t } = useTranslation('home')
+
+  const STAT_LABELS: Record<(typeof stats)[number]['icon'], string> = {
+    revenue: t('dashboard.stats.totalRevenue'),
+    orders: t('dashboard.stats.orders'),
+    customers: t('dashboard.stats.newCustomers'),
+    conversion: t('dashboard.stats.conversionRate'),
+  }
+
+  const STATUS_LABELS: Record<OrderStatus, string> = {
+    Fulfilled: t('dashboard.orderStatus.fulfilled'),
+    Processing: t('dashboard.orderStatus.processing'),
+    Pending: t('dashboard.orderStatus.pending'),
+    Refunded: t('dashboard.orderStatus.refunded'),
+  }
+
   return (
     <Container size="lg" px={0}>
       <Stack gap="md">
@@ -59,7 +76,7 @@ function Home() {
           {stats.map((stat) => (
             <StatCard
               key={stat.label}
-              label={stat.label}
+              label={STAT_LABELS[stat.icon]}
               value={stat.value}
               change={stat.change}
               icon={STAT_ICONS[stat.icon]}
@@ -71,9 +88,9 @@ function Home() {
           <Grid.Col span={{ base: 12, lg: 8 }}>
             <Card withBorder radius="md" padding="lg" h="100%">
               <Stack gap={2} mb="md">
-                <Title order={3}>Revenue</Title>
+                <Title order={3}>{t('dashboard.revenueCard.title')}</Title>
                 <Text c="dimmed" size="sm">
-                  Last 14 days
+                  {t('dashboard.revenueCard.subtitle')}
                 </Text>
               </Stack>
               <AreaChart
@@ -81,7 +98,11 @@ function Home() {
                 data={revenueSeries}
                 dataKey="date"
                 series={[
-                  { name: 'revenue', color: 'blue.6', label: 'Revenue' },
+                  {
+                    name: 'revenue',
+                    color: 'blue.6',
+                    label: t('dashboard.revenueCard.title'),
+                  },
                 ]}
                 curveType="monotone"
                 withGradient
@@ -94,9 +115,9 @@ function Home() {
           <Grid.Col span={{ base: 12, lg: 4 }}>
             <Card withBorder radius="md" padding="lg" h="100%">
               <Stack gap={2} mb="md">
-                <Title order={3}>Sales by category</Title>
+                <Title order={3}>{t('dashboard.categoryCard.title')}</Title>
                 <Text c="dimmed" size="sm">
-                  Share of total orders
+                  {t('dashboard.categoryCard.subtitle')}
                 </Text>
               </Stack>
 
@@ -138,9 +159,9 @@ function Home() {
         <SimpleGrid cols={{ base: 1, lg: 2 }} spacing="md">
           <Card withBorder radius="md" padding="lg">
             <Stack gap={2} mb="md">
-              <Title order={3}>Top products</Title>
+              <Title order={3}>{t('dashboard.topProductsCard.title')}</Title>
               <Text c="dimmed" size="sm">
-                By revenue, last 14 days
+                {t('dashboard.topProductsCard.subtitle')}
               </Text>
             </Stack>
             <BarsList
@@ -152,18 +173,22 @@ function Home() {
 
           <Card withBorder radius="md" padding="lg">
             <Stack gap={2} mb="md">
-              <Title order={3}>Recent orders</Title>
+              <Title order={3}>{t('dashboard.recentOrdersCard.title')}</Title>
               <Text c="dimmed" size="sm">
-                Latest activity across your store
+                {t('dashboard.recentOrdersCard.subtitle')}
               </Text>
             </Stack>
             <Table verticalSpacing="sm" highlightOnHover>
               <Table.Thead>
                 <Table.Tr>
-                  <Table.Th>Order</Table.Th>
-                  <Table.Th>Customer</Table.Th>
-                  <Table.Th>Status</Table.Th>
-                  <Table.Th ta="right">Amount</Table.Th>
+                  <Table.Th>{t('dashboard.recentOrdersCard.orderColumn')}</Table.Th>
+                  <Table.Th>
+                    {t('dashboard.recentOrdersCard.customerColumn')}
+                  </Table.Th>
+                  <Table.Th>{t('dashboard.recentOrdersCard.statusColumn')}</Table.Th>
+                  <Table.Th ta="right">
+                    {t('dashboard.recentOrdersCard.amountColumn')}
+                  </Table.Th>
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
@@ -184,7 +209,7 @@ function Home() {
                         variant="light"
                         size="sm"
                       >
-                        {order.status}
+                        {STATUS_LABELS[order.status]}
                       </Badge>
                     </Table.Td>
                     <Table.Td ta="right">

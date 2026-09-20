@@ -3,6 +3,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
 import { Button, Group, Stack, TextInput } from '@mantine/core'
 import { IconPlus, IconSearch } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { CreateNoteForm } from '#/components/home/notes/create-note-form'
 import { NotesTable } from '#/components/home/notes/notes-table'
 import { NotesTableSkeleton } from '#/components/home/notes/notes-table-skeleton'
@@ -46,6 +47,7 @@ export const Route = createFileRoute('/home/notes/')({
 })
 
 function NotesPage() {
+  const { t } = useTranslation('home')
   const { q, sortBy, sortDirection, page } = Route.useSearch()
   const navigate = useNavigate({ from: Route.fullPath })
   const queryClient = useQueryClient()
@@ -68,7 +70,7 @@ function NotesPage() {
         >
           <TextInput
             name="q"
-            placeholder="Search by title"
+            placeholder={t('notes.searchPlaceholder')}
             leftSection={<IconSearch size={16} />}
             defaultValue={q ?? ''}
             w={{ base: '100%', sm: 320 }}
@@ -79,7 +81,7 @@ function NotesPage() {
           leftSection={<IconPlus size={16} />}
           onClick={() => setCreateOpened(true)}
         >
-          Add note
+          {t('notes.addButton')}
         </Button>
       </Group>
 

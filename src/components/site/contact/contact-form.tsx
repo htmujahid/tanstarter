@@ -12,11 +12,14 @@ import {
   Title,
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { createContactSubmissionFn } from '#/server/actions/contact'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export function ContactForm() {
+  const { t } = useTranslation('site')
+  const { t: tCommon } = useTranslation('common')
   const [formError, setFormError] = useState<string | null>(null)
   const [submitted, setSubmitted] = useState(false)
 
@@ -29,7 +32,7 @@ export function ContactForm() {
         await createContactSubmissionFn({ data: value })
       } catch (error) {
         setFormError(
-          error instanceof Error ? error.message : 'Unable to send message',
+          error instanceof Error ? error.message : t('contact.genericError'),
         )
         return
       }
@@ -44,12 +47,12 @@ export function ContactForm() {
       {submitted ? (
         <Stack align="center" gap="xs" py="md">
           <IconCircleCheck size={32} color="var(--mantine-color-teal-6)" />
-          <Title order={4}>Message sent</Title>
+          <Title order={4}>{t('contact.successTitle')}</Title>
           <Text c="dimmed" size="sm" ta="center">
-            Thanks for reaching out — we&apos;ll get back to you soon.
+            {t('contact.successDescription')}
           </Text>
           <Button variant="light" mt="sm" onClick={() => setSubmitted(false)}>
-            Send another message
+            {t('contact.sendAnother')}
           </Button>
         </Stack>
       ) : (
@@ -71,13 +74,13 @@ export function ContactForm() {
               name="name"
               validators={{
                 onChange: ({ value }) =>
-                  value ? undefined : 'Name is required',
+                  value ? undefined : t('contact.nameRequired'),
               }}
             >
               {(field) => (
                 <TextInput
-                  label="Name"
-                  placeholder="Your name"
+                  label={t('contact.nameLabel')}
+                  placeholder={t('contact.namePlaceholder')}
                   autoComplete="name"
                   required
                   value={field.state.value}
@@ -94,9 +97,9 @@ export function ContactForm() {
               name="email"
               validators={{
                 onChange: ({ value }) => {
-                  if (!value) return 'Email is required'
+                  if (!value) return t('contact.emailRequired')
                   if (!EMAIL_PATTERN.test(value)) {
-                    return 'Enter a valid email address'
+                    return tCommon('messages.invalidEmail')
                   }
                   return undefined
                 },
@@ -104,8 +107,8 @@ export function ContactForm() {
             >
               {(field) => (
                 <TextInput
-                  label="Email"
-                  placeholder="you@example.com"
+                  label={t('contact.emailLabel')}
+                  placeholder={t('contact.emailPlaceholder')}
                   autoComplete="email"
                   required
                   value={field.state.value}
@@ -122,13 +125,13 @@ export function ContactForm() {
               name="message"
               validators={{
                 onChange: ({ value }) =>
-                  value ? undefined : 'Message is required',
+                  value ? undefined : t('contact.messageRequired'),
               }}
             >
               {(field) => (
                 <Textarea
-                  label="Message"
-                  placeholder="How can we help?"
+                  label={t('contact.messageLabel')}
+                  placeholder={t('contact.messagePlaceholder')}
                   autosize
                   minRows={4}
                   required
@@ -154,7 +157,7 @@ export function ContactForm() {
                     loading={isSubmitting}
                     disabled={!canSubmit}
                   >
-                    Send message
+                    {t('contact.submit')}
                   </Button>
                 )}
               </form.Subscribe>

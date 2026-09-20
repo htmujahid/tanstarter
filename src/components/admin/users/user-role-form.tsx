@@ -11,6 +11,7 @@ import {
   Title,
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { authClient } from '#/lib/auth-client'
 import { useSession } from '#/hooks/use-session'
 import { userQueryOptions } from '#/lib/queries/admin'
@@ -22,6 +23,8 @@ export function UserRoleForm({
   userId: string
   onSaved: () => void
 }) {
+  const { t } = useTranslation('admin')
+  const { t: tCommon } = useTranslation('common')
   const { data: user } = useSuspenseQuery(userQueryOptions(userId))
   const session = useSession()
   const disabled = user.id === session?.user.id
@@ -35,9 +38,9 @@ export function UserRoleForm({
     <Card withBorder radius="md" padding="lg">
       <Stack gap="md">
         <Stack gap={2}>
-          <Title order={4}>Role</Title>
+          <Title order={4}>{t('users.detail.roleForm.title')}</Title>
           <Text c="dimmed" size="sm">
-            Controls what this user can access.
+            {t('users.detail.roleForm.description')}
           </Text>
         </Stack>
 
@@ -49,21 +52,21 @@ export function UserRoleForm({
 
         {success && (
           <Alert color="green" icon={<IconCircleCheck size={16} />}>
-            Role updated successfully
+            {t('users.detail.roleForm.successMessage')}
           </Alert>
         )}
 
         {disabled && (
           <Text size="sm" c="dimmed">
-            You can&apos;t change your own role.
+            {t('users.detail.roleForm.selfNotice')}
           </Text>
         )}
 
         <Select
-          label="Role"
+          label={t('users.detail.roleForm.roleLabel')}
           data={[
-            { value: 'user', label: 'User' },
-            { value: 'admin', label: 'Admin' },
+            { value: 'user', label: t('users.roles.user') },
+            { value: 'admin', label: t('users.roles.admin') },
           ]}
           value={role}
           onChange={(value) => {
@@ -88,7 +91,7 @@ export function UserRoleForm({
               setSubmitting(false)
 
               if (err) {
-                setError(err.message ?? 'Unable to change role')
+                setError(err.message ?? t('users.detail.roleForm.genericError'))
                 return
               }
 
@@ -96,7 +99,7 @@ export function UserRoleForm({
               onSaved()
             }}
           >
-            Save
+            {tCommon('actions.save')}
           </Button>
         </Group>
       </Stack>

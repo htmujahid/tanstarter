@@ -10,6 +10,7 @@ import {
   Tooltip,
 } from '@mantine/core'
 import { IconCheck, IconCopy } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 
 export function RevealApiKeyModal({
   apiKey,
@@ -18,23 +19,31 @@ export function RevealApiKeyModal({
   apiKey: string | null
   onClose: () => void
 }) {
+  const { t } = useTranslation('home')
+
   return (
     <Modal
       opened={apiKey !== null}
       onClose={onClose}
       closeOnClickOutside={false}
-      title="API key created"
+      title={t('apiKeys.revealModal.title')}
     >
       <Stack gap="md">
         <Text size="sm" c="dimmed">
-          Copy this key now — you won&apos;t be able to see it again.
+          {t('apiKeys.revealModal.description')}
         </Text>
 
         <Group gap="xs" wrap="nowrap">
           <TextInput readOnly value={apiKey ?? ''} flex={1} ff="monospace" />
           <CopyButton value={apiKey ?? ''}>
             {({ copied, copy }) => (
-              <Tooltip label={copied ? 'Copied' : 'Copy'}>
+              <Tooltip
+                label={
+                  copied
+                    ? t('apiKeys.revealModal.copiedTooltip')
+                    : t('apiKeys.revealModal.copyTooltip')
+                }
+              >
                 <ActionIcon
                   variant="light"
                   color={copied ? 'teal' : undefined}
@@ -48,7 +57,7 @@ export function RevealApiKeyModal({
         </Group>
 
         <Group justify="flex-end">
-          <Button onClick={onClose}>Done</Button>
+          <Button onClick={onClose}>{t('apiKeys.revealModal.done')}</Button>
         </Group>
       </Stack>
     </Modal>

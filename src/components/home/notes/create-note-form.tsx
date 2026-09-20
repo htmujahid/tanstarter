@@ -10,6 +10,7 @@ import {
   TextInput,
 } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { createNoteFn } from '#/server/actions/notes'
 
 export function CreateNoteForm({
@@ -21,6 +22,8 @@ export function CreateNoteForm({
   onClose: () => void
   onCreated: () => void
 }) {
+  const { t } = useTranslation('home')
+  const { t: tCommon } = useTranslation('common')
   const [formError, setFormError] = useState<string | null>(null)
 
   const form = useForm({
@@ -34,7 +37,9 @@ export function CreateNoteForm({
         })
       } catch (error) {
         setFormError(
-          error instanceof Error ? error.message : 'Unable to create note',
+          error instanceof Error
+            ? error.message
+            : t('notes.createForm.genericError'),
         )
         return
       }
@@ -52,7 +57,7 @@ export function CreateNoteForm({
         setFormError(null)
         onClose()
       }}
-      title="Add note"
+      title={t('notes.createForm.title')}
     >
       <form
         onSubmit={(event) => {
@@ -72,13 +77,13 @@ export function CreateNoteForm({
             name="title"
             validators={{
               onChange: ({ value }) =>
-                value ? undefined : 'Title is required',
+                value ? undefined : t('notes.form.titleRequired'),
             }}
           >
             {(field) => (
               <TextInput
-                label="Title"
-                placeholder="Note title"
+                label={t('notes.form.titleLabel')}
+                placeholder={t('notes.form.titlePlaceholder')}
                 autoComplete="off"
                 required
                 value={field.state.value}
@@ -94,8 +99,8 @@ export function CreateNoteForm({
           <form.Field name="body">
             {(field) => (
               <Textarea
-                label="Body"
-                placeholder="Optional"
+                label={t('notes.form.bodyLabel')}
+                placeholder={t('notes.form.bodyPlaceholder')}
                 autosize
                 minRows={3}
                 value={field.state.value}
@@ -109,7 +114,7 @@ export function CreateNoteForm({
 
           <Group justify="flex-end">
             <Button variant="subtle" onClick={onClose}>
-              Cancel
+              {tCommon('actions.cancel')}
             </Button>
             <form.Subscribe
               selector={(state) =>
@@ -122,7 +127,7 @@ export function CreateNoteForm({
                   loading={isSubmitting}
                   disabled={!canSubmit}
                 >
-                  Create note
+                  {t('notes.createForm.submit')}
                 </Button>
               )}
             </form.Subscribe>

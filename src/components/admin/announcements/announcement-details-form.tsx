@@ -14,6 +14,7 @@ import {
   Title,
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { updateAnnouncementFn } from '#/server/actions/announcements'
 import { announcementQueryOptions } from '#/lib/queries/announcements'
 
@@ -24,6 +25,7 @@ export function AnnouncementDetailsForm({
   announcementId: number
   onSaved: () => void
 }) {
+  const { t } = useTranslation('admin')
   const { data: announcement } = useSuspenseQuery(
     announcementQueryOptions(announcementId),
   )
@@ -53,7 +55,7 @@ export function AnnouncementDetailsForm({
         setFormError(
           error instanceof Error
             ? error.message
-            : 'Unable to update announcement',
+            : t('announcements.detail.updateError'),
         )
         return
       }
@@ -74,9 +76,9 @@ export function AnnouncementDetailsForm({
       >
         <Stack gap="md">
           <Stack gap={2}>
-            <Title order={4}>Announcement details</Title>
+            <Title order={4}>{t('announcements.detail.title')}</Title>
             <Text c="dimmed" size="sm">
-              Update this announcement&apos;s content and visibility.
+              {t('announcements.detail.description')}
             </Text>
           </Stack>
 
@@ -88,7 +90,7 @@ export function AnnouncementDetailsForm({
 
           {success && (
             <Alert color="green" icon={<IconCircleCheck size={16} />}>
-              Announcement updated successfully
+              {t('announcements.detail.updateSuccess')}
             </Alert>
           )}
 
@@ -96,12 +98,12 @@ export function AnnouncementDetailsForm({
             name="title"
             validators={{
               onChange: ({ value }) =>
-                value ? undefined : 'Title is required',
+                value ? undefined : t('announcements.fields.titleRequired'),
             }}
           >
             {(field) => (
               <TextInput
-                label="Title"
+                label={t('announcements.fields.titleLabel')}
                 required
                 value={field.state.value}
                 onChange={(event) => {
@@ -117,8 +119,8 @@ export function AnnouncementDetailsForm({
           <form.Field name="body">
             {(field) => (
               <Textarea
-                label="Body"
-                placeholder="Optional"
+                label={t('announcements.fields.bodyLabel')}
+                placeholder={t('announcements.fields.bodyPlaceholder')}
                 autosize
                 minRows={4}
                 value={field.state.value}
@@ -134,8 +136,8 @@ export function AnnouncementDetailsForm({
           <form.Field name="published">
             {(field) => (
               <Switch
-                label="Published"
-                description="Visible to everyone. Leave off to keep as a draft."
+                label={t('announcements.statusPublished')}
+                description={t('announcements.fields.publishedDescription')}
                 checked={field.state.value}
                 onChange={(event) => {
                   setSuccess(false)
@@ -157,7 +159,7 @@ export function AnnouncementDetailsForm({
                   loading={isSubmitting}
                   disabled={!canSubmit}
                 >
-                  Save changes
+                  {t('announcements.detail.saveButton')}
                 </Button>
               )}
             </form.Subscribe>

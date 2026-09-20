@@ -11,6 +11,7 @@ import {
   Title,
 } from '@mantine/core'
 import { IconArrowLeft, IconBellOff } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { AnnouncementDetail } from '#/components/site/announcements/announcement-detail'
 import { siteAnnouncementQueryOptions } from '#/lib/queries/announcements'
 
@@ -37,17 +38,21 @@ export const Route = createFileRoute('/site/announcements/$announcementId')({
 })
 
 function BackLink() {
+  const { t } = useTranslation('site')
+
   return (
     <Anchor component={Link} to="/site/announcements" size="sm" c="dimmed">
       <Group gap={4} wrap="nowrap">
-        <IconArrowLeft size={14} />
-        Back to announcements
+        <IconArrowLeft size={14} className="icon-rtl-flip" />
+        {t('announcements.backLink')}
       </Group>
     </Anchor>
   )
 }
 
 function AnnouncementNotFound() {
+  const { t } = useTranslation('site')
+
   return (
     <Container size="md" px={0}>
       <Stack gap="lg">
@@ -58,10 +63,9 @@ function AnnouncementNotFound() {
               size={32}
               className="text-[var(--mantine-color-dimmed)]"
             />
-            <Title order={4}>Announcement not found</Title>
+            <Title order={4}>{t('announcements.notFound.title')}</Title>
             <Text c="dimmed" size="sm" ta="center">
-              This announcement may have been removed, or the link is no longer
-              valid.
+              {t('announcements.notFound.description')}
             </Text>
             <Button
               component={Link}
@@ -69,7 +73,7 @@ function AnnouncementNotFound() {
               variant="light"
               mt="sm"
             >
-              Back to announcements
+              {t('announcements.backLink')}
             </Button>
           </Stack>
         </Card>

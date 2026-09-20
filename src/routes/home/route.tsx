@@ -7,6 +7,7 @@ import {
 import { AppShell, Button, Group, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconUserShield } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { DashboardHeader } from '#/components/dashboard/dashboard-header'
 import { Sidebar } from '#/components/dashboard/sidebar'
 import { authClient } from '#/lib/auth-client'
@@ -27,6 +28,7 @@ export const Route = createFileRoute('/home')({
 })
 
 function HomeLayout() {
+  const { t } = useTranslation()
   const { session } = Route.useRouteContext()
   const router = useRouter()
   const [mobileOpened, { toggle: toggleMobile, close: closeMobile }] =
@@ -73,7 +75,7 @@ function HomeLayout() {
           >
             <IconUserShield size={16} />
             <Text size="sm" fw={500}>
-              Viewing as {session.user.name}
+              {t('impersonation.viewingAs', { name: session.user.name })}
             </Text>
             <Button
               size="xs"
@@ -84,7 +86,7 @@ function HomeLayout() {
                 await router.navigate({ to: '/admin' })
               }}
             >
-              Stop impersonating
+              {t('actions.stopImpersonating')}
             </Button>
           </Group>
         )}

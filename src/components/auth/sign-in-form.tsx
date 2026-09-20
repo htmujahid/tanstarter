@@ -3,10 +3,12 @@ import { useNavigate } from '@tanstack/react-router'
 import { useForm } from '@tanstack/react-form'
 import { Alert, Button, PasswordInput, Stack, TextInput } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { PasskeySignInButton } from '#/components/auth/passkey-sign-in-button'
 import { signIn } from '#/lib/auth-client'
 
 export function SignInForm() {
+  const { t } = useTranslation('auth')
   const navigate = useNavigate()
   const [formError, setFormError] = useState<string | null>(null)
 
@@ -26,7 +28,7 @@ export function SignInForm() {
           })
 
       if (error) {
-        setFormError(error.message ?? 'Unable to sign in')
+        setFormError(error.message ?? t('signIn.genericError'))
         return
       }
 
@@ -54,13 +56,13 @@ export function SignInForm() {
             name="identifier"
             validators={{
               onChange: ({ value }) =>
-                value ? undefined : 'Email or username is required',
+                value ? undefined : t('signIn.identifierRequired'),
             }}
           >
             {(field) => (
               <TextInput
-                label="Email or username"
-                placeholder="you@example.com or username"
+                label={t('signIn.identifierLabel')}
+                placeholder={t('signIn.identifierPlaceholder')}
                 autoComplete="username webauthn"
                 required
                 value={field.state.value}
@@ -77,13 +79,13 @@ export function SignInForm() {
             name="password"
             validators={{
               onChange: ({ value }) =>
-                value ? undefined : 'Password is required',
+                value ? undefined : t('signIn.passwordRequired'),
             }}
           >
             {(field) => (
               <PasswordInput
-                label="Password"
-                placeholder="Your password"
+                label={t('signIn.passwordLabel')}
+                placeholder={t('signIn.passwordPlaceholder')}
                 autoComplete="current-password"
                 required
                 value={field.state.value}
@@ -109,7 +111,7 @@ export function SignInForm() {
                 fullWidth
                 mt="sm"
               >
-                Sign in
+                {t('signIn.submit')}
               </Button>
             )}
           </form.Subscribe>

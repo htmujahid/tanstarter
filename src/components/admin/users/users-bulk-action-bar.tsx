@@ -16,6 +16,7 @@ import {
   IconUserCheck,
   IconUserShield,
 } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { authClient } from '#/lib/auth-client'
 import { BanUserModal } from '#/components/admin/users/ban-user-modal'
 import type { AdminUser } from '#/components/admin/users/users-table-column'
@@ -29,6 +30,8 @@ export function UsersBulkActionBar({
   onClearSelection: () => void
   onChanged: () => void
 }) {
+  const { t } = useTranslation('admin')
+  const { t: tCommon } = useTranslation('common')
   const navigate = useNavigate()
   const [actionError, setActionError] = useState<string | null>(null)
   const [banUsers, setBanUsers] = useState<AdminUser[]>([])
@@ -44,7 +47,8 @@ export function UsersBulkActionBar({
 
     if (error) {
       setActionError(
-        (error as { message?: string }).message ?? 'Something went wrong',
+        (error as { message?: string }).message ??
+          tCommon('messages.somethingWentWrong'),
       )
       return false
     }
@@ -110,7 +114,7 @@ export function UsersBulkActionBar({
 
       <ActionBar opened={users.length > 0} onClose={onClearSelection}>
         <Text size="sm" fw={500} visibleFrom="xs">
-          {users.length} selected
+          {tCommon('table.rowsSelected', { count: users.length })}
         </Text>
         <ActionBar.Divider visibleFrom="xs" />
 
@@ -122,7 +126,7 @@ export function UsersBulkActionBar({
             loading={pending === 'impersonate'}
             onClick={handleImpersonate}
           >
-            Impersonate
+            {t('users.actions.impersonateButton')}
           </Button>
         )}
 
@@ -133,7 +137,7 @@ export function UsersBulkActionBar({
             leftSection={<IconBan size={14} />}
             onClick={() => setBanUsers(users.filter((user) => !user.banned))}
           >
-            Ban
+            {t('users.actions.banButton')}
           </Button>
         )}
 
@@ -145,7 +149,7 @@ export function UsersBulkActionBar({
             loading={pending === 'unban'}
             onClick={handleBulkUnban}
           >
-            Unban
+            {t('users.actions.unbanButton')}
           </Button>
         )}
 
@@ -156,7 +160,7 @@ export function UsersBulkActionBar({
           leftSection={<IconTrash size={14} />}
           onClick={() => setDeleteUsers(users)}
         >
-          Delete
+          {tCommon('actions.delete')}
         </Button>
 
         <ActionBar.CloseButton />
@@ -175,28 +179,23 @@ export function UsersBulkActionBar({
       <Modal
         opened={deleteUsers.length > 0}
         onClose={() => setDeleteUsers([])}
-        title={
-          deleteUsers.length === 1
-            ? `Delete user`
-            : `Delete ${deleteUsers.length} users`
-        }
+        title={tCommon('confirmDelete.title', {
+          item:
+            deleteUsers.length === 1
+              ? deleteUsers[0].name
+              : t('users.bulkActions.usersCountLabel', {
+                  count: deleteUsers.length,
+                }),
+        })}
       >
         <Stack gap="md">
-          <Text size="sm">
-            Permanently delete{' '}
-            {deleteUsers.length === 1 ? (
-              <strong>{deleteUsers[0].name}</strong>
-            ) : (
-              `${deleteUsers.length} users`
-            )}
-            ? This cannot be undone.
-          </Text>
+          <Text size="sm">{tCommon('confirmDelete.description')}</Text>
           <Group justify="flex-end">
             <Button variant="subtle" onClick={() => setDeleteUsers([])}>
-              Cancel
+              {tCommon('actions.cancel')}
             </Button>
             <Button color="red" onClick={handleBulkDelete}>
-              Delete
+              {tCommon('actions.delete')}
             </Button>
           </Group>
         </Stack>

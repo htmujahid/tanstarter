@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { Group, Stack, TextInput } from '@mantine/core'
 import { IconSearch } from '@tabler/icons-react'
 import { useQueryClient } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import { ContactsTable } from '#/components/admin/contacts/contacts-table'
 import { ContactsTableSkeleton } from '#/components/admin/contacts/contacts-table-skeleton'
 import { SORTABLE_FIELDS } from '#/components/admin/contacts/contacts-table-column'
@@ -44,6 +45,7 @@ export const Route = createFileRoute('/admin/contacts/')({
 })
 
 function ContactsPage() {
+  const { t } = useTranslation('admin')
   const { q, sortBy, sortDirection, page } = Route.useSearch()
   const navigate = useNavigate({ from: Route.fullPath })
   const queryClient = useQueryClient()
@@ -65,7 +67,7 @@ function ContactsPage() {
         >
           <TextInput
             name="q"
-            placeholder="Search by name"
+            placeholder={t('contacts.searchPlaceholder')}
             leftSection={<IconSearch size={16} />}
             defaultValue={q ?? ''}
             w={{ base: '100%', sm: 320 }}

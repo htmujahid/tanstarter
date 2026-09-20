@@ -10,6 +10,7 @@ import {
   Textarea,
 } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { createFeedbackFn } from '#/server/actions/feedback'
 import { FEEDBACK_CATEGORIES } from '#/server/db/schemas'
 import type { FeedbackCategory } from '#/server/db/schemas'
@@ -23,6 +24,8 @@ export function CreateFeedbackForm({
   onClose: () => void
   onCreated: () => void
 }) {
+  const { t } = useTranslation('site')
+  const { t: tCommon } = useTranslation('common')
   const [formError, setFormError] = useState<string | null>(null)
 
   const form = useForm({
@@ -39,7 +42,7 @@ export function CreateFeedbackForm({
         })
       } catch (error) {
         setFormError(
-          error instanceof Error ? error.message : 'Unable to send feedback',
+          error instanceof Error ? error.message : t('feedback.genericError'),
         )
         return
       }
@@ -57,7 +60,7 @@ export function CreateFeedbackForm({
         setFormError(null)
         onClose()
       }}
-      title="Send feedback"
+      title={t('feedback.sendFeedback')}
     >
       <form
         onSubmit={(event) => {
@@ -76,10 +79,10 @@ export function CreateFeedbackForm({
           <form.Field name="category">
             {(field) => (
               <Select
-                label="Category"
+                label={t('feedback.categoryLabel')}
                 data={FEEDBACK_CATEGORIES.map((value) => ({
                   value,
-                  label: value,
+                  label: t(`feedback.categories.${value}`),
                 }))}
                 value={field.state.value}
                 onChange={(value) => field.handleChange(value ?? 'general')}
@@ -92,13 +95,13 @@ export function CreateFeedbackForm({
             name="message"
             validators={{
               onChange: ({ value }) =>
-                value ? undefined : 'Message is required',
+                value ? undefined : t('feedback.messageRequired'),
             }}
           >
             {(field) => (
               <Textarea
-                label="Message"
-                placeholder="Tell us what's on your mind"
+                label={t('feedback.messageLabel')}
+                placeholder={t('feedback.messagePlaceholder')}
                 autosize
                 minRows={4}
                 required
@@ -114,7 +117,7 @@ export function CreateFeedbackForm({
 
           <Group justify="flex-end">
             <Button variant="subtle" onClick={onClose}>
-              Cancel
+              {tCommon('actions.cancel')}
             </Button>
             <form.Subscribe
               selector={(state) =>
@@ -127,7 +130,7 @@ export function CreateFeedbackForm({
                   loading={isSubmitting}
                   disabled={!canSubmit}
                 >
-                  Send feedback
+                  {t('feedback.sendFeedback')}
                 </Button>
               )}
             </form.Subscribe>

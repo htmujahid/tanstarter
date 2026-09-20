@@ -11,6 +11,7 @@ import {
   Table,
 } from '@mantine/core'
 import { IconMessageCircle } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { FeedbackBulkActionBar } from '#/components/admin/feedback/feedback-bulk-action-bar'
 import {
   getFeedbackTableColumns,
@@ -46,6 +47,7 @@ export function FeedbackTable({
   onClearFilters: () => void
   onPageChange: (page: number) => void
 }) {
+  const { t } = useTranslation('admin')
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   const {
@@ -63,7 +65,7 @@ export function FeedbackTable({
   const totalPages = Math.max(1, Math.ceil(total / FEEDBACK_PAGE_SIZE))
   const hasFilters = Boolean(q || category || status)
 
-  const columns = useMemo(() => getFeedbackTableColumns(), [])
+  const columns = useMemo(() => getFeedbackTableColumns(t), [t])
 
   const sorting: SortingState = sortBy
     ? [{ id: sortBy, desc: sortDirection === 'desc' }]
@@ -118,17 +120,21 @@ export function FeedbackTable({
                   <EmptyState
                     icon={<IconMessageCircle size={28} />}
                     withIndicatorBackground
-                    title={hasFilters ? 'No feedback found' : 'No feedback yet'}
+                    title={
+                      hasFilters
+                        ? t('feedback.table.emptyTitleFiltered')
+                        : t('feedback.table.emptyTitle')
+                    }
                     description={
                       hasFilters
-                        ? 'Try adjusting your search or filters to find what you are looking for.'
-                        : 'Feedback submitted by users will show up here.'
+                        ? t('feedback.table.emptyDescriptionFiltered')
+                        : t('feedback.table.emptyDescription')
                     }
                   >
                     {hasFilters && (
                       <EmptyState.Actions>
                         <Button variant="default" onClick={onClearFilters}>
-                          Clear filters
+                          {t('feedback.table.clearFilters')}
                         </Button>
                       </EmptyState.Actions>
                     )}

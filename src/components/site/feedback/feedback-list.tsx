@@ -10,8 +10,10 @@ import {
   Text,
 } from '@mantine/core'
 import { IconMessageCircle, IconPlus } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { formatDateTime } from '#/lib/format-date'
 import { feedbackListQueryOptions } from '#/lib/queries/feedback'
+import type { FeedbackCategory, FeedbackStatus } from '#/server/db'
 
 const CATEGORY_COLORS: Record<string, string> = {
   bug: 'red',
@@ -26,6 +28,7 @@ const STATUS_COLORS: Record<string, string> = {
 }
 
 export function FeedbackList({ onAddFeedback }: { onAddFeedback: () => void }) {
+  const { t } = useTranslation('site')
   const {
     data: { feedback },
   } = useSuspenseQuery(feedbackListQueryOptions({ page: 1 }))
@@ -36,15 +39,15 @@ export function FeedbackList({ onAddFeedback }: { onAddFeedback: () => void }) {
         <EmptyState
           icon={<IconMessageCircle size={28} />}
           withIndicatorBackground
-          title="No feedback sent yet"
-          description="Have a bug report, feature request, or comment? Let us know."
+          title={t('feedback.emptyState.title')}
+          description={t('feedback.emptyState.description')}
         >
           <EmptyState.Actions>
             <Button
               leftSection={<IconPlus size={16} />}
               onClick={onAddFeedback}
             >
-              Send feedback
+              {t('feedback.sendFeedback')}
             </Button>
           </EmptyState.Actions>
         </EmptyState>
@@ -75,14 +78,14 @@ export function FeedbackList({ onAddFeedback }: { onAddFeedback: () => void }) {
                     variant="light"
                     size="sm"
                   >
-                    {item.category}
+                    {t(`feedback.categories.${item.category as FeedbackCategory}`)}
                   </Badge>
                   <Badge
                     color={STATUS_COLORS[item.status] ?? 'gray'}
                     variant="light"
                     size="sm"
                   >
-                    {item.status}
+                    {t(`feedback.statuses.${item.status as FeedbackStatus}`)}
                   </Badge>
                 </Group>
               </Group>

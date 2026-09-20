@@ -11,6 +11,7 @@ import {
   Table,
 } from '@mantine/core'
 import { IconMailbox } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { ContactsBulkActionBar } from '#/components/admin/contacts/contacts-bulk-action-bar'
 import {
   getContactsTableColumns,
@@ -41,6 +42,7 @@ export function ContactsTable({
   onClearFilters: () => void
   onPageChange: (page: number) => void
 }) {
+  const { t } = useTranslation('admin')
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   const {
@@ -51,7 +53,7 @@ export function ContactsTable({
   const totalPages = Math.max(1, Math.ceil(total / CONTACT_PAGE_SIZE))
   const hasFilters = Boolean(q)
 
-  const columns = useMemo(() => getContactsTableColumns(), [])
+  const columns = useMemo(() => getContactsTableColumns(t), [t])
 
   const sorting: SortingState = sortBy
     ? [{ id: sortBy, desc: sortDirection === 'desc' }]
@@ -108,19 +110,19 @@ export function ContactsTable({
                     withIndicatorBackground
                     title={
                       hasFilters
-                        ? 'No submissions found'
-                        : 'No contact submissions yet'
+                        ? t('contacts.table.emptyTitleFiltered')
+                        : t('contacts.table.emptyTitle')
                     }
                     description={
                       hasFilters
-                        ? 'Try adjusting your search to find what you are looking for.'
-                        : 'Messages sent through the contact form will show up here.'
+                        ? t('contacts.table.emptyDescriptionFiltered')
+                        : t('contacts.table.emptyDescription')
                     }
                   >
                     {hasFilters && (
                       <EmptyState.Actions>
                         <Button variant="default" onClick={onClearFilters}>
-                          Clear filters
+                          {t('contacts.table.clearFilters')}
                         </Button>
                       </EmptyState.Actions>
                     )}

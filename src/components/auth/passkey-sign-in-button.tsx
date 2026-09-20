@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { Alert, Button, Divider, Stack } from '@mantine/core'
 import { IconAlertCircle, IconFingerprint } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { signIn } from '#/lib/auth-client'
 
 export function PasskeySignInButton() {
+  const { t } = useTranslation('auth')
   const navigate = useNavigate()
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -44,7 +46,7 @@ export function PasskeySignInButton() {
     setLoading(false)
 
     if (signInError) {
-      setError(signInError.message ?? 'Unable to sign in with passkey')
+      setError(signInError.message ?? t('passkey.genericError'))
       return
     }
 
@@ -53,7 +55,7 @@ export function PasskeySignInButton() {
 
   return (
     <Stack gap="md">
-      <Divider label="or" labelPosition="center" />
+      <Divider label={t('passkey.divider')} labelPosition="center" />
 
       {error && (
         <Alert color="red" icon={<IconAlertCircle size={16} />}>
@@ -69,7 +71,7 @@ export function PasskeySignInButton() {
         fullWidth
         onClick={handleClick}
       >
-        Sign in with a passkey
+        {t('passkey.submit')}
       </Button>
     </Stack>
   )

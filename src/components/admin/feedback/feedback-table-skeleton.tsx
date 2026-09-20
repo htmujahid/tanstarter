@@ -1,6 +1,9 @@
 import { Skeleton, Table } from '@mantine/core'
+import { useTranslation } from 'react-i18next'
 
 export function FeedbackTableSkeleton({ rows = 5 }: { rows?: number }) {
+  const { t } = useTranslation('admin')
+
   return (
     <Table.ScrollContainer minWidth={720}>
       <Table verticalSpacing="sm">
@@ -9,11 +12,11 @@ export function FeedbackTableSkeleton({ rows = 5 }: { rows?: number }) {
             <Table.Th>
               <Skeleton height={18} width={18} radius="sm" />
             </Table.Th>
-            <Table.Th>Submitter</Table.Th>
-            <Table.Th>Category</Table.Th>
-            <Table.Th>Message</Table.Th>
-            <Table.Th>Status</Table.Th>
-            <Table.Th>Submitted</Table.Th>
+            <Table.Th>{t('feedback.table.submitterColumn')}</Table.Th>
+            <Table.Th>{t('feedback.table.categoryColumn')}</Table.Th>
+            <Table.Th>{t('feedback.table.messageColumn')}</Table.Th>
+            <Table.Th>{t('feedback.table.statusColumn')}</Table.Th>
+            <Table.Th>{t('feedback.table.submittedColumn')}</Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>

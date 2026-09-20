@@ -13,8 +13,10 @@ import {
   Title,
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { updateFeedbackStatusFn } from '#/server/actions/feedback'
 import { feedbackQueryOptions } from '#/lib/queries/feedback'
+import { categoryLabel } from '#/components/admin/feedback/feedback-table-column'
 import { FEEDBACK_STATUSES } from '#/server/db/schemas'
 import type { FeedbackStatus } from '#/server/db/schemas'
 
@@ -31,6 +33,7 @@ export function FeedbackDetailForm({
   feedbackId: number
   onSaved: () => void
 }) {
+  const { t } = useTranslation('admin')
   const { data: feedback } = useSuspenseQuery(feedbackQueryOptions(feedbackId))
   const [formError, setFormError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
@@ -47,7 +50,9 @@ export function FeedbackDetailForm({
         })
       } catch (error) {
         setFormError(
-          error instanceof Error ? error.message : 'Unable to update status',
+          error instanceof Error
+            ? error.message
+            : t('feedback.detail.updateError'),
         )
         return
       }
@@ -62,17 +67,20 @@ export function FeedbackDetailForm({
       <Stack gap="md">
         <Stack gap={2}>
           <Group gap="xs" align="center">
-            <Title order={4}>Feedback</Title>
+            <Title order={4}>{t('feedback.detail.title')}</Title>
             <Badge
               color={CATEGORY_COLORS[feedback.category] ?? 'gray'}
               variant="light"
               size="sm"
             >
-              {feedback.category}
+              {categoryLabel(t, feedback.category)}
             </Badge>
           </Group>
           <Text c="dimmed" size="sm">
-            Submitted by {feedback.submitterName} ({feedback.submitterEmail})
+            {t('feedback.detail.submittedBy', {
+              name: feedback.submitterName,
+              email: feedback.submitterEmail,
+            })}
           </Text>
         </Stack>
 
@@ -94,17 +102,17 @@ export function FeedbackDetailForm({
 
             {success && (
               <Alert color="green" icon={<IconCircleCheck size={16} />}>
-                Status updated successfully
+                {t('feedback.detail.updateSuccess')}
               </Alert>
             )}
 
             <form.Field name="status">
               {(field) => (
                 <Select
-                  label="Status"
+                  label={t('feedback.detail.statusLabel')}
                   data={FEEDBACK_STATUSES.map((value) => ({
                     value,
-                    label: value,
+                    label: t(`feedback.statuses.${value}` as const),
                   }))}
                   value={field.state.value}
                   onChange={(value) => {
@@ -129,7 +137,7 @@ export function FeedbackDetailForm({
                     loading={isSubmitting}
                     disabled={!canSubmit}
                   >
-                    Save status
+                    {t('feedback.detail.saveButton')}
                   </Button>
                 )}
               </form.Subscribe>

@@ -11,6 +11,7 @@ import {
   IconChevronUp,
   IconSelector,
 } from '@tabler/icons-react'
+import type { TFunction } from 'i18next'
 import type { Session } from '#/server/auth/auth'
 
 export type AdminUser = NonNullable<Session>['user']
@@ -57,13 +58,13 @@ function SortableHeader({
   )
 }
 
-export function getUsersTableColumns() {
+export function getUsersTableColumns(t: TFunction<'admin'>) {
   return columnHelper.columns([
     columnHelper.display({
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          aria-label="Select all users"
+          aria-label={t('users.list.table.selectAllAria')}
           checked={table.getIsAllPageRowsSelected()}
           indeterminate={
             !table.getIsAllPageRowsSelected() &&
@@ -75,7 +76,9 @@ export function getUsersTableColumns() {
       enableSorting: false,
       cell: ({ row }) => (
         <Checkbox
-          aria-label={`Select ${row.original.name}`}
+          aria-label={t('users.list.table.selectRowAria', {
+            name: row.original.name,
+          })}
           checked={row.getIsSelected()}
           disabled={!row.getCanSelect()}
           onChange={row.getToggleSelectedHandler()}
@@ -83,7 +86,9 @@ export function getUsersTableColumns() {
       ),
     }),
     columnHelper.accessor('name', {
-      header: ({ column }) => <SortableHeader label="User" column={column} />,
+      header: ({ column }) => (
+        <SortableHeader label={t('users.list.table.userColumn')} column={column} />
+      ),
       cell: ({ row }) => (
         <div>
           <Link
@@ -100,29 +105,41 @@ export function getUsersTableColumns() {
       ),
     }),
     columnHelper.accessor('role', {
-      header: ({ column }) => <SortableHeader label="Role" column={column} />,
+      header: ({ column }) => (
+        <SortableHeader label={t('users.list.table.roleColumn')} column={column} />
+      ),
       cell: ({ getValue }) => {
         const role = getValue() ?? 'user'
         return (
           <Badge color={role === 'admin' ? 'grape' : 'gray'} variant="light">
-            {role}
+            {role === 'admin' ? t('users.roles.admin') : t('users.roles.user')}
           </Badge>
         )
       },
     }),
     columnHelper.accessor('banned', {
-      header: ({ column }) => <SortableHeader label="Status" column={column} />,
+      header: ({ column }) => (
+        <SortableHeader
+          label={t('users.list.table.statusColumn')}
+          column={column}
+        />
+      ),
       cell: ({ getValue }) => {
         const isBanned = Boolean(getValue())
         return (
           <Badge color={isBanned ? 'red' : 'teal'} variant="light">
-            {isBanned ? 'Banned' : 'Active'}
+            {isBanned ? t('users.status.banned') : t('users.status.active')}
           </Badge>
         )
       },
     }),
     columnHelper.accessor('createdAt', {
-      header: ({ column }) => <SortableHeader label="Joined" column={column} />,
+      header: ({ column }) => (
+        <SortableHeader
+          label={t('users.list.table.joinedColumn')}
+          column={column}
+        />
+      ),
       cell: ({ getValue }) => (
         <Text size="sm" c="dimmed">
           {new Date(getValue()).toLocaleDateString()}

@@ -1,0 +1,45 @@
+import type { AuthTranslations } from '#/lib/i18n/locales/types'
+
+export const auth: AuthTranslations = {
+  layout: {
+    title: 'آن لائن فروخت کے لیے آپ کو ہر چیز میسر ہے۔',
+    subtitle: 'ایک تیز، محفوظ اسٹور فرنٹ لانچ کریں اور اسے ایک ہی جگہ سے منظم کریں۔',
+    copyright: '© {{year}} کامرس',
+  },
+  signIn: {
+    title: 'خوش آمدید',
+    subtitle: 'جاری رکھنے کے لیے اپنے اکاؤنٹ میں سائن ان کریں',
+    identifierLabel: 'ای میل یا صارف نام',
+    identifierPlaceholder: 'you@example.com یا صارف نام',
+    identifierRequired: 'ای میل یا صارف نام درکار ہے',
+    passwordLabel: 'پاس ورڈ',
+    passwordPlaceholder: 'آپ کا پاس ورڈ',
+    passwordRequired: 'پاس ورڈ درکار ہے',
+    submit: 'سائن ان کریں',
+    genericError: 'سائن ان نہیں ہو سکا',
+  },
+  setup: {
+    title: 'شروع کریں',
+    subtitle: 'اپنا اسٹور سیٹ اپ کرنے کے لیے پہلا اکاؤنٹ بنائیں',
+    nameLabel: 'نام',
+    namePlaceholder: 'جین ڈو',
+    nameRequired: 'نام درکار ہے',
+    emailLabel: 'ای میل',
+    emailPlaceholder: 'you@example.com',
+    emailRequired: 'ای میل درکار ہے',
+    passwordLabel: 'پاس ورڈ',
+    passwordPlaceholder: 'کم از کم 8 حروف',
+    passwordTooShort: 'پاس ورڈ کم از کم 8 حروف کا ہونا چاہیے',
+    confirmPasswordLabel: 'پاس ورڈ کی تصدیق کریں',
+    confirmPasswordPlaceholder: 'اپنا پاس ورڈ دوبارہ درج کریں',
+    confirmPasswordRequired: 'اپنے پاس ورڈ کی تصدیق کریں',
+    passwordMismatch: 'پاس ورڈ مماثل نہیں ہیں',
+    submit: 'اکاؤنٹ بنائیں',
+    genericError: 'پہلا صارف بنانے میں ناکامی',
+  },
+  passkey: {
+    divider: 'یا',
+    submit: 'پاس کی کے ساتھ سائن ان کریں',
+    genericError: 'پاس کی کے ساتھ سائن ان نہیں ہو سکا',
+  },
+}

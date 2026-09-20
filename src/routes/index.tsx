@@ -16,12 +16,16 @@ import {
   IconSparkles,
 } from '@tabler/icons-react'
 
+import { useTranslation } from 'react-i18next'
 import { Header } from '#/components/header'
 import { features } from '#/lib/features'
 
 export const Route = createFileRoute('/')({ component: App })
 
 function App() {
+  const { t } = useTranslation('site')
+  const { t: tCommon } = useTranslation('common')
+
   return (
     <div className="flex h-dvh flex-col overflow-hidden">
       <Header />
@@ -44,7 +48,7 @@ function App() {
             color="blue"
             leftSection={<IconSparkles size={14} />}
           >
-            Built for modern storefronts
+            {t('landing.badge')}
           </Badge>
 
           <Stack gap="sm" align="center" ta="center">
@@ -52,18 +56,17 @@ function App() {
               order={1}
               className="text-3xl leading-tight sm:text-4xl lg:text-5xl"
             >
-              Sell online without{' '}
+              {t('landing.heroTitle')}{' '}
               <Text
                 span
                 inherit
                 className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent"
               >
-                the overhead
+                {t('landing.heroHighlight')}
               </Text>
             </Title>
             <Text size="lg" c="dimmed" maw={560}>
-              Launch a fast, secure storefront your customers will love. Built
-              to get out of your way, so you can focus on selling.
+              {t('landing.subtitle')}
             </Text>
           </Stack>
 
@@ -72,12 +75,12 @@ function App() {
               component={Link}
               to="/auth/setup"
               size="md"
-              rightSection={<IconArrowRight size={18} />}
+              rightSection={<IconArrowRight size={18} className="icon-rtl-flip" />}
             >
-              Get started
+              {tCommon('actions.getStarted')}
             </Button>
             <Button component={Link} to="/help" size="md" variant="default">
-              Get help
+              {t('landing.getHelp')}
             </Button>
           </Group>
 
@@ -91,7 +94,7 @@ function App() {
             >
               <Group gap={6} wrap="nowrap">
                 <IconBellRinging size={14} />
-                Announcements
+                {t('landing.announcementsLink')}
               </Group>
             </Anchor>
             <Anchor
@@ -103,7 +106,7 @@ function App() {
             >
               <Group gap={6} wrap="nowrap">
                 <IconMail size={14} />
-                Contact us
+                {t('landing.contactLink')}
               </Group>
             </Anchor>
           </Group>
@@ -111,7 +114,7 @@ function App() {
           <Group gap="lg" justify="center" wrap="wrap" className="pt-2">
             {features.map((feature) => (
               <Group
-                key={feature.title}
+                key={feature.id}
                 gap="sm"
                 wrap="nowrap"
                 align="flex-start"
@@ -122,10 +125,10 @@ function App() {
                 </ThemeIcon>
                 <Stack gap={2}>
                   <Text fw={600} size="sm">
-                    {feature.title}
+                    {tCommon(`features.${feature.id}.title`)}
                   </Text>
                   <Text size="xs" c="dimmed">
-                    {feature.description}
+                    {tCommon(`features.${feature.id}.description`)}
                   </Text>
                 </Stack>
               </Group>

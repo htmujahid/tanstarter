@@ -13,6 +13,7 @@ import {
   Title,
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { updateNoteFn } from '#/server/actions/notes'
 import { noteQueryOptions } from '#/lib/queries/notes'
 
@@ -23,6 +24,7 @@ export function NoteDetailsForm({
   noteId: number
   onSaved: () => void
 }) {
+  const { t } = useTranslation('home')
   const { data: note } = useSuspenseQuery(noteQueryOptions(noteId))
   const [formError, setFormError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
@@ -46,7 +48,9 @@ export function NoteDetailsForm({
         })
       } catch (error) {
         setFormError(
-          error instanceof Error ? error.message : 'Unable to update note',
+          error instanceof Error
+            ? error.message
+            : t('notes.detailsForm.genericError'),
         )
         return
       }
@@ -67,9 +71,9 @@ export function NoteDetailsForm({
       >
         <Stack gap="md">
           <Stack gap={2}>
-            <Title order={4}>Note details</Title>
+            <Title order={4}>{t('notes.detailsForm.title')}</Title>
             <Text c="dimmed" size="sm">
-              Update this note&apos;s title and body.
+              {t('notes.detailsForm.subtitle')}
             </Text>
           </Stack>
 
@@ -81,7 +85,7 @@ export function NoteDetailsForm({
 
           {success && (
             <Alert color="green" icon={<IconCircleCheck size={16} />}>
-              Note updated successfully
+              {t('notes.detailsForm.updateSuccess')}
             </Alert>
           )}
 
@@ -89,12 +93,12 @@ export function NoteDetailsForm({
             name="title"
             validators={{
               onChange: ({ value }) =>
-                value ? undefined : 'Title is required',
+                value ? undefined : t('notes.form.titleRequired'),
             }}
           >
             {(field) => (
               <TextInput
-                label="Title"
+                label={t('notes.form.titleLabel')}
                 required
                 value={field.state.value}
                 onChange={(event) => {
@@ -110,8 +114,8 @@ export function NoteDetailsForm({
           <form.Field name="body">
             {(field) => (
               <Textarea
-                label="Body"
-                placeholder="Optional"
+                label={t('notes.form.bodyLabel')}
+                placeholder={t('notes.form.bodyPlaceholder')}
                 autosize
                 minRows={4}
                 value={field.state.value}
@@ -136,7 +140,7 @@ export function NoteDetailsForm({
                   loading={isSubmitting}
                   disabled={!canSubmit}
                 >
-                  Save changes
+                  {t('notes.detailsForm.submit')}
                 </Button>
               )}
             </form.Subscribe>

@@ -3,9 +3,11 @@ import { useNavigate } from '@tanstack/react-router'
 import { useForm } from '@tanstack/react-form'
 import { Alert, Button, PasswordInput, Stack, TextInput } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { signUp } from '#/lib/auth-client'
 
 export function SetupForm() {
+  const { t } = useTranslation('auth')
   const navigate = useNavigate()
   const [formError, setFormError] = useState<string | null>(null)
 
@@ -15,7 +17,7 @@ export function SetupForm() {
       setFormError(null)
 
       if (value.password !== value.confirmPassword) {
-        setFormError('Passwords do not match')
+        setFormError(t('setup.passwordMismatch'))
         return
       }
 
@@ -26,7 +28,7 @@ export function SetupForm() {
       })
 
       if (error) {
-        setFormError(error.message ?? 'Unable to create the first user')
+        setFormError(error.message ?? t('setup.genericError'))
         return
       }
 
@@ -52,13 +54,13 @@ export function SetupForm() {
         <form.Field
           name="name"
           validators={{
-            onChange: ({ value }) => (value ? undefined : 'Name is required'),
+            onChange: ({ value }) => (value ? undefined : t('setup.nameRequired')),
           }}
         >
           {(field) => (
             <TextInput
-              label="Name"
-              placeholder="Jane Doe"
+              label={t('setup.nameLabel')}
+              placeholder={t('setup.namePlaceholder')}
               autoComplete="name"
               required
               value={field.state.value}
@@ -74,13 +76,13 @@ export function SetupForm() {
         <form.Field
           name="email"
           validators={{
-            onChange: ({ value }) => (value ? undefined : 'Email is required'),
+            onChange: ({ value }) => (value ? undefined : t('setup.emailRequired')),
           }}
         >
           {(field) => (
             <TextInput
-              label="Email"
-              placeholder="you@example.com"
+              label={t('setup.emailLabel')}
+              placeholder={t('setup.emailPlaceholder')}
               autoComplete="email"
               required
               value={field.state.value}
@@ -97,15 +99,13 @@ export function SetupForm() {
           name="password"
           validators={{
             onChange: ({ value }) =>
-              value.length >= 8
-                ? undefined
-                : 'Password must be at least 8 characters',
+              value.length >= 8 ? undefined : t('setup.passwordTooShort'),
           }}
         >
           {(field) => (
             <PasswordInput
-              label="Password"
-              placeholder="At least 8 characters"
+              label={t('setup.passwordLabel')}
+              placeholder={t('setup.passwordPlaceholder')}
               autoComplete="new-password"
               required
               value={field.state.value}
@@ -122,13 +122,13 @@ export function SetupForm() {
           name="confirmPassword"
           validators={{
             onChange: ({ value }) =>
-              value ? undefined : 'Confirm your password',
+              value ? undefined : t('setup.confirmPasswordRequired'),
           }}
         >
           {(field) => (
             <PasswordInput
-              label="Confirm password"
-              placeholder="Re-enter your password"
+              label={t('setup.confirmPasswordLabel')}
+              placeholder={t('setup.confirmPasswordPlaceholder')}
               autoComplete="new-password"
               required
               value={field.state.value}
@@ -152,7 +152,7 @@ export function SetupForm() {
               fullWidth
               mt="sm"
             >
-              Create account
+              {t('setup.submit')}
             </Button>
           )}
         </form.Subscribe>

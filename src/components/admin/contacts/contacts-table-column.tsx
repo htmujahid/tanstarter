@@ -11,6 +11,7 @@ import {
   IconChevronUp,
   IconSelector,
 } from '@tabler/icons-react'
+import type { TFunction } from 'i18next'
 import type { ContactSubmission } from '#/server/db/schemas'
 
 export const SORTABLE_FIELDS = ['name', 'createdAt'] as const
@@ -62,13 +63,13 @@ function SortableHeader({
   )
 }
 
-export function getContactsTableColumns() {
+export function getContactsTableColumns(t: TFunction<'admin'>) {
   return columnHelper.columns([
     columnHelper.display({
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          aria-label="Select all contact submissions"
+          aria-label={t('contacts.table.selectAllAria')}
           checked={table.getIsAllPageRowsSelected()}
           indeterminate={
             !table.getIsAllPageRowsSelected() &&
@@ -80,7 +81,9 @@ export function getContactsTableColumns() {
       enableSorting: false,
       cell: ({ row }) => (
         <Checkbox
-          aria-label={`Select submission from ${row.original.name}`}
+          aria-label={t('contacts.table.selectRowAria', {
+            name: row.original.name,
+          })}
           checked={row.getIsSelected()}
           disabled={!row.getCanSelect()}
           onChange={row.getToggleSelectedHandler()}
@@ -88,7 +91,9 @@ export function getContactsTableColumns() {
       ),
     }),
     columnHelper.accessor('name', {
-      header: ({ column }) => <SortableHeader label="Name" column={column} />,
+      header: ({ column }) => (
+        <SortableHeader label={t('contacts.table.nameColumn')} column={column} />
+      ),
       cell: ({ row }) => (
         <div>
           <Link
@@ -105,7 +110,7 @@ export function getContactsTableColumns() {
       ),
     }),
     columnHelper.accessor('message', {
-      header: 'Message',
+      header: t('contacts.table.messageColumn'),
       enableSorting: false,
       cell: ({ getValue }) => (
         <Text size="sm" lineClamp={1} maw={360}>
@@ -115,7 +120,10 @@ export function getContactsTableColumns() {
     }),
     columnHelper.accessor('createdAt', {
       header: ({ column }) => (
-        <SortableHeader label="Submitted" column={column} />
+        <SortableHeader
+          label={t('contacts.table.submittedColumn')}
+          column={column}
+        />
       ),
       cell: ({ getValue }) => (
         <Text size="sm" c="dimmed">

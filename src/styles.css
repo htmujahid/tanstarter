@@ -19,6 +19,33 @@
   );
 }
 
+/* Mirrors "directional" icons (back/forward links, standalone
+   expand/collapse buttons) so they keep pointing the semantically correct
+   way in RTL — Tabler icons don't auto-mirror, and `dir="rtl"` alone only
+   flips layout, not icon glyphs. Not used on NavLink's own disclosure
+   chevron — see the rule below for that, since it needs the open/closed
+   state to land on an absolute angle, not a mirror on top of Mantine's
+   own rotation. */
+[dir='rtl'] .icon-rtl-flip {
+  transform: scaleX(-1);
+}
+
+/* NavLink's built-in disclosure chevron (rendered in its `section` slot
+   with `data-position="right"`) always rotates 90deg clockwise from
+   whatever the closed-state icon is when Mantine opens it. We use an
+   asymmetric chevron-right icon there instead of Mantine's default
+   symmetric chevron-down, and only NavLink's `right` section is targeted
+   — `left` sections (leading icons) are untouched.
+   Closed: right (LTR) / left (RTL, 180deg from right).
+   Open: down in both directions (90deg — same value LTR already uses),
+   so the second, more specific rule below wins over the first. */
+[dir='rtl'] .mantine-NavLink-section[data-position='right'] {
+  transform: rotate(180deg);
+}
+[dir='rtl'] .mantine-NavLink-section[data-position='right'][data-rotate] {
+  transform: rotate(90deg);
+}
+
 .bg-grid-pattern-light {
   background-image: radial-gradient(
     rgba(255, 255, 255, 0.35) 1px,

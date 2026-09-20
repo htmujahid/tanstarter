@@ -12,24 +12,25 @@ import {
   Title,
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { authClient } from '#/lib/auth-client'
 import type { Session } from '#/server/auth/auth'
 
 const USERNAME_PATTERN = /^[a-zA-Z0-9_]+$/
 
-function validateUsername(value: string) {
-  if (!value) return 'Username is required'
-  if (value.length < 3) return 'Username must be at least 3 characters'
-  if (value.length > 30) return 'Username must be at most 30 characters'
-  if (!USERNAME_PATTERN.test(value))
-    return 'Only letters, numbers, and underscores are allowed'
-  return undefined
-}
-
 export function ProfileForm({ user }: { user: NonNullable<Session>['user'] }) {
+  const { t } = useTranslation('profile')
   const router = useRouter()
   const [formError, setFormError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
+
+  function validateUsername(value: string) {
+    if (!value) return t('profileForm.usernameRequired')
+    if (value.length < 3) return t('profileForm.usernameTooShort')
+    if (value.length > 30) return t('profileForm.usernameTooLong')
+    if (!USERNAME_PATTERN.test(value)) return t('profileForm.usernameInvalid')
+    return undefined
+  }
 
   const form = useForm({
     defaultValues: {
@@ -46,7 +47,7 @@ export function ProfileForm({ user }: { user: NonNullable<Session>['user'] }) {
       })
 
       if (error) {
-        setFormError(error.message ?? 'Unable to update profile')
+        setFormError(error.message ?? t('profileForm.genericError'))
         return
       }
 
@@ -66,9 +67,9 @@ export function ProfileForm({ user }: { user: NonNullable<Session>['user'] }) {
       >
         <Stack gap="md">
           <Stack gap={2}>
-            <Title order={3}>Profile information</Title>
+            <Title order={3}>{t('profileForm.title')}</Title>
             <Text c="dimmed" size="sm">
-              Update your name and username.
+              {t('profileForm.subtitle')}
             </Text>
           </Stack>
 
@@ -80,20 +81,21 @@ export function ProfileForm({ user }: { user: NonNullable<Session>['user'] }) {
 
           {success && (
             <Alert color="green" icon={<IconCircleCheck size={16} />}>
-              Profile updated successfully
+              {t('profileForm.successMessage')}
             </Alert>
           )}
 
           <form.Field
             name="name"
             validators={{
-              onChange: ({ value }) => (value ? undefined : 'Name is required'),
+              onChange: ({ value }) =>
+                value ? undefined : t('profileForm.nameRequired'),
             }}
           >
             {(field) => (
               <TextInput
-                label="Name"
-                placeholder="Jane Doe"
+                label={t('profileForm.nameLabel')}
+                placeholder={t('profileForm.namePlaceholder')}
                 autoComplete="name"
                 required
                 value={field.state.value}
@@ -115,9 +117,9 @@ export function ProfileForm({ user }: { user: NonNullable<Session>['user'] }) {
           >
             {(field) => (
               <TextInput
-                label="Username"
-                description="Letters, numbers, and underscores only. Used to sign in."
-                placeholder="janedoe"
+                label={t('profileForm.usernameLabel')}
+                description={t('profileForm.usernameDescription')}
+                placeholder={t('profileForm.usernamePlaceholder')}
                 autoComplete="username"
                 required
                 value={field.state.value}
@@ -143,7 +145,7 @@ export function ProfileForm({ user }: { user: NonNullable<Session>['user'] }) {
                   loading={isSubmitting}
                   disabled={!canSubmit}
                 >
-                  Save changes
+                  {t('profileForm.submit')}
                 </Button>
               )}
             </form.Subscribe>

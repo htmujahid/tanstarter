@@ -11,6 +11,7 @@ import {
   Title,
 } from '@mantine/core'
 import { IconArrowLeft, IconMessageOff } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { FeedbackDetail } from '#/components/site/feedback/feedback-detail'
 import { feedbackQueryOptions } from '#/lib/queries/feedback'
 
@@ -37,17 +38,21 @@ export const Route = createFileRoute('/site/feedback/$feedbackId')({
 })
 
 function BackLink() {
+  const { t } = useTranslation('site')
+
   return (
     <Anchor component={Link} to="/site/feedback" size="sm" c="dimmed">
       <Group gap={4} wrap="nowrap">
-        <IconArrowLeft size={14} />
-        Back to feedback
+        <IconArrowLeft size={14} className="icon-rtl-flip" />
+        {t('feedback.backLink')}
       </Group>
     </Anchor>
   )
 }
 
 function FeedbackNotFound() {
+  const { t } = useTranslation('site')
+
   return (
     <Container size="md" px={0}>
       <Stack gap="lg">
@@ -58,10 +63,9 @@ function FeedbackNotFound() {
               size={32}
               className="text-[var(--mantine-color-dimmed)]"
             />
-            <Title order={4}>Feedback not found</Title>
+            <Title order={4}>{t('feedback.notFound.title')}</Title>
             <Text c="dimmed" size="sm" ta="center">
-              This feedback may have been removed, or the link is no longer
-              valid.
+              {t('feedback.notFound.description')}
             </Text>
             <Button
               component={Link}
@@ -69,7 +73,7 @@ function FeedbackNotFound() {
               variant="light"
               mt="sm"
             >
-              Back to feedback
+              {t('feedback.backLink')}
             </Button>
           </Stack>
         </Card>

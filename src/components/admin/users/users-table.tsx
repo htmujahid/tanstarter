@@ -11,6 +11,7 @@ import {
   Table,
 } from '@mantine/core'
 import { IconPlus, IconUsers } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { UsersBulkActionBar } from '#/components/admin/users/users-bulk-action-bar'
 import { useSession } from '#/hooks/use-session'
 import {
@@ -43,6 +44,7 @@ export function UsersTable({
   onClearFilters: () => void
   onPageChange: (page: number) => void
 }) {
+  const { t } = useTranslation('admin')
   const session = useSession()
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
@@ -54,7 +56,7 @@ export function UsersTable({
   const totalPages = Math.max(1, Math.ceil(total / USERS_PAGE_SIZE))
   const hasFilters = Boolean(q || role)
 
-  const columns = useMemo(() => getUsersTableColumns(), [])
+  const columns = useMemo(() => getUsersTableColumns(t), [t])
 
   const sorting: SortingState = sortBy
     ? [{ id: sortBy, desc: sortDirection === 'desc' }]
@@ -109,24 +111,28 @@ export function UsersTable({
                   <EmptyState
                     icon={<IconUsers size={28} />}
                     withIndicatorBackground
-                    title={hasFilters ? 'No users found' : 'No users yet'}
+                    title={
+                      hasFilters
+                        ? t('users.list.emptyState.noResultsTitle')
+                        : t('users.list.emptyState.noUsersTitle')
+                    }
                     description={
                       hasFilters
-                        ? 'Try adjusting your search or filters to find what you are looking for.'
-                        : 'Get started by adding your first user.'
+                        ? t('users.list.emptyState.noResultsDescription')
+                        : t('users.list.emptyState.noUsersDescription')
                     }
                   >
                     <EmptyState.Actions>
                       {hasFilters ? (
                         <Button variant="default" onClick={onClearFilters}>
-                          Clear filters
+                          {t('users.list.emptyState.clearFiltersButton')}
                         </Button>
                       ) : (
                         <Button
                           leftSection={<IconPlus size={16} />}
                           onClick={onAddUser}
                         >
-                          Add user
+                          {t('users.list.addUserButton')}
                         </Button>
                       )}
                     </EmptyState.Actions>

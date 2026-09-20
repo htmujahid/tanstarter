@@ -2,6 +2,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { Button, Card, Group, Stack, Text, Title } from '@mantine/core'
 import { IconPencil } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { useSession } from '#/hooks/use-session'
 import { formatDateTime } from '#/lib/format-date'
 import { siteAnnouncementQueryOptions } from '#/lib/queries/announcements'
@@ -14,6 +15,7 @@ export function AnnouncementDetail({
   const { data: announcement } = useSuspenseQuery(
     siteAnnouncementQueryOptions(announcementId),
   )
+  const { t: tCommon } = useTranslation('common')
   const session = useSession()
   const navigate = useNavigate()
 
@@ -32,7 +34,7 @@ export function AnnouncementDetail({
               })
             }
           >
-            Edit
+            {tCommon('actions.edit')}
           </Button>
         </Group>
       )}

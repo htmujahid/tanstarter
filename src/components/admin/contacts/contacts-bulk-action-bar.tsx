@@ -9,6 +9,7 @@ import {
   Text,
 } from '@mantine/core'
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { deleteContactSubmissionFn } from '#/server/actions/contact'
 import type { ContactSubmission } from '#/server/db/schemas'
 
@@ -21,6 +22,8 @@ export function ContactsBulkActionBar({
   onClearSelection: () => void
   onChanged: () => void
 }) {
+  const { t } = useTranslation('admin')
+  const { t: tCommon } = useTranslation('common')
   const [actionError, setActionError] = useState<string | null>(null)
   const [deleteRows, setDeleteRows] = useState<ContactSubmission[]>([])
   const [pending, setPending] = useState(false)
@@ -43,7 +46,7 @@ export function ContactsBulkActionBar({
       setActionError(
         failed.reason instanceof Error
           ? failed.reason.message
-          : 'Something went wrong',
+          : tCommon('messages.somethingWentWrong'),
       )
       return
     }
@@ -68,7 +71,7 @@ export function ContactsBulkActionBar({
 
       <ActionBar opened={contacts.length > 0} onClose={onClearSelection}>
         <Text size="sm" fw={500} visibleFrom="xs">
-          {contacts.length} selected
+          {tCommon('table.rowsSelected', { count: contacts.length })}
         </Text>
         <ActionBar.Divider visibleFrom="xs" />
 
@@ -79,7 +82,7 @@ export function ContactsBulkActionBar({
           leftSection={<IconTrash size={14} />}
           onClick={() => setDeleteRows(contacts)}
         >
-          Delete
+          {tCommon('actions.delete')}
         </Button>
 
         <ActionBar.CloseButton />
@@ -90,26 +93,30 @@ export function ContactsBulkActionBar({
         onClose={() => setDeleteRows([])}
         title={
           deleteRows.length === 1
-            ? 'Delete submission'
-            : `Delete ${deleteRows.length} submissions`
+            ? t('contacts.deleteModal.title')
+            : t('contacts.deleteModal.titleBulk', {
+                count: deleteRows.length,
+              })
         }
       >
         <Stack gap="md">
           <Text size="sm">
-            Permanently delete{' '}
+            {t('contacts.deleteModal.confirmPrefix')}{' '}
             {deleteRows.length === 1 ? (
               <strong>{deleteRows[0].name}</strong>
             ) : (
-              `${deleteRows.length} submissions`
+              t('contacts.deleteModal.itemsCount', {
+                count: deleteRows.length,
+              })
             )}
-            ? This cannot be undone.
+            {t('contacts.deleteModal.confirmSuffix')}
           </Text>
           <Group justify="flex-end">
             <Button variant="subtle" onClick={() => setDeleteRows([])}>
-              Cancel
+              {tCommon('actions.cancel')}
             </Button>
             <Button color="red" loading={pending} onClick={handleBulkDelete}>
-              Delete
+              {tCommon('actions.delete')}
             </Button>
           </Group>
         </Stack>

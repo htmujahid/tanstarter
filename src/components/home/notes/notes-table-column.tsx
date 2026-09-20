@@ -11,6 +11,7 @@ import {
   IconChevronUp,
   IconSelector,
 } from '@tabler/icons-react'
+import type { TFunction } from 'i18next'
 import type { Note } from '#/server/db'
 
 export const SORTABLE_FIELDS = ['title', 'createdAt', 'updatedAt'] as const
@@ -59,13 +60,13 @@ function SortableHeader({
   )
 }
 
-export function getNotesTableColumns() {
+export function getNotesTableColumns(t: TFunction<'home'>) {
   return columnHelper.columns([
     columnHelper.display({
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          aria-label="Select all notes"
+          aria-label={t('notes.table.selectAllAria')}
           checked={table.getIsAllPageRowsSelected()}
           indeterminate={
             !table.getIsAllPageRowsSelected() &&
@@ -77,7 +78,9 @@ export function getNotesTableColumns() {
       enableSorting: false,
       cell: ({ row }) => (
         <Checkbox
-          aria-label={`Select ${row.original.title}`}
+          aria-label={t('notes.table.selectRowAria', {
+            title: row.original.title,
+          })}
           checked={row.getIsSelected()}
           disabled={!row.getCanSelect()}
           onChange={row.getToggleSelectedHandler()}
@@ -85,7 +88,9 @@ export function getNotesTableColumns() {
       ),
     }),
     columnHelper.accessor('title', {
-      header: ({ column }) => <SortableHeader label="Title" column={column} />,
+      header: ({ column }) => (
+        <SortableHeader label={t('notes.table.titleColumn')} column={column} />
+      ),
       cell: ({ row }) => (
         <div>
           <Link
@@ -105,7 +110,10 @@ export function getNotesTableColumns() {
     }),
     columnHelper.accessor('createdAt', {
       header: ({ column }) => (
-        <SortableHeader label="Created" column={column} />
+        <SortableHeader
+          label={t('notes.table.createdColumn')}
+          column={column}
+        />
       ),
       cell: ({ getValue }) => (
         <Text size="sm" c="dimmed">
@@ -115,7 +123,10 @@ export function getNotesTableColumns() {
     }),
     columnHelper.accessor('updatedAt', {
       header: ({ column }) => (
-        <SortableHeader label="Updated" column={column} />
+        <SortableHeader
+          label={t('notes.table.updatedColumn')}
+          column={column}
+        />
       ),
       cell: ({ getValue }) => (
         <Text size="sm" c="dimmed">

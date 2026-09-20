@@ -3,6 +3,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
 import { Button, Group, Select, Stack, TextInput } from '@mantine/core'
 import { IconPlus, IconSearch } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { AnnouncementsTable } from '#/components/admin/announcements/announcements-table'
 import { AnnouncementsTableSkeleton } from '#/components/admin/announcements/announcements-table-skeleton'
 import { CreateAnnouncementForm } from '#/components/admin/announcements/create-announcement-form'
@@ -56,6 +57,7 @@ export const Route = createFileRoute('/admin/announcements/')({
 })
 
 function AnnouncementsPage() {
+  const { t } = useTranslation('admin')
   const { q, published, sortBy, sortDirection, page } = Route.useSearch()
   const navigate = useNavigate({ from: Route.fullPath })
   const queryClient = useQueryClient()
@@ -87,7 +89,7 @@ function AnnouncementsPage() {
           >
             <TextInput
               name="q"
-              placeholder="Search by title"
+              placeholder={t('announcements.searchPlaceholder')}
               leftSection={<IconSearch size={16} />}
               defaultValue={q ?? ''}
               w={{ base: '100%', sm: 320 }}
@@ -95,10 +97,10 @@ function AnnouncementsPage() {
           </form>
 
           <Select
-            placeholder="All statuses"
+            placeholder={t('announcements.statusFilterPlaceholder')}
             data={[
-              { value: 'true', label: 'Published' },
-              { value: 'false', label: 'Draft' },
+              { value: 'true', label: t('announcements.statusPublished') },
+              { value: 'false', label: t('announcements.statusDraft') },
             ]}
             value={published ?? null}
             onChange={(value) =>
@@ -122,7 +124,7 @@ function AnnouncementsPage() {
           leftSection={<IconPlus size={16} />}
           onClick={() => setCreateOpened(true)}
         >
-          Add announcement
+          {t('announcements.addAnnouncement')}
         </Button>
       </Group>
 
