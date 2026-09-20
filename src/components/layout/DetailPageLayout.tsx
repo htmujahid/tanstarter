@@ -46,7 +46,7 @@ export default function DetailPageLayout({
           </Stack>
         )}
 
-        <Grid gap="lg">
+        <Grid gap="md">
           <Grid.Col span={{ base: 12, md: sidebar ? 8 : 12 }}>
             <Stack gap="md">{main}</Stack>
           </Grid.Col>

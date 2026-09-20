@@ -50,3 +50,13 @@ export const getAdminStatsFn = createServerFn({ method: 'GET' })
   .handler(async () => {
     return getUserStats(getDb())
   })
+
+export const listUserSessionsFn = createServerFn({ method: 'GET' })
+  .middleware([authMiddleware])
+  .validator((data: { userId: string }) => data)
+  .handler(async ({ data }) => {
+    return getAuth().api.listUserSessions({
+      body: { userId: data.userId },
+      headers: getRequest().headers,
+    })
+  })

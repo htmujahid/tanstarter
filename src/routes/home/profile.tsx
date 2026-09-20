@@ -2,8 +2,15 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Container, Grid, Stack } from '@mantine/core'
 import ChangePasswordForm from '#/components/profile/ChangePasswordForm'
 import ProfileForm from '#/components/profile/ProfileForm'
+import SessionsList from '#/components/profile/SessionsList'
+import { sessionsQueryOptions } from '#/lib/queries/session'
 
 export const Route = createFileRoute('/home/profile')({
+  loader: ({ context }) => {
+    void context.queryClient
+      .query({ ...sessionsQueryOptions(), staleTime: 'static' })
+      .catch(() => undefined)
+  },
   staticData: { breadcrumb: 'Profile' },
   component: Profile,
 })
@@ -13,14 +20,15 @@ function Profile() {
 
   return (
     <Container size="lg" px={0}>
-      <Grid gap="lg">
+      <Grid gap="md">
         <Grid.Col span={{ base: 12, md: 6 }}>
-          <Stack gap="xl">
+          <Stack gap="md">
             <ProfileForm user={session.user} />
+            <SessionsList currentSessionToken={session.session.token} />
           </Stack>
         </Grid.Col>
         <Grid.Col span={{ base: 12, md: 6 }}>
-          <Stack gap="xl">
+          <Stack gap="md">
             <ChangePasswordForm />
           </Stack>
         </Grid.Col>

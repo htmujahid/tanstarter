@@ -19,7 +19,7 @@ import UserActionsBar from '#/components/admin/UserActionsBar'
 import UserDetailsForm from '#/components/admin/UserDetailsForm'
 import UserRoleForm from '#/components/admin/UserRoleForm'
 import UserSessionsCard from '#/components/admin/UserSessionsCard'
-import { userQueryOptions } from '#/lib/queries/admin'
+import { userQueryOptions, userSessionsQueryOptions } from '#/lib/queries/admin'
 
 export const Route = createFileRoute('/admin/users/$userId')({
   loader: async ({ context, params }) => {
@@ -31,6 +31,15 @@ export const Route = createFileRoute('/admin/users/$userId')({
     } catch {
       throw notFound()
     }
+
+    // Fire-and-forget: sessions render in via UserSessionsCard's own
+    // loading state instead of blocking navigation on this query.
+    void context.queryClient
+      .query({
+        ...userSessionsQueryOptions(params.userId),
+        staleTime: 'static',
+      })
+      .catch(() => undefined)
   },
   pendingComponent: UserDetailPending,
   notFoundComponent: UserNotFound,
@@ -96,7 +105,7 @@ function UserDetailPending() {
           <Skeleton height={36} width={260} />
         </Group>
 
-        <Grid gap="lg">
+        <Grid gap="md">
           <Grid.Col span={{ base: 12, md: 8 }}>
             <Stack gap="md">
               <CardSkeleton />
