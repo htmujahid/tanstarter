@@ -42,6 +42,31 @@ export const getAnnouncementFn = createServerFn({ method: 'GET' })
     return announcement
   })
 
+/**
+ * Public, unauthenticated reads — used by the `/site/announcements` pages.
+ * Always published-only, mirroring the public `/api/announcements` REST
+ * route. No `authMiddleware`/permission check: there may be no session.
+ */
+export const listPublicAnnouncementsFn = createServerFn({ method: 'GET' })
+  .validator((data: Omit<ListAnnouncementsInput, 'onlyPublished'>) => data)
+  .handler(async ({ data }) => {
+    return listAnnouncements(getDb(), { ...data, onlyPublished: true })
+  })
+
+export const getPublicAnnouncementFn = createServerFn({ method: 'GET' })
+  .validator((data: { id: number }) => data)
+  .handler(async ({ data }) => {
+    const announcement = await getAnnouncementById(getDb(), data.id, {
+      onlyPublished: true,
+    })
+
+    if (!announcement) {
+      throw new Error('Announcement not found')
+    }
+
+    return announcement
+  })
+
 export const createAnnouncementFn = createServerFn({ method: 'POST' })
   .middleware([authMiddleware])
   .validator((data: CreateAnnouncementInput) => {

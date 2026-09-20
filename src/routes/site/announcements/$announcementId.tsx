@@ -7,7 +7,6 @@ import {
 import { useSuspenseQuery } from '@tanstack/react-query'
 import {
   Anchor,
-  Badge,
   Button,
   Card,
   Container,
@@ -18,9 +17,9 @@ import {
   Title,
 } from '@mantine/core'
 import { IconArrowLeft, IconBellOff, IconPencil } from '@tabler/icons-react'
-import { announcementQueryOptions } from '#/lib/queries/announcements'
+import { siteAnnouncementQueryOptions } from '#/lib/queries/announcements'
 
-export const Route = createFileRoute('/home/announcements/$announcementId')({
+export const Route = createFileRoute('/site/announcements/$announcementId')({
   loader: async ({ context, params }) => {
     const id = Number(params.announcementId)
     if (!Number.isInteger(id)) {
@@ -29,7 +28,7 @@ export const Route = createFileRoute('/home/announcements/$announcementId')({
 
     try {
       await context.queryClient.query({
-        ...announcementQueryOptions(id),
+        ...siteAnnouncementQueryOptions(id),
         staleTime: 'static',
       })
     } catch {
@@ -44,7 +43,7 @@ export const Route = createFileRoute('/home/announcements/$announcementId')({
 
 function BackLink() {
   return (
-    <Anchor component={Link} to="/home/announcements" size="sm" c="dimmed">
+    <Anchor component={Link} to="/site/announcements" size="sm" c="dimmed">
       <Group gap={4} wrap="nowrap">
         <IconArrowLeft size={14} />
         Back to announcements
@@ -71,7 +70,7 @@ function AnnouncementNotFound() {
             </Text>
             <Button
               component={Link}
-              to="/home/announcements"
+              to="/site/announcements"
               variant="light"
               mt="sm"
             >
@@ -104,7 +103,7 @@ function AnnouncementDetailPending() {
 function AnnouncementDetailPage() {
   const { announcementId } = Route.useParams()
   const { data: announcement } = useSuspenseQuery(
-    announcementQueryOptions(Number(announcementId)),
+    siteAnnouncementQueryOptions(Number(announcementId)),
   )
   const { session } = Route.useRouteContext()
   const navigate = useNavigate()
@@ -114,7 +113,7 @@ function AnnouncementDetailPage() {
       <Stack gap="lg">
         <Group justify="space-between" align="center" wrap="wrap">
           <BackLink />
-          {session.user.role === 'admin' && (
+          {session?.user.role === 'admin' && (
             <Button
               variant="light"
               size="xs"
@@ -133,14 +132,7 @@ function AnnouncementDetailPage() {
 
         <Card withBorder radius="md" padding="lg">
           <Stack gap="md">
-            <Group justify="space-between" align="flex-start" wrap="wrap">
-              <Title order={2}>{announcement.title}</Title>
-              {!announcement.published && (
-                <Badge color="gray" variant="light" size="sm">
-                  Draft
-                </Badge>
-              )}
-            </Group>
+            <Title order={2}>{announcement.title}</Title>
 
             <Text c="dimmed" size="sm">
               {new Date(

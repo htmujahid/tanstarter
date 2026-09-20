@@ -12,15 +12,17 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as AuthRouteRouteImport } from './routes/auth/route'
-import { Route as ContactRouteImport } from './routes/contact'
 import { Route as HelpRouteImport } from './routes/help'
 import { Route as HomeRouteRouteImport } from './routes/home/route'
+import { Route as SiteRouteRouteImport } from './routes/site/route'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AuthSetupRouteImport } from './routes/auth/setup'
 import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
 import { Route as HomeIndexRouteImport } from './routes/home/index'
 import { Route as HomeApiKeysRouteImport } from './routes/home/api-keys'
 import { Route as HomeProfileRouteImport } from './routes/home/profile'
+import { Route as SiteContactRouteImport } from './routes/site/contact'
+import { Route as SiteFeedbackRouteRouteImport } from './routes/site/feedback/route'
 import { Route as AdminAnnouncementsIndexRouteImport } from './routes/admin/announcements/index'
 import { Route as AdminAnnouncementsAnnouncementIdRouteImport } from './routes/admin/announcements/$announcementId'
 import { Route as AdminContactsIndexRouteImport } from './routes/admin/contacts/index'
@@ -29,12 +31,12 @@ import { Route as AdminFeedbackIndexRouteImport } from './routes/admin/feedback/
 import { Route as AdminFeedbackFeedbackIdRouteImport } from './routes/admin/feedback/$feedbackId'
 import { Route as AdminUsersIndexRouteImport } from './routes/admin/users/index'
 import { Route as AdminUsersUserIdRouteImport } from './routes/admin/users/$userId'
-import { Route as HomeAnnouncementsIndexRouteImport } from './routes/home/announcements/index'
-import { Route as HomeAnnouncementsAnnouncementIdRouteImport } from './routes/home/announcements/$announcementId'
-import { Route as HomeFeedbackIndexRouteImport } from './routes/home/feedback/index'
-import { Route as HomeFeedbackFeedbackIdRouteImport } from './routes/home/feedback/$feedbackId'
 import { Route as HomeNotesIndexRouteImport } from './routes/home/notes/index'
 import { Route as HomeNotesNoteIdRouteImport } from './routes/home/notes/$noteId'
+import { Route as SiteAnnouncementsIndexRouteImport } from './routes/site/announcements/index'
+import { Route as SiteAnnouncementsAnnouncementIdRouteImport } from './routes/site/announcements/$announcementId'
+import { Route as SiteFeedbackIndexRouteImport } from './routes/site/feedback/index'
+import { Route as SiteFeedbackFeedbackIdRouteImport } from './routes/site/feedback/$feedbackId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -51,11 +53,6 @@ const AuthRouteRoute = AuthRouteRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const HelpRoute = HelpRouteImport.update({
   id: '/help',
   path: '/help',
@@ -64,6 +61,11 @@ const HelpRoute = HelpRouteImport.update({
 const HomeRouteRoute = HomeRouteRouteImport.update({
   id: '/home',
   path: '/home',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SiteRouteRoute = SiteRouteRouteImport.update({
+  id: '/site',
+  path: '/site',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
@@ -95,6 +97,16 @@ const HomeProfileRoute = HomeProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
   getParentRoute: () => HomeRouteRoute,
+} as any)
+const SiteContactRoute = SiteContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => SiteRouteRoute,
+} as any)
+const SiteFeedbackRouteRoute = SiteFeedbackRouteRouteImport.update({
+  id: '/feedback',
+  path: '/feedback',
+  getParentRoute: () => SiteRouteRoute,
 } as any)
 const AdminAnnouncementsIndexRoute = AdminAnnouncementsIndexRouteImport.update({
   id: '/announcements/',
@@ -137,27 +149,6 @@ const AdminUsersUserIdRoute = AdminUsersUserIdRouteImport.update({
   path: '/users/$userId',
   getParentRoute: () => AdminRouteRoute,
 } as any)
-const HomeAnnouncementsIndexRoute = HomeAnnouncementsIndexRouteImport.update({
-  id: '/announcements/',
-  path: '/announcements/',
-  getParentRoute: () => HomeRouteRoute,
-} as any)
-const HomeAnnouncementsAnnouncementIdRoute =
-  HomeAnnouncementsAnnouncementIdRouteImport.update({
-    id: '/announcements/$announcementId',
-    path: '/announcements/$announcementId',
-    getParentRoute: () => HomeRouteRoute,
-  } as any)
-const HomeFeedbackIndexRoute = HomeFeedbackIndexRouteImport.update({
-  id: '/feedback/',
-  path: '/feedback/',
-  getParentRoute: () => HomeRouteRoute,
-} as any)
-const HomeFeedbackFeedbackIdRoute = HomeFeedbackFeedbackIdRouteImport.update({
-  id: '/feedback/$feedbackId',
-  path: '/feedback/$feedbackId',
-  getParentRoute: () => HomeRouteRoute,
-} as any)
 const HomeNotesIndexRoute = HomeNotesIndexRouteImport.update({
   id: '/notes/',
   path: '/notes/',
@@ -168,60 +159,84 @@ const HomeNotesNoteIdRoute = HomeNotesNoteIdRouteImport.update({
   path: '/notes/$noteId',
   getParentRoute: () => HomeRouteRoute,
 } as any)
+const SiteAnnouncementsIndexRoute = SiteAnnouncementsIndexRouteImport.update({
+  id: '/announcements/',
+  path: '/announcements/',
+  getParentRoute: () => SiteRouteRoute,
+} as any)
+const SiteAnnouncementsAnnouncementIdRoute =
+  SiteAnnouncementsAnnouncementIdRouteImport.update({
+    id: '/announcements/$announcementId',
+    path: '/announcements/$announcementId',
+    getParentRoute: () => SiteRouteRoute,
+  } as any)
+const SiteFeedbackIndexRoute = SiteFeedbackIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SiteFeedbackRouteRoute,
+} as any)
+const SiteFeedbackFeedbackIdRoute = SiteFeedbackFeedbackIdRouteImport.update({
+  id: '/$feedbackId',
+  path: '/$feedbackId',
+  getParentRoute: () => SiteFeedbackRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
   '/auth': typeof AuthRouteRouteWithChildren
   '/home': typeof HomeRouteRouteWithChildren
-  '/contact': typeof ContactRoute
+  '/site': typeof SiteRouteRouteWithChildren
   '/help': typeof HelpRoute
+  '/site/feedback': typeof SiteFeedbackRouteRouteWithChildren
   '/auth/setup': typeof AuthSetupRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/home/api-keys': typeof HomeApiKeysRoute
   '/home/profile': typeof HomeProfileRoute
+  '/site/contact': typeof SiteContactRoute
   '/admin/': typeof AdminIndexRoute
   '/home/': typeof HomeIndexRoute
   '/admin/announcements/$announcementId': typeof AdminAnnouncementsAnnouncementIdRoute
   '/admin/contacts/$contactId': typeof AdminContactsContactIdRoute
   '/admin/feedback/$feedbackId': typeof AdminFeedbackFeedbackIdRoute
   '/admin/users/$userId': typeof AdminUsersUserIdRoute
-  '/home/announcements/$announcementId': typeof HomeAnnouncementsAnnouncementIdRoute
-  '/home/feedback/$feedbackId': typeof HomeFeedbackFeedbackIdRoute
   '/home/notes/$noteId': typeof HomeNotesNoteIdRoute
+  '/site/announcements/$announcementId': typeof SiteAnnouncementsAnnouncementIdRoute
+  '/site/feedback/$feedbackId': typeof SiteFeedbackFeedbackIdRoute
   '/admin/announcements/': typeof AdminAnnouncementsIndexRoute
   '/admin/contacts/': typeof AdminContactsIndexRoute
   '/admin/feedback/': typeof AdminFeedbackIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
-  '/home/announcements/': typeof HomeAnnouncementsIndexRoute
-  '/home/feedback/': typeof HomeFeedbackIndexRoute
   '/home/notes/': typeof HomeNotesIndexRoute
+  '/site/announcements/': typeof SiteAnnouncementsIndexRoute
+  '/site/feedback/': typeof SiteFeedbackIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
-  '/contact': typeof ContactRoute
+  '/site': typeof SiteRouteRouteWithChildren
   '/help': typeof HelpRoute
   '/auth/setup': typeof AuthSetupRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/home/api-keys': typeof HomeApiKeysRoute
   '/home/profile': typeof HomeProfileRoute
+  '/site/contact': typeof SiteContactRoute
   '/admin': typeof AdminIndexRoute
   '/home': typeof HomeIndexRoute
   '/admin/announcements/$announcementId': typeof AdminAnnouncementsAnnouncementIdRoute
   '/admin/contacts/$contactId': typeof AdminContactsContactIdRoute
   '/admin/feedback/$feedbackId': typeof AdminFeedbackFeedbackIdRoute
   '/admin/users/$userId': typeof AdminUsersUserIdRoute
-  '/home/announcements/$announcementId': typeof HomeAnnouncementsAnnouncementIdRoute
-  '/home/feedback/$feedbackId': typeof HomeFeedbackFeedbackIdRoute
   '/home/notes/$noteId': typeof HomeNotesNoteIdRoute
+  '/site/announcements/$announcementId': typeof SiteAnnouncementsAnnouncementIdRoute
+  '/site/feedback/$feedbackId': typeof SiteFeedbackFeedbackIdRoute
   '/admin/announcements': typeof AdminAnnouncementsIndexRoute
   '/admin/contacts': typeof AdminContactsIndexRoute
   '/admin/feedback': typeof AdminFeedbackIndexRoute
   '/admin/users': typeof AdminUsersIndexRoute
-  '/home/announcements': typeof HomeAnnouncementsIndexRoute
-  '/home/feedback': typeof HomeFeedbackIndexRoute
   '/home/notes': typeof HomeNotesIndexRoute
+  '/site/announcements': typeof SiteAnnouncementsIndexRoute
+  '/site/feedback': typeof SiteFeedbackIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -229,28 +244,30 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteRouteWithChildren
   '/auth': typeof AuthRouteRouteWithChildren
   '/home': typeof HomeRouteRouteWithChildren
-  '/contact': typeof ContactRoute
+  '/site': typeof SiteRouteRouteWithChildren
   '/help': typeof HelpRoute
+  '/site/feedback': typeof SiteFeedbackRouteRouteWithChildren
   '/auth/setup': typeof AuthSetupRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/home/api-keys': typeof HomeApiKeysRoute
   '/home/profile': typeof HomeProfileRoute
+  '/site/contact': typeof SiteContactRoute
   '/admin/': typeof AdminIndexRoute
   '/home/': typeof HomeIndexRoute
   '/admin/announcements/$announcementId': typeof AdminAnnouncementsAnnouncementIdRoute
   '/admin/contacts/$contactId': typeof AdminContactsContactIdRoute
   '/admin/feedback/$feedbackId': typeof AdminFeedbackFeedbackIdRoute
   '/admin/users/$userId': typeof AdminUsersUserIdRoute
-  '/home/announcements/$announcementId': typeof HomeAnnouncementsAnnouncementIdRoute
-  '/home/feedback/$feedbackId': typeof HomeFeedbackFeedbackIdRoute
   '/home/notes/$noteId': typeof HomeNotesNoteIdRoute
+  '/site/announcements/$announcementId': typeof SiteAnnouncementsAnnouncementIdRoute
+  '/site/feedback/$feedbackId': typeof SiteFeedbackFeedbackIdRoute
   '/admin/announcements/': typeof AdminAnnouncementsIndexRoute
   '/admin/contacts/': typeof AdminContactsIndexRoute
   '/admin/feedback/': typeof AdminFeedbackIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
-  '/home/announcements/': typeof HomeAnnouncementsIndexRoute
-  '/home/feedback/': typeof HomeFeedbackIndexRoute
   '/home/notes/': typeof HomeNotesIndexRoute
+  '/site/announcements/': typeof SiteAnnouncementsIndexRoute
+  '/site/feedback/': typeof SiteFeedbackIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -259,82 +276,87 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth'
     | '/home'
-    | '/contact'
+    | '/site'
     | '/help'
+    | '/site/feedback'
     | '/auth/setup'
     | '/auth/sign-in'
     | '/home/api-keys'
     | '/home/profile'
+    | '/site/contact'
     | '/admin/'
     | '/home/'
     | '/admin/announcements/$announcementId'
     | '/admin/contacts/$contactId'
     | '/admin/feedback/$feedbackId'
     | '/admin/users/$userId'
-    | '/home/announcements/$announcementId'
-    | '/home/feedback/$feedbackId'
     | '/home/notes/$noteId'
+    | '/site/announcements/$announcementId'
+    | '/site/feedback/$feedbackId'
     | '/admin/announcements/'
     | '/admin/contacts/'
     | '/admin/feedback/'
     | '/admin/users/'
-    | '/home/announcements/'
-    | '/home/feedback/'
     | '/home/notes/'
+    | '/site/announcements/'
+    | '/site/feedback/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
-    | '/contact'
+    | '/site'
     | '/help'
     | '/auth/setup'
     | '/auth/sign-in'
     | '/home/api-keys'
     | '/home/profile'
+    | '/site/contact'
     | '/admin'
     | '/home'
     | '/admin/announcements/$announcementId'
     | '/admin/contacts/$contactId'
     | '/admin/feedback/$feedbackId'
     | '/admin/users/$userId'
-    | '/home/announcements/$announcementId'
-    | '/home/feedback/$feedbackId'
     | '/home/notes/$noteId'
+    | '/site/announcements/$announcementId'
+    | '/site/feedback/$feedbackId'
     | '/admin/announcements'
     | '/admin/contacts'
     | '/admin/feedback'
     | '/admin/users'
-    | '/home/announcements'
-    | '/home/feedback'
     | '/home/notes'
+    | '/site/announcements'
+    | '/site/feedback'
   id:
     | '__root__'
     | '/'
     | '/admin'
     | '/auth'
     | '/home'
-    | '/contact'
+    | '/site'
     | '/help'
+    | '/site/feedback'
     | '/auth/setup'
     | '/auth/sign-in'
     | '/home/api-keys'
     | '/home/profile'
+    | '/site/contact'
     | '/admin/'
     | '/home/'
     | '/admin/announcements/$announcementId'
     | '/admin/contacts/$contactId'
     | '/admin/feedback/$feedbackId'
     | '/admin/users/$userId'
-    | '/home/announcements/$announcementId'
-    | '/home/feedback/$feedbackId'
     | '/home/notes/$noteId'
+    | '/site/announcements/$announcementId'
+    | '/site/feedback/$feedbackId'
     | '/admin/announcements/'
     | '/admin/contacts/'
     | '/admin/feedback/'
     | '/admin/users/'
-    | '/home/announcements/'
-    | '/home/feedback/'
     | '/home/notes/'
+    | '/site/announcements/'
+    | '/site/feedback/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -342,7 +364,7 @@ export interface RootRouteChildren {
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   HomeRouteRoute: typeof HomeRouteRouteWithChildren
-  ContactRoute: typeof ContactRoute
+  SiteRouteRoute: typeof SiteRouteRouteWithChildren
   HelpRoute: typeof HelpRoute
 }
 
@@ -369,13 +391,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/help': {
       id: '/help'
       path: '/help'
@@ -388,6 +403,13 @@ declare module '@tanstack/react-router' {
       path: '/home'
       fullPath: '/home'
       preLoaderRoute: typeof HomeRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/site': {
+      id: '/site'
+      path: '/site'
+      fullPath: '/site'
+      preLoaderRoute: typeof SiteRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -431,6 +453,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/home/profile'
       preLoaderRoute: typeof HomeProfileRouteImport
       parentRoute: typeof HomeRouteRoute
+    }
+    '/site/contact': {
+      id: '/site/contact'
+      path: '/contact'
+      fullPath: '/site/contact'
+      preLoaderRoute: typeof SiteContactRouteImport
+      parentRoute: typeof SiteRouteRoute
+    }
+    '/site/feedback': {
+      id: '/site/feedback'
+      path: '/feedback'
+      fullPath: '/site/feedback'
+      preLoaderRoute: typeof SiteFeedbackRouteRouteImport
+      parentRoute: typeof SiteRouteRoute
     }
     '/admin/announcements/': {
       id: '/admin/announcements/'
@@ -488,34 +524,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminUsersUserIdRouteImport
       parentRoute: typeof AdminRouteRoute
     }
-    '/home/announcements/': {
-      id: '/home/announcements/'
-      path: '/announcements'
-      fullPath: '/home/announcements/'
-      preLoaderRoute: typeof HomeAnnouncementsIndexRouteImport
-      parentRoute: typeof HomeRouteRoute
-    }
-    '/home/announcements/$announcementId': {
-      id: '/home/announcements/$announcementId'
-      path: '/announcements/$announcementId'
-      fullPath: '/home/announcements/$announcementId'
-      preLoaderRoute: typeof HomeAnnouncementsAnnouncementIdRouteImport
-      parentRoute: typeof HomeRouteRoute
-    }
-    '/home/feedback/': {
-      id: '/home/feedback/'
-      path: '/feedback'
-      fullPath: '/home/feedback/'
-      preLoaderRoute: typeof HomeFeedbackIndexRouteImport
-      parentRoute: typeof HomeRouteRoute
-    }
-    '/home/feedback/$feedbackId': {
-      id: '/home/feedback/$feedbackId'
-      path: '/feedback/$feedbackId'
-      fullPath: '/home/feedback/$feedbackId'
-      preLoaderRoute: typeof HomeFeedbackFeedbackIdRouteImport
-      parentRoute: typeof HomeRouteRoute
-    }
     '/home/notes/': {
       id: '/home/notes/'
       path: '/notes'
@@ -529,6 +537,34 @@ declare module '@tanstack/react-router' {
       fullPath: '/home/notes/$noteId'
       preLoaderRoute: typeof HomeNotesNoteIdRouteImport
       parentRoute: typeof HomeRouteRoute
+    }
+    '/site/announcements/': {
+      id: '/site/announcements/'
+      path: '/announcements'
+      fullPath: '/site/announcements/'
+      preLoaderRoute: typeof SiteAnnouncementsIndexRouteImport
+      parentRoute: typeof SiteRouteRoute
+    }
+    '/site/announcements/$announcementId': {
+      id: '/site/announcements/$announcementId'
+      path: '/announcements/$announcementId'
+      fullPath: '/site/announcements/$announcementId'
+      preLoaderRoute: typeof SiteAnnouncementsAnnouncementIdRouteImport
+      parentRoute: typeof SiteRouteRoute
+    }
+    '/site/feedback/': {
+      id: '/site/feedback/'
+      path: '/'
+      fullPath: '/site/feedback/'
+      preLoaderRoute: typeof SiteFeedbackIndexRouteImport
+      parentRoute: typeof SiteFeedbackRouteRoute
+    }
+    '/site/feedback/$feedbackId': {
+      id: '/site/feedback/$feedbackId'
+      path: '/$feedbackId'
+      fullPath: '/site/feedback/$feedbackId'
+      preLoaderRoute: typeof SiteFeedbackFeedbackIdRouteImport
+      parentRoute: typeof SiteFeedbackRouteRoute
     }
   }
 }
@@ -579,11 +615,7 @@ interface HomeRouteRouteChildren {
   HomeApiKeysRoute: typeof HomeApiKeysRoute
   HomeProfileRoute: typeof HomeProfileRoute
   HomeIndexRoute: typeof HomeIndexRoute
-  HomeAnnouncementsAnnouncementIdRoute: typeof HomeAnnouncementsAnnouncementIdRoute
-  HomeFeedbackFeedbackIdRoute: typeof HomeFeedbackFeedbackIdRoute
   HomeNotesNoteIdRoute: typeof HomeNotesNoteIdRoute
-  HomeAnnouncementsIndexRoute: typeof HomeAnnouncementsIndexRoute
-  HomeFeedbackIndexRoute: typeof HomeFeedbackIndexRoute
   HomeNotesIndexRoute: typeof HomeNotesIndexRoute
 }
 
@@ -591,11 +623,7 @@ const HomeRouteRouteChildren: HomeRouteRouteChildren = {
   HomeApiKeysRoute: HomeApiKeysRoute,
   HomeProfileRoute: HomeProfileRoute,
   HomeIndexRoute: HomeIndexRoute,
-  HomeAnnouncementsAnnouncementIdRoute: HomeAnnouncementsAnnouncementIdRoute,
-  HomeFeedbackFeedbackIdRoute: HomeFeedbackFeedbackIdRoute,
   HomeNotesNoteIdRoute: HomeNotesNoteIdRoute,
-  HomeAnnouncementsIndexRoute: HomeAnnouncementsIndexRoute,
-  HomeFeedbackIndexRoute: HomeFeedbackIndexRoute,
   HomeNotesIndexRoute: HomeNotesIndexRoute,
 }
 
@@ -603,12 +631,43 @@ const HomeRouteRouteWithChildren = HomeRouteRoute._addFileChildren(
   HomeRouteRouteChildren,
 )
 
+interface SiteFeedbackRouteRouteChildren {
+  SiteFeedbackFeedbackIdRoute: typeof SiteFeedbackFeedbackIdRoute
+  SiteFeedbackIndexRoute: typeof SiteFeedbackIndexRoute
+}
+
+const SiteFeedbackRouteRouteChildren: SiteFeedbackRouteRouteChildren = {
+  SiteFeedbackFeedbackIdRoute: SiteFeedbackFeedbackIdRoute,
+  SiteFeedbackIndexRoute: SiteFeedbackIndexRoute,
+}
+
+const SiteFeedbackRouteRouteWithChildren =
+  SiteFeedbackRouteRoute._addFileChildren(SiteFeedbackRouteRouteChildren)
+
+interface SiteRouteRouteChildren {
+  SiteFeedbackRouteRoute: typeof SiteFeedbackRouteRouteWithChildren
+  SiteContactRoute: typeof SiteContactRoute
+  SiteAnnouncementsAnnouncementIdRoute: typeof SiteAnnouncementsAnnouncementIdRoute
+  SiteAnnouncementsIndexRoute: typeof SiteAnnouncementsIndexRoute
+}
+
+const SiteRouteRouteChildren: SiteRouteRouteChildren = {
+  SiteFeedbackRouteRoute: SiteFeedbackRouteRouteWithChildren,
+  SiteContactRoute: SiteContactRoute,
+  SiteAnnouncementsAnnouncementIdRoute: SiteAnnouncementsAnnouncementIdRoute,
+  SiteAnnouncementsIndexRoute: SiteAnnouncementsIndexRoute,
+}
+
+const SiteRouteRouteWithChildren = SiteRouteRoute._addFileChildren(
+  SiteRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRouteRoute: AdminRouteRouteWithChildren,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   HomeRouteRoute: HomeRouteRouteWithChildren,
-  ContactRoute: ContactRoute,
+  SiteRouteRoute: SiteRouteRouteWithChildren,
   HelpRoute: HelpRoute,
 }
 export const routeTree = rootRouteImport

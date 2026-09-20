@@ -1,5 +1,6 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
 import {
+  Anchor,
   Badge,
   Button,
   Group,
@@ -8,7 +9,12 @@ import {
   ThemeIcon,
   Title,
 } from '@mantine/core'
-import { IconArrowRight, IconSparkles } from '@tabler/icons-react'
+import {
+  IconArrowRight,
+  IconBellRinging,
+  IconMail,
+  IconSparkles,
+} from '@tabler/icons-react'
 
 import { Header } from '#/components/header'
 import { features } from '#/lib/features'
@@ -73,6 +79,33 @@ function App() {
             <Button component={Link} to="/help" size="md" variant="default">
               Get help
             </Button>
+          </Group>
+
+          <Group gap="lg" justify="center">
+            <Anchor
+              component={Link}
+              to="/site/announcements"
+              size="sm"
+              c="dimmed"
+              underline="hover"
+            >
+              <Group gap={6} wrap="nowrap">
+                <IconBellRinging size={14} />
+                Announcements
+              </Group>
+            </Anchor>
+            <Anchor
+              component={Link}
+              to="/site/contact"
+              size="sm"
+              c="dimmed"
+              underline="hover"
+            >
+              <Group gap={6} wrap="nowrap">
+                <IconMail size={14} />
+                Contact us
+              </Group>
+            </Anchor>
           </Group>
 
           <Group gap="lg" justify="center" wrap="wrap" className="pt-2">

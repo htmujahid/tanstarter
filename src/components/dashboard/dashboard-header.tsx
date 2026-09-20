@@ -9,6 +9,7 @@ import {
 } from '@mantine/core'
 import {
   IconChevronDown,
+  IconHome,
   IconKey,
   IconLogout,
   IconShieldLock,
@@ -25,20 +26,22 @@ export function DashboardHeader({
   onBurgerClick,
 }: {
   session: NonNullable<Session>
-  navbarOpened: boolean
-  onBurgerClick: () => void
+  navbarOpened?: boolean
+  onBurgerClick?: () => void
 }) {
   const router = useRouter()
 
   return (
     <Group h="100%" px="md" justify="space-between" wrap="nowrap">
       <Group gap="sm" wrap="nowrap" style={{ minWidth: 0 }}>
-        <Burger
-          opened={navbarOpened}
-          onClick={onBurgerClick}
-          hiddenFrom="sm"
-          size="sm"
-        />
+        {onBurgerClick && (
+          <Burger
+            opened={navbarOpened}
+            onClick={onBurgerClick}
+            hiddenFrom="sm"
+            size="sm"
+          />
+        )}
         <HeaderBreadcrumbs />
       </Group>
 
@@ -62,6 +65,13 @@ export function DashboardHeader({
             </UnstyledButton>
           </Menu.Target>
           <Menu.Dropdown>
+            <Menu.Item
+              component={Link}
+              to="/home"
+              leftSection={<IconHome size={16} />}
+            >
+              Home
+            </Menu.Item>
             <Menu.Item
               component={Link}
               to="/home/profile"

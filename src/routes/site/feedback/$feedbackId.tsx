@@ -15,7 +15,7 @@ import {
 import { IconArrowLeft, IconMessageOff } from '@tabler/icons-react'
 import { feedbackQueryOptions } from '#/lib/queries/feedback'
 
-export const Route = createFileRoute('/home/feedback/$feedbackId')({
+export const Route = createFileRoute('/site/feedback/$feedbackId')({
   loader: async ({ context, params }) => {
     const id = Number(params.feedbackId)
     if (!Number.isInteger(id)) {
@@ -51,7 +51,7 @@ const STATUS_COLORS: Record<string, string> = {
 
 function BackLink() {
   return (
-    <Anchor component={Link} to="/home/feedback" size="sm" c="dimmed">
+    <Anchor component={Link} to="/site/feedback" size="sm" c="dimmed">
       <Group gap={4} wrap="nowrap">
         <IconArrowLeft size={14} />
         Back to feedback
@@ -78,7 +78,7 @@ function FeedbackNotFound() {
             </Text>
             <Button
               component={Link}
-              to="/home/feedback"
+              to="/site/feedback"
               variant="light"
               mt="sm"
             >

@@ -70,7 +70,7 @@ function Help() {
 
           <Text size="sm" c="dimmed">
             Still need help?{' '}
-            <Anchor component={Link} to="/contact">
+            <Anchor component={Link} to="/site/contact">
               Contact our support team
             </Anchor>
             , or head{' '}
