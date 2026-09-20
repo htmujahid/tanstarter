@@ -1,24 +1,17 @@
 import { Link, useRouter } from '@tanstack/react-router'
-import {
-  Anchor,
-  Avatar,
-  Button,
-  Group,
-  Menu,
-  Skeleton,
-  Text,
-} from '@mantine/core'
+import { Anchor, Avatar, Button, Group, Menu, Text } from '@mantine/core'
 import {
   IconChevronDown,
   IconLogout,
   IconShoppingBag,
 } from '@tabler/icons-react'
 import { ThemeToggle } from '#/components/theme-toggle'
-import { signOut, useSession } from '#/lib/auth-client'
+import { signOut } from '#/lib/auth-client'
+import { useSession } from '#/hooks/use-session'
 
 export function Header() {
   const router = useRouter()
-  const { data: session, isPending } = useSession()
+  const session = useSession()
 
   return (
     <header className="border-b border-[var(--mantine-color-default-border)]">
@@ -35,9 +28,7 @@ export function Header() {
         <Group gap="xs" wrap="nowrap">
           <ThemeToggle />
 
-          {isPending ? (
-            <Skeleton height={36} width={92} radius="sm" />
-          ) : session ? (
+          {session ? (
             <Menu position="bottom-end" shadow="md" width={180}>
               <Menu.Target>
                 <Button
