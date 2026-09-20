@@ -17,29 +17,53 @@ import {
   IconMailbox,
   IconMessageCircle,
   IconShieldLock,
+  IconSpeakerphone,
   IconUsers,
   IconX,
 } from '@tabler/icons-react'
 
-const navItems = [
-  { label: 'Overview', icon: IconLayoutDashboard, to: '/admin' as const },
-  { label: 'Users', icon: IconUsers, to: '/admin/users' as const },
+type AdminPath =
+  | '/admin'
+  | '/admin/users'
+  | '/admin/announcements'
+  | '/admin/feedback'
+  | '/admin/contacts'
+
+type NavLeaf = {
+  label: string
+  icon: typeof IconLayoutDashboard
+  to: AdminPath
+}
+
+type NavItem =
+  | NavLeaf
+  | { label: string; icon: typeof IconLayoutDashboard; children: NavLeaf[] }
+
+const navItems: NavItem[] = [
+  { label: 'Overview', icon: IconLayoutDashboard, to: '/admin' },
+  { label: 'Users', icon: IconUsers, to: '/admin/users' },
   {
-    label: 'Announcements',
-    icon: IconBellRinging,
-    to: '/admin/announcements' as const,
-  },
-  {
-    label: 'Feedback',
-    icon: IconMessageCircle,
-    to: '/admin/feedback' as const,
-  },
-  {
-    label: 'Contact submissions',
-    icon: IconMailbox,
-    to: '/admin/contacts' as const,
+    label: 'Communications',
+    icon: IconSpeakerphone,
+    children: [
+      {
+        label: 'Announcements',
+        icon: IconBellRinging,
+        to: '/admin/announcements',
+      },
+      { label: 'Feedback', icon: IconMessageCircle, to: '/admin/feedback' },
+      {
+        label: 'Contact submissions',
+        icon: IconMailbox,
+        to: '/admin/contacts',
+      },
+    ],
   },
 ]
+
+const collapsedItems: NavLeaf[] = navItems.flatMap((item) =>
+  'children' in item ? item.children : [item],
+)
 
 export function AdminSidebar({
   collapsed,
@@ -99,7 +123,7 @@ export function AdminSidebar({
           style={{ flex: 1, overflow: 'auto' }}
         >
           <Stack gap={4} align="center">
-            {navItems.map((item) => (
+            {collapsedItems.map((item) => (
               <Tooltip
                 key={item.label}
                 label={item.label}
@@ -157,19 +181,44 @@ export function AdminSidebar({
           style={{ flex: 1, overflow: 'auto' }}
         >
           <Stack gap={4}>
-            {navItems.map((item) => (
-              <NavLink
-                key={item.label}
-                component={Link}
-                to={item.to}
-                activeOptions={{ exact: true }}
-                label={item.label}
-                leftSection={<item.icon size={18} stroke={1.75} />}
-                active={pathname === item.to}
-                variant="light"
-                onClick={onNavigate}
-              />
-            ))}
+            {navItems.map((item) =>
+              'children' in item ? (
+                <NavLink
+                  key={item.label}
+                  label={item.label}
+                  leftSection={<item.icon size={18} stroke={1.75} />}
+                  defaultOpened={item.children.some(
+                    (child) => child.to === pathname,
+                  )}
+                >
+                  {item.children.map((child) => (
+                    <NavLink
+                      key={child.label}
+                      component={Link}
+                      to={child.to}
+                      activeOptions={{ exact: true }}
+                      label={child.label}
+                      leftSection={<child.icon size={16} stroke={1.75} />}
+                      active={pathname === child.to}
+                      variant="light"
+                      onClick={onNavigate}
+                    />
+                  ))}
+                </NavLink>
+              ) : (
+                <NavLink
+                  key={item.label}
+                  component={Link}
+                  to={item.to}
+                  activeOptions={{ exact: true }}
+                  label={item.label}
+                  leftSection={<item.icon size={18} stroke={1.75} />}
+                  active={pathname === item.to}
+                  variant="light"
+                  onClick={onNavigate}
+                />
+              ),
+            )}
           </Stack>
 
           <Stack gap={4}>
