@@ -13,11 +13,11 @@ import { authClient } from '#/lib/auth-client'
 import type { AdminUser } from '#/components/admin/UsersTableColumn'
 
 export default function BanUserModal({
-  user,
+  users,
   onClose,
   onChanged,
 }: {
-  user: AdminUser | null
+  users: AdminUser[]
   onClose: () => void
   onChanged: () => void
 }) {
@@ -26,19 +26,25 @@ export default function BanUserModal({
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
+  const opened = users.length > 0
+
   useEffect(() => {
-    if (user) {
+    if (opened) {
       setReason('')
       setDays('')
       setError(null)
     }
-  }, [user])
+  }, [opened])
 
   return (
     <Modal
-      opened={Boolean(user)}
+      opened={opened}
       onClose={onClose}
-      title={`Ban ${user?.name ?? ''}`}
+      title={
+        users.length === 1
+          ? `Ban ${users[0].name}`
+          : `Ban ${users.length} users`
+      }
     >
       <Stack gap="md">
         {error && (
@@ -71,25 +77,29 @@ export default function BanUserModal({
             color="red"
             loading={submitting}
             onClick={async () => {
-              if (!user) return
               setSubmitting(true)
-              const { error: err } = await authClient.admin.banUser({
-                userId: user.id,
-                banReason: reason || undefined,
-                banExpiresIn:
-                  typeof days === 'number' ? days * 86400 : undefined,
-              })
+              const results = await Promise.all(
+                users.map((user) =>
+                  authClient.admin.banUser({
+                    userId: user.id,
+                    banReason: reason || undefined,
+                    banExpiresIn:
+                      typeof days === 'number' ? days * 86400 : undefined,
+                  }),
+                ),
+              )
               setSubmitting(false)
 
-              if (err) {
-                setError(err.message ?? 'Unable to ban user')
+              const failed = results.find((result) => result.error)
+              if (failed?.error) {
+                setError(failed.error.message ?? 'Unable to ban user')
                 return
               }
 
               onChanged()
             }}
           >
-            Ban user
+            {users.length === 1 ? 'Ban user' : `Ban ${users.length} users`}
           </Button>
         </Group>
       </Stack>

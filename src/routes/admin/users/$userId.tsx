@@ -15,7 +15,7 @@ import {
 import { IconArrowLeft, IconUserOff } from '@tabler/icons-react'
 import DetailPageLayout from '#/components/layout/DetailPageLayout'
 import SetUserPasswordForm from '#/components/admin/SetUserPasswordForm'
-import UserActionsBar from '#/components/admin/UserActionsBar'
+import UserDetailActions from '#/components/admin/UserDetailActions'
 import UserDetailsForm from '#/components/admin/UserDetailsForm'
 import UserRoleForm from '#/components/admin/UserRoleForm'
 import UserSessionsCard from '#/components/admin/UserSessionsCard'
@@ -138,7 +138,7 @@ function UserDetailPage() {
     <DetailPageLayout
       backLink={<BackLink />}
       actions={
-        <UserActionsBar user={user} isSelf={isSelf} onChanged={invalidate} />
+        <UserDetailActions user={user} isSelf={isSelf} onChanged={invalidate} />
       }
       main={
         <>

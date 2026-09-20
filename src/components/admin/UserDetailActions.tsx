@@ -12,7 +12,7 @@ import { authClient } from '#/lib/auth-client'
 import BanUserModal from '#/components/admin/BanUserModal'
 import type { AdminUser } from '#/components/admin/UsersTableColumn'
 
-export default function UserActionsBar({
+export default function UserDetailActions({
   user,
   isSelf,
   onChanged,
@@ -129,7 +129,7 @@ export default function UserActionsBar({
       )}
 
       <BanUserModal
-        user={banModalOpen ? user : null}
+        users={banModalOpen ? [user] : []}
         onClose={() => setBanModalOpen(false)}
         onChanged={() => {
           setBanModalOpen(false)

@@ -1,20 +1,15 @@
-import { Link } from '@tanstack/react-router'
 import {
   createColumnHelper,
+  rowSelectionFeature,
   rowSortingFeature,
   tableFeatures,
 } from '@tanstack/react-table'
-import { ActionIcon, Badge, Menu, Text, UnstyledButton } from '@mantine/core'
+import { Link } from '@tanstack/react-router'
+import { Badge, Checkbox, Text, UnstyledButton } from '@mantine/core'
 import {
-  IconBan,
   IconChevronDown,
   IconChevronUp,
-  IconDots,
-  IconEye,
   IconSelector,
-  IconTrash,
-  IconUserCheck,
-  IconUserShield,
 } from '@tabler/icons-react'
 import type { Session } from '#/server/auth/auth'
 
@@ -23,7 +18,10 @@ export type AdminUser = NonNullable<Session>['user']
 export const SORTABLE_FIELDS = ['name', 'role', 'banned', 'createdAt'] as const
 export type SortableField = (typeof SORTABLE_FIELDS)[number]
 
-export const usersTableFeatures = tableFeatures({ rowSortingFeature })
+export const usersTableFeatures = tableFeatures({
+  rowSortingFeature,
+  rowSelectionFeature,
+})
 
 const columnHelper = createColumnHelper<typeof usersTableFeatures, AdminUser>()
 
@@ -59,24 +57,31 @@ function SortableHeader({
   )
 }
 
-export function getUsersTableColumns({
-  currentUserId,
-  pendingId,
-  onView,
-  onImpersonate,
-  onBan,
-  onUnban,
-  onDelete,
-}: {
-  currentUserId: string
-  pendingId: string | null
-  onView: (user: AdminUser) => void
-  onImpersonate: (user: AdminUser) => void
-  onBan: (user: AdminUser) => void
-  onUnban: (user: AdminUser) => void
-  onDelete: (user: AdminUser) => void
-}) {
+export function getUsersTableColumns() {
   return columnHelper.columns([
+    columnHelper.display({
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          aria-label="Select all users"
+          checked={table.getIsAllPageRowsSelected()}
+          indeterminate={
+            !table.getIsAllPageRowsSelected() &&
+            table.getIsSomePageRowsSelected()
+          }
+          onChange={table.getToggleAllPageRowsSelectedHandler()}
+        />
+      ),
+      enableSorting: false,
+      cell: ({ row }) => (
+        <Checkbox
+          aria-label={`Select ${row.original.name}`}
+          checked={row.getIsSelected()}
+          disabled={!row.getCanSelect()}
+          onChange={row.getToggleSelectedHandler()}
+        />
+      ),
+    }),
     columnHelper.accessor('name', {
       header: ({ column }) => <SortableHeader label="User" column={column} />,
       cell: ({ row }) => (
@@ -123,77 +128,6 @@ export function getUsersTableColumns({
           {new Date(getValue()).toLocaleDateString()}
         </Text>
       ),
-    }),
-    columnHelper.display({
-      id: 'actions',
-      header: '',
-      enableSorting: false,
-      cell: ({ row }) => {
-        const user = row.original
-        const isSelf = user.id === currentUserId
-        const isBanned = Boolean(user.banned)
-
-        return (
-          <Menu position="bottom-end" shadow="md" width={200}>
-            <Menu.Target>
-              <ActionIcon
-                variant="subtle"
-                color="gray"
-                loading={pendingId === user.id}
-              >
-                <IconDots size={16} />
-              </ActionIcon>
-            </Menu.Target>
-            <Menu.Dropdown>
-              <Menu.Item
-                leftSection={<IconEye size={16} />}
-                onClick={() => onView(user)}
-              >
-                View details
-              </Menu.Item>
-
-              {!isSelf && (
-                <Menu.Item
-                  leftSection={<IconUserShield size={16} />}
-                  onClick={() => onImpersonate(user)}
-                >
-                  Impersonate
-                </Menu.Item>
-              )}
-
-              {!isSelf &&
-                (isBanned ? (
-                  <Menu.Item
-                    leftSection={<IconUserCheck size={16} />}
-                    onClick={() => onUnban(user)}
-                  >
-                    Unban
-                  </Menu.Item>
-                ) : (
-                  <Menu.Item
-                    leftSection={<IconBan size={16} />}
-                    onClick={() => onBan(user)}
-                  >
-                    Ban
-                  </Menu.Item>
-                ))}
-
-              {!isSelf && (
-                <>
-                  <Menu.Divider />
-                  <Menu.Item
-                    color="red"
-                    leftSection={<IconTrash size={16} />}
-                    onClick={() => onDelete(user)}
-                  >
-                    Delete
-                  </Menu.Item>
-                </>
-              )}
-            </Menu.Dropdown>
-          </Menu>
-        )
-      },
     }),
   ])
 }

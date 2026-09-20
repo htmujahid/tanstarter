@@ -68,7 +68,6 @@ function UsersPage() {
   const navigate = useNavigate({ from: Route.fullPath })
   const queryClient = useQueryClient()
   const { session } = Route.useRouteContext()
-  const [search, setSearch] = useState(q ?? '')
   const [createOpened, setCreateOpened] = useState(false)
 
   const totalPages = Math.max(1, Math.ceil(total / USERS_PAGE_SIZE))
@@ -82,9 +81,12 @@ function UsersPage() {
           <form
             onSubmit={(event) => {
               event.preventDefault()
+              const value = new FormData(event.currentTarget)
+                .get('q')
+                ?.toString()
               void navigate({
                 search: {
-                  q: search || undefined,
+                  q: value || undefined,
                   role,
                   sortBy,
                   sortDirection,
@@ -94,10 +96,10 @@ function UsersPage() {
             }}
           >
             <TextInput
+              name="q"
               placeholder="Search by name or email"
               leftSection={<IconSearch size={16} />}
-              value={search}
-              onChange={(event) => setSearch(event.currentTarget.value)}
+              defaultValue={q ?? ''}
               w={{ base: '100%', sm: 320 }}
             />
           </form>

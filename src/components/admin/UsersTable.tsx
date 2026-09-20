@@ -1,11 +1,8 @@
 import { useMemo, useState } from 'react'
-import { useNavigate } from '@tanstack/react-router'
 import { flexRender, functionalUpdate, useTable } from '@tanstack/react-table'
-import type { SortingState } from '@tanstack/react-table'
-import { Alert, Button, Group, Modal, Stack, Table, Text } from '@mantine/core'
-import { IconAlertCircle } from '@tabler/icons-react'
-import { authClient } from '#/lib/auth-client'
-import BanUserModal from '#/components/admin/BanUserModal'
+import type { RowSelectionState, SortingState } from '@tanstack/react-table'
+import { Stack, Table } from '@mantine/core'
+import UsersBulkActionBar from '#/components/admin/UsersBulkActionBar'
 import {
   getUsersTableColumns,
   usersTableFeatures,
@@ -27,70 +24,9 @@ export default function UsersTable({
   onSortChange: (sortBy?: string, sortDirection?: 'asc' | 'desc') => void
   onChanged: () => void
 }) {
-  const navigate = useNavigate()
-  const [actionError, setActionError] = useState<string | null>(null)
-  const [banUser, setBanUser] = useState<AdminUser | null>(null)
-  const [deleteUser, setDeleteUser] = useState<AdminUser | null>(null)
-  const [pendingId, setPendingId] = useState<string | null>(null)
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
-  async function run(id: string, action: () => Promise<{ error: unknown }>) {
-    setActionError(null)
-    setPendingId(id)
-    const { error } = await action()
-    setPendingId(null)
-
-    if (error) {
-      setActionError(
-        (error as { message?: string }).message ?? 'Something went wrong',
-      )
-      return false
-    }
-
-    return true
-  }
-
-  async function handleUnban(user: AdminUser) {
-    const ok = await run(user.id, () =>
-      authClient.admin.unbanUser({ userId: user.id }),
-    )
-    if (ok) onChanged()
-  }
-
-  async function handleImpersonate(user: AdminUser) {
-    const ok = await run(user.id, () =>
-      authClient.admin.impersonateUser({ userId: user.id }),
-    )
-    if (ok) await navigate({ to: '/home' })
-  }
-
-  async function handleDelete() {
-    if (!deleteUser) return
-    const ok = await run(deleteUser.id, () =>
-      authClient.admin.removeUser({ userId: deleteUser.id }),
-    )
-    if (ok) {
-      setDeleteUser(null)
-      onChanged()
-    }
-  }
-
-  const columns = useMemo(
-    () =>
-      getUsersTableColumns({
-        currentUserId,
-        pendingId,
-        onView: (user) =>
-          navigate({
-            to: '/admin/users/$userId',
-            params: { userId: user.id },
-          }),
-        onImpersonate: handleImpersonate,
-        onBan: setBanUser,
-        onUnban: handleUnban,
-        onDelete: setDeleteUser,
-      }),
-    [currentUserId, pendingId],
-  )
+  const columns = useMemo(() => getUsersTableColumns(), [])
 
   const sorting: SortingState = sortBy
     ? [{ id: sortBy, desc: sortDirection === 'desc' }]
@@ -103,7 +39,8 @@ export default function UsersTable({
     getRowId: (user) => user.id,
     manualSorting: true,
     enableMultiSort: false,
-    state: { sorting },
+    enableRowSelection: (row) => row.original.id !== currentUserId,
+    state: { sorting, rowSelection },
     onSortingChange: (updater) => {
       const next = functionalUpdate(updater, sorting)
       const nextSort = next.at(0)
@@ -112,21 +49,13 @@ export default function UsersTable({
         nextSort ? (nextSort.desc ? 'desc' : 'asc') : undefined,
       )
     },
+    onRowSelectionChange: setRowSelection,
   })
+
+  const selectedUsers = table.getSelectedRowModel().rows.map((r) => r.original)
 
   return (
     <Stack gap="md">
-      {actionError && (
-        <Alert
-          color="red"
-          icon={<IconAlertCircle size={16} />}
-          withCloseButton
-          onClose={() => setActionError(null)}
-        >
-          {actionError}
-        </Alert>
-      )}
-
       <Table.ScrollContainer minWidth={640}>
         <Table verticalSpacing="sm" highlightOnHover>
           <Table.Thead>
@@ -147,12 +76,16 @@ export default function UsersTable({
           </Table.Thead>
           <Table.Tbody>
             {table.getRowModel().rows.map((row) => (
-              <Table.Tr key={row.id}>
+              <Table.Tr
+                key={row.id}
+                bg={
+                  row.getIsSelected()
+                    ? 'var(--mantine-color-blue-light)'
+                    : undefined
+                }
+              >
                 {row.getAllCells().map((cell) => (
-                  <Table.Td
-                    key={cell.id}
-                    ta={cell.column.id === 'actions' ? 'right' : undefined}
-                  >
+                  <Table.Td key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </Table.Td>
                 ))}
@@ -162,39 +95,11 @@ export default function UsersTable({
         </Table>
       </Table.ScrollContainer>
 
-      <BanUserModal
-        user={banUser}
-        onClose={() => setBanUser(null)}
-        onChanged={() => {
-          setBanUser(null)
-          onChanged()
-        }}
+      <UsersBulkActionBar
+        users={selectedUsers}
+        onClearSelection={() => setRowSelection({})}
+        onChanged={onChanged}
       />
-
-      <Modal
-        opened={Boolean(deleteUser)}
-        onClose={() => setDeleteUser(null)}
-        title="Delete user"
-      >
-        <Stack gap="md">
-          <Text size="sm">
-            Permanently delete <strong>{deleteUser?.name}</strong>? This cannot
-            be undone.
-          </Text>
-          <Group justify="flex-end">
-            <Button variant="subtle" onClick={() => setDeleteUser(null)}>
-              Cancel
-            </Button>
-            <Button
-              color="red"
-              loading={pendingId === deleteUser?.id}
-              onClick={handleDelete}
-            >
-              Delete
-            </Button>
-          </Group>
-        </Stack>
-      </Modal>
     </Stack>
   )
 }
