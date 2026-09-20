@@ -1,30 +1,58 @@
 import { useMemo, useState } from 'react'
 import { flexRender, functionalUpdate, useTable } from '@tanstack/react-table'
 import type { RowSelectionState, SortingState } from '@tanstack/react-table'
-import { Stack, Table } from '@mantine/core'
+import { useSuspenseQuery } from '@tanstack/react-query'
+import {
+  Button,
+  EmptyState,
+  Group,
+  Pagination,
+  Stack,
+  Table,
+} from '@mantine/core'
+import { IconPlus, IconUsers } from '@tabler/icons-react'
 import { UsersBulkActionBar } from '#/components/admin/users/users-bulk-action-bar'
+import { useSession } from '#/hooks/use-session'
 import {
   getUsersTableColumns,
   usersTableFeatures,
 } from '#/components/admin/users/users-table-column'
-import type { AdminUser } from '#/components/admin/users/users-table-column'
+import type { SortableField } from '#/components/admin/users/users-table-column'
+import { USERS_PAGE_SIZE, usersQueryOptions } from '#/lib/queries/admin'
 
 export function UsersTable({
-  users,
-  currentUserId,
+  q,
+  role,
   sortBy,
   sortDirection,
+  page,
   onSortChange,
   onChanged,
+  onAddUser,
+  onClearFilters,
+  onPageChange,
 }: {
-  users: AdminUser[]
-  currentUserId: string
-  sortBy?: string
+  q?: string
+  role?: 'admin' | 'user'
+  sortBy?: SortableField
   sortDirection?: 'asc' | 'desc'
+  page: number
   onSortChange: (sortBy?: string, sortDirection?: 'asc' | 'desc') => void
   onChanged: () => void
+  onAddUser: () => void
+  onClearFilters: () => void
+  onPageChange: (page: number) => void
 }) {
+  const session = useSession()
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+
+  const {
+    data: { users, total },
+  } = useSuspenseQuery(
+    usersQueryOptions({ q, role, sortBy, sortDirection, page }),
+  )
+  const totalPages = Math.max(1, Math.ceil(total / USERS_PAGE_SIZE))
+  const hasFilters = Boolean(q || role)
 
   const columns = useMemo(() => getUsersTableColumns(), [])
 
@@ -39,7 +67,7 @@ export function UsersTable({
     getRowId: (user) => user.id,
     manualSorting: true,
     enableMultiSort: false,
-    enableRowSelection: (row) => row.original.id !== currentUserId,
+    enableRowSelection: (row) => row.original.id !== session?.user.id,
     state: { sorting, rowSelection },
     onSortingChange: (updater) => {
       const next = functionalUpdate(updater, sorting)
@@ -57,7 +85,7 @@ export function UsersTable({
   return (
     <Stack gap="md">
       <Table.ScrollContainer minWidth={640}>
-        <Table verticalSpacing="sm" highlightOnHover>
+        <Table verticalSpacing="sm" withTableBorder highlightOnHover>
           <Table.Thead>
             {table.getHeaderGroups().map((headerGroup) => (
               <Table.Tr key={headerGroup.id}>
@@ -75,22 +103,57 @@ export function UsersTable({
             ))}
           </Table.Thead>
           <Table.Tbody>
-            {table.getRowModel().rows.map((row) => (
-              <Table.Tr
-                key={row.id}
-                bg={
-                  row.getIsSelected()
-                    ? 'var(--mantine-color-blue-light)'
-                    : undefined
-                }
-              >
-                {row.getAllCells().map((cell) => (
-                  <Table.Td key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </Table.Td>
-                ))}
+            {users.length === 0 ? (
+              <Table.Tr>
+                <Table.Td colSpan={columns.length}>
+                  <EmptyState
+                    icon={<IconUsers size={28} />}
+                    withIndicatorBackground
+                    title={hasFilters ? 'No users found' : 'No users yet'}
+                    description={
+                      hasFilters
+                        ? 'Try adjusting your search or filters to find what you are looking for.'
+                        : 'Get started by adding your first user.'
+                    }
+                  >
+                    <EmptyState.Actions>
+                      {hasFilters ? (
+                        <Button variant="default" onClick={onClearFilters}>
+                          Clear filters
+                        </Button>
+                      ) : (
+                        <Button
+                          leftSection={<IconPlus size={16} />}
+                          onClick={onAddUser}
+                        >
+                          Add user
+                        </Button>
+                      )}
+                    </EmptyState.Actions>
+                  </EmptyState>
+                </Table.Td>
               </Table.Tr>
-            ))}
+            ) : (
+              table.getRowModel().rows.map((row) => (
+                <Table.Tr
+                  key={row.id}
+                  bg={
+                    row.getIsSelected()
+                      ? 'var(--mantine-color-blue-light)'
+                      : undefined
+                  }
+                >
+                  {row.getAllCells().map((cell) => (
+                    <Table.Td key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </Table.Td>
+                  ))}
+                </Table.Tr>
+              ))
+            )}
           </Table.Tbody>
         </Table>
       </Table.ScrollContainer>
@@ -100,6 +163,12 @@ export function UsersTable({
         onClearSelection={() => setRowSelection({})}
         onChanged={onChanged}
       />
+
+      {totalPages > 1 && users.length > 0 && (
+        <Group justify="center">
+          <Pagination value={page} total={totalPages} onChange={onPageChange} />
+        </Group>
+      )}
     </Stack>
   )
 }

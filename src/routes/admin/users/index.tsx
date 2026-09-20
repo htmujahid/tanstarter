@@ -1,21 +1,14 @@
 import { useState } from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
-import {
-  Button,
-  Group,
-  Pagination,
-  Select,
-  Stack,
-  TextInput,
-} from '@mantine/core'
+import { useQueryClient } from '@tanstack/react-query'
+import { Button, Group, Select, Stack, TextInput } from '@mantine/core'
 import { IconPlus, IconSearch } from '@tabler/icons-react'
 import { CreateUserForm } from '#/components/admin/users/create-user-form'
 import { UsersTable } from '#/components/admin/users/users-table'
 import { UsersTableSkeleton } from '#/components/admin/users/users-table-skeleton'
 import { SORTABLE_FIELDS } from '#/components/admin/users/users-table-column'
 import type { SortableField } from '#/components/admin/users/users-table-column'
-import { USERS_PAGE_SIZE, usersQueryOptions } from '#/lib/queries/admin'
+import { usersQueryOptions } from '#/lib/queries/admin'
 
 type UsersSearch = {
   q?: string
@@ -60,17 +53,10 @@ export const Route = createFileRoute('/admin/users/')({
 
 function UsersPage() {
   const { q, role, sortBy, sortDirection, page } = Route.useSearch()
-  const {
-    data: { users, total },
-  } = useSuspenseQuery(
-    usersQueryOptions({ q, role, sortBy, sortDirection, page }),
-  )
   const navigate = useNavigate({ from: Route.fullPath })
   const queryClient = useQueryClient()
-  const { session } = Route.useRouteContext()
   const [createOpened, setCreateOpened] = useState(false)
 
-  const totalPages = Math.max(1, Math.ceil(total / USERS_PAGE_SIZE))
   const invalidate = () =>
     queryClient.invalidateQueries({ queryKey: ['admin'] })
 
@@ -137,10 +123,11 @@ function UsersPage() {
       </Group>
 
       <UsersTable
-        users={users}
-        currentUserId={session.user.id}
+        q={q}
+        role={role}
         sortBy={sortBy}
         sortDirection={sortDirection}
+        page={page}
         onSortChange={(nextSortBy, nextSortDirection) =>
           void navigate({
             search: {
@@ -153,21 +140,24 @@ function UsersPage() {
           })
         }
         onChanged={invalidate}
+        onAddUser={() => setCreateOpened(true)}
+        onClearFilters={() =>
+          void navigate({
+            search: {
+              q: undefined,
+              role: undefined,
+              sortBy,
+              sortDirection,
+              page: 1,
+            },
+          })
+        }
+        onPageChange={(value) =>
+          void navigate({
+            search: { q, role, sortBy, sortDirection, page: value },
+          })
+        }
       />
-
-      {totalPages > 1 && (
-        <Group justify="center">
-          <Pagination
-            value={page}
-            total={totalPages}
-            onChange={(value) =>
-              void navigate({
-                search: { q, role, sortBy, sortDirection, page: value },
-              })
-            }
-          />
-        </Group>
-      )}
 
       <CreateUserForm
         opened={createOpened}
