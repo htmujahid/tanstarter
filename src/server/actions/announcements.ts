@@ -44,7 +44,7 @@ export const getAnnouncementFn = createServerFn({ method: 'GET' })
 
 /**
  * Public, unauthenticated reads — used by the `/site/announcements` pages.
- * Always published-only, mirroring the public `/api/announcements` REST
+ * Always published-only, mirroring the public `/api/v1/announcements` REST
  * route. No `authMiddleware`/permission check: there may be no session.
  */
 export const listPublicAnnouncementsFn = createServerFn({ method: 'GET' })
