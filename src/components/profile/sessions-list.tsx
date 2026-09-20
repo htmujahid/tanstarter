@@ -15,6 +15,7 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle, IconDeviceDesktop, IconX } from '@tabler/icons-react'
 import { authClient } from '#/lib/auth-client'
+import { formatDateTime } from '#/lib/format-date'
 import { sessionsQueryOptions } from '#/lib/queries/session'
 
 function describeUserAgent(userAgent?: string | null) {
@@ -43,15 +44,6 @@ function describeUserAgent(userAgent?: string | null) {
             : 'Unknown OS'
 
   return `${browser} on ${os}`
-}
-
-/**
- * Explicit UTC avoids a server/client hydration mismatch: this table is
- * suspense-rendered during SSR (Cloudflare Workers, UTC) and would
- * otherwise reformat in the visitor's local timezone on the client.
- */
-function formatTimestamp(value: string | Date) {
-  return `${new Date(value).toLocaleString(undefined, { timeZone: 'UTC' })} UTC`
 }
 
 export function SessionsList({
@@ -181,7 +173,7 @@ export function SessionsList({
                       </Table.Td>
                       <Table.Td>
                         <Text size="sm" c="dimmed">
-                          {formatTimestamp(session.expiresAt)}
+                          {formatDateTime(session.expiresAt)}
                         </Text>
                       </Table.Td>
                       <Table.Td ta="right">

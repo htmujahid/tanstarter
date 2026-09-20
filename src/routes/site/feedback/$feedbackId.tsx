@@ -1,8 +1,6 @@
 import { Link, createFileRoute, notFound } from '@tanstack/react-router'
-import { useSuspenseQuery } from '@tanstack/react-query'
 import {
   Anchor,
-  Badge,
   Button,
   Card,
   Container,
@@ -13,6 +11,7 @@ import {
   Title,
 } from '@mantine/core'
 import { IconArrowLeft, IconMessageOff } from '@tabler/icons-react'
+import { FeedbackDetail } from '#/components/site/feedback/feedback-detail'
 import { feedbackQueryOptions } from '#/lib/queries/feedback'
 
 export const Route = createFileRoute('/site/feedback/$feedbackId')({
@@ -36,18 +35,6 @@ export const Route = createFileRoute('/site/feedback/$feedbackId')({
   staticData: { breadcrumb: 'Feedback' },
   component: FeedbackDetailPage,
 })
-
-const CATEGORY_COLORS: Record<string, string> = {
-  bug: 'red',
-  feature: 'blue',
-  general: 'gray',
-}
-
-const STATUS_COLORS: Record<string, string> = {
-  new: 'blue',
-  reviewed: 'yellow',
-  resolved: 'teal',
-}
 
 function BackLink() {
   return (
@@ -110,44 +97,12 @@ function FeedbackDetailPending() {
 
 function FeedbackDetailPage() {
   const { feedbackId } = Route.useParams()
-  const { data: feedback } = useSuspenseQuery(
-    feedbackQueryOptions(Number(feedbackId)),
-  )
 
   return (
     <Container size="md" px={0}>
       <Stack gap="lg">
         <BackLink />
-
-        <Card withBorder radius="md" padding="lg">
-          <Stack gap="md">
-            <Group justify="space-between" align="flex-start" wrap="wrap">
-              <Group gap="xs">
-                <Badge
-                  color={CATEGORY_COLORS[feedback.category] ?? 'gray'}
-                  variant="light"
-                >
-                  {feedback.category}
-                </Badge>
-                <Badge
-                  color={STATUS_COLORS[feedback.status] ?? 'gray'}
-                  variant="light"
-                >
-                  {feedback.status}
-                </Badge>
-              </Group>
-            </Group>
-
-            <Text c="dimmed" size="sm">
-              Submitted{' '}
-              {new Date(
-                feedback.createdAt.replace(' ', 'T') + 'Z',
-              ).toLocaleString()}
-            </Text>
-
-            <Text style={{ whiteSpace: 'pre-wrap' }}>{feedback.message}</Text>
-          </Stack>
-        </Card>
+        <FeedbackDetail feedbackId={Number(feedbackId)} />
       </Stack>
     </Container>
   )

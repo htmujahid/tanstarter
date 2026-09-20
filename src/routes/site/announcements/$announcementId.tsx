@@ -1,10 +1,4 @@
-import {
-  Link,
-  createFileRoute,
-  notFound,
-  useNavigate,
-} from '@tanstack/react-router'
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { Link, createFileRoute, notFound } from '@tanstack/react-router'
 import {
   Anchor,
   Button,
@@ -16,7 +10,8 @@ import {
   Text,
   Title,
 } from '@mantine/core'
-import { IconArrowLeft, IconBellOff, IconPencil } from '@tabler/icons-react'
+import { IconArrowLeft, IconBellOff } from '@tabler/icons-react'
+import { AnnouncementDetail } from '#/components/site/announcements/announcement-detail'
 import { siteAnnouncementQueryOptions } from '#/lib/queries/announcements'
 
 export const Route = createFileRoute('/site/announcements/$announcementId')({
@@ -102,51 +97,12 @@ function AnnouncementDetailPending() {
 
 function AnnouncementDetailPage() {
   const { announcementId } = Route.useParams()
-  const { data: announcement } = useSuspenseQuery(
-    siteAnnouncementQueryOptions(Number(announcementId)),
-  )
-  const { session } = Route.useRouteContext()
-  const navigate = useNavigate()
 
   return (
     <Container size="md" px={0}>
       <Stack gap="lg">
-        <Group justify="space-between" align="center" wrap="wrap">
-          <BackLink />
-          {session?.user.role === 'admin' && (
-            <Button
-              variant="light"
-              size="xs"
-              leftSection={<IconPencil size={14} />}
-              onClick={() =>
-                navigate({
-                  to: '/admin/announcements/$announcementId',
-                  params: { announcementId: String(announcement.id) },
-                })
-              }
-            >
-              Edit
-            </Button>
-          )}
-        </Group>
-
-        <Card withBorder radius="md" padding="lg">
-          <Stack gap="md">
-            <Title order={2}>{announcement.title}</Title>
-
-            <Text c="dimmed" size="sm">
-              {new Date(
-                announcement.createdAt.replace(' ', 'T') + 'Z',
-              ).toLocaleString()}
-            </Text>
-
-            {announcement.body && (
-              <Text style={{ whiteSpace: 'pre-wrap' }}>
-                {announcement.body}
-              </Text>
-            )}
-          </Stack>
-        </Card>
+        <BackLink />
+        <AnnouncementDetail announcementId={Number(announcementId)} />
       </Stack>
     </Container>
   )
