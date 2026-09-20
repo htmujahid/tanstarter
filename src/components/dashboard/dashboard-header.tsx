@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router'
+import { Link, useRouter } from '@tanstack/react-router'
 import {
   Avatar,
   Burger,
@@ -27,6 +27,8 @@ export function DashboardHeader({
   navbarOpened: boolean
   onBurgerClick: () => void
 }) {
+  const router = useRouter()
+
   return (
     <Group h="100%" px="md" justify="space-between" wrap="nowrap">
       <Group gap="sm" wrap="nowrap" style={{ minWidth: 0 }}>
@@ -78,7 +80,10 @@ export function DashboardHeader({
             <Menu.Divider />
             <Menu.Item
               leftSection={<IconLogout size={16} />}
-              onClick={() => signOut()}
+              onClick={async () => {
+                await signOut()
+                await router.invalidate()
+              }}
             >
               Sign out
             </Menu.Item>

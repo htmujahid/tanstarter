@@ -3,6 +3,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { useForm } from '@tanstack/react-form'
 import { Alert, Button, PasswordInput, Stack, TextInput } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
+import { PasskeySignInButton } from '#/components/auth/passkey-sign-in-button'
 import { signIn } from '#/lib/auth-client'
 
 export function SignInForm() {
@@ -34,82 +35,88 @@ export function SignInForm() {
   })
 
   return (
-    <form
-      onSubmit={(event) => {
-        event.preventDefault()
-        event.stopPropagation()
-        void form.handleSubmit()
-      }}
-    >
-      <Stack gap="md">
-        {formError && (
-          <Alert color="red" icon={<IconAlertCircle size={16} />}>
-            {formError}
-          </Alert>
-        )}
-
-        <form.Field
-          name="identifier"
-          validators={{
-            onChange: ({ value }) =>
-              value ? undefined : 'Email or username is required',
-          }}
-        >
-          {(field) => (
-            <TextInput
-              label="Email or username"
-              placeholder="you@example.com or username"
-              autoComplete="username"
-              required
-              value={field.state.value}
-              onChange={(event) =>
-                field.handleChange(event.currentTarget.value)
-              }
-              onBlur={field.handleBlur}
-              error={field.state.meta.errors[0]}
-            />
+    <Stack gap="md">
+      <form
+        onSubmit={(event) => {
+          event.preventDefault()
+          event.stopPropagation()
+          void form.handleSubmit()
+        }}
+      >
+        <Stack gap="md">
+          {formError && (
+            <Alert color="red" icon={<IconAlertCircle size={16} />}>
+              {formError}
+            </Alert>
           )}
-        </form.Field>
 
-        <form.Field
-          name="password"
-          validators={{
-            onChange: ({ value }) =>
-              value ? undefined : 'Password is required',
-          }}
-        >
-          {(field) => (
-            <PasswordInput
-              label="Password"
-              placeholder="Your password"
-              autoComplete="current-password"
-              required
-              value={field.state.value}
-              onChange={(event) =>
-                field.handleChange(event.currentTarget.value)
-              }
-              onBlur={field.handleBlur}
-              error={field.state.meta.errors[0]}
-            />
-          )}
-        </form.Field>
+          <form.Field
+            name="identifier"
+            validators={{
+              onChange: ({ value }) =>
+                value ? undefined : 'Email or username is required',
+            }}
+          >
+            {(field) => (
+              <TextInput
+                label="Email or username"
+                placeholder="you@example.com or username"
+                autoComplete="username webauthn"
+                required
+                value={field.state.value}
+                onChange={(event) =>
+                  field.handleChange(event.currentTarget.value)
+                }
+                onBlur={field.handleBlur}
+                error={field.state.meta.errors[0]}
+              />
+            )}
+          </form.Field>
 
-        <form.Subscribe
-          selector={(state) => [state.canSubmit, state.isSubmitting] as const}
-        >
-          {([canSubmit, isSubmitting]) => (
-            <Button
-              type="submit"
-              loading={isSubmitting}
-              disabled={!canSubmit}
-              fullWidth
-              mt="sm"
-            >
-              Sign in
-            </Button>
-          )}
-        </form.Subscribe>
-      </Stack>
-    </form>
+          <form.Field
+            name="password"
+            validators={{
+              onChange: ({ value }) =>
+                value ? undefined : 'Password is required',
+            }}
+          >
+            {(field) => (
+              <PasswordInput
+                label="Password"
+                placeholder="Your password"
+                autoComplete="current-password"
+                required
+                value={field.state.value}
+                onChange={(event) =>
+                  field.handleChange(event.currentTarget.value)
+                }
+                onBlur={field.handleBlur}
+                error={field.state.meta.errors[0]}
+              />
+            )}
+          </form.Field>
+
+          <form.Subscribe
+            selector={(state) =>
+              [state.canSubmit, state.isSubmitting] as const
+            }
+          >
+            {([canSubmit, isSubmitting]) => (
+              <Button
+                type="submit"
+                loading={isSubmitting}
+                disabled={!canSubmit}
+                fullWidth
+                mt="sm"
+              >
+                Sign in
+              </Button>
+            )}
+          </form.Subscribe>
+        </Stack>
+      </form>
+
+      <PasskeySignInButton />
+    </Stack>
   )
 }

@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router'
+import { Link, useRouter } from '@tanstack/react-router'
 import {
   Anchor,
   Avatar,
@@ -17,6 +17,7 @@ import { ThemeToggle } from '#/components/theme-toggle'
 import { signOut, useSession } from '#/lib/auth-client'
 
 export function Header() {
+  const router = useRouter()
   const { data: session, isPending } = useSession()
 
   return (
@@ -57,7 +58,10 @@ export function Header() {
               <Menu.Dropdown>
                 <Menu.Item
                   leftSection={<IconLogout size={16} />}
-                  onClick={() => signOut()}
+                  onClick={async () => {
+                    await signOut()
+                    await router.invalidate()
+                  }}
                 >
                   Sign out
                 </Menu.Item>
