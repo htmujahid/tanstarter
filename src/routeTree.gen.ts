@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as AuthRouteRouteImport } from './routes/auth/route'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as HelpRouteImport } from './routes/help'
 import { Route as HomeRouteRouteImport } from './routes/home/route'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
@@ -22,6 +23,8 @@ import { Route as HomeApiKeysRouteImport } from './routes/home/api-keys'
 import { Route as HomeProfileRouteImport } from './routes/home/profile'
 import { Route as AdminAnnouncementsIndexRouteImport } from './routes/admin/announcements/index'
 import { Route as AdminAnnouncementsAnnouncementIdRouteImport } from './routes/admin/announcements/$announcementId'
+import { Route as AdminContactsIndexRouteImport } from './routes/admin/contacts/index'
+import { Route as AdminContactsContactIdRouteImport } from './routes/admin/contacts/$contactId'
 import { Route as AdminFeedbackIndexRouteImport } from './routes/admin/feedback/index'
 import { Route as AdminFeedbackFeedbackIdRouteImport } from './routes/admin/feedback/$feedbackId'
 import { Route as AdminUsersIndexRouteImport } from './routes/admin/users/index'
@@ -46,6 +49,11 @@ const AdminRouteRoute = AdminRouteRouteImport.update({
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HelpRoute = HelpRouteImport.update({
@@ -99,6 +107,16 @@ const AdminAnnouncementsAnnouncementIdRoute =
     path: '/announcements/$announcementId',
     getParentRoute: () => AdminRouteRoute,
   } as any)
+const AdminContactsIndexRoute = AdminContactsIndexRouteImport.update({
+  id: '/contacts/',
+  path: '/contacts/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminContactsContactIdRoute = AdminContactsContactIdRouteImport.update({
+  id: '/contacts/$contactId',
+  path: '/contacts/$contactId',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const AdminFeedbackIndexRoute = AdminFeedbackIndexRouteImport.update({
   id: '/feedback/',
   path: '/feedback/',
@@ -156,6 +174,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteRouteWithChildren
   '/auth': typeof AuthRouteRouteWithChildren
   '/home': typeof HomeRouteRouteWithChildren
+  '/contact': typeof ContactRoute
   '/help': typeof HelpRoute
   '/auth/setup': typeof AuthSetupRoute
   '/auth/sign-in': typeof AuthSignInRoute
@@ -164,12 +183,14 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminIndexRoute
   '/home/': typeof HomeIndexRoute
   '/admin/announcements/$announcementId': typeof AdminAnnouncementsAnnouncementIdRoute
+  '/admin/contacts/$contactId': typeof AdminContactsContactIdRoute
   '/admin/feedback/$feedbackId': typeof AdminFeedbackFeedbackIdRoute
   '/admin/users/$userId': typeof AdminUsersUserIdRoute
   '/home/announcements/$announcementId': typeof HomeAnnouncementsAnnouncementIdRoute
   '/home/feedback/$feedbackId': typeof HomeFeedbackFeedbackIdRoute
   '/home/notes/$noteId': typeof HomeNotesNoteIdRoute
   '/admin/announcements/': typeof AdminAnnouncementsIndexRoute
+  '/admin/contacts/': typeof AdminContactsIndexRoute
   '/admin/feedback/': typeof AdminFeedbackIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
   '/home/announcements/': typeof HomeAnnouncementsIndexRoute
@@ -179,6 +200,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
+  '/contact': typeof ContactRoute
   '/help': typeof HelpRoute
   '/auth/setup': typeof AuthSetupRoute
   '/auth/sign-in': typeof AuthSignInRoute
@@ -187,12 +209,14 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/home': typeof HomeIndexRoute
   '/admin/announcements/$announcementId': typeof AdminAnnouncementsAnnouncementIdRoute
+  '/admin/contacts/$contactId': typeof AdminContactsContactIdRoute
   '/admin/feedback/$feedbackId': typeof AdminFeedbackFeedbackIdRoute
   '/admin/users/$userId': typeof AdminUsersUserIdRoute
   '/home/announcements/$announcementId': typeof HomeAnnouncementsAnnouncementIdRoute
   '/home/feedback/$feedbackId': typeof HomeFeedbackFeedbackIdRoute
   '/home/notes/$noteId': typeof HomeNotesNoteIdRoute
   '/admin/announcements': typeof AdminAnnouncementsIndexRoute
+  '/admin/contacts': typeof AdminContactsIndexRoute
   '/admin/feedback': typeof AdminFeedbackIndexRoute
   '/admin/users': typeof AdminUsersIndexRoute
   '/home/announcements': typeof HomeAnnouncementsIndexRoute
@@ -205,6 +229,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteRouteWithChildren
   '/auth': typeof AuthRouteRouteWithChildren
   '/home': typeof HomeRouteRouteWithChildren
+  '/contact': typeof ContactRoute
   '/help': typeof HelpRoute
   '/auth/setup': typeof AuthSetupRoute
   '/auth/sign-in': typeof AuthSignInRoute
@@ -213,12 +238,14 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/home/': typeof HomeIndexRoute
   '/admin/announcements/$announcementId': typeof AdminAnnouncementsAnnouncementIdRoute
+  '/admin/contacts/$contactId': typeof AdminContactsContactIdRoute
   '/admin/feedback/$feedbackId': typeof AdminFeedbackFeedbackIdRoute
   '/admin/users/$userId': typeof AdminUsersUserIdRoute
   '/home/announcements/$announcementId': typeof HomeAnnouncementsAnnouncementIdRoute
   '/home/feedback/$feedbackId': typeof HomeFeedbackFeedbackIdRoute
   '/home/notes/$noteId': typeof HomeNotesNoteIdRoute
   '/admin/announcements/': typeof AdminAnnouncementsIndexRoute
+  '/admin/contacts/': typeof AdminContactsIndexRoute
   '/admin/feedback/': typeof AdminFeedbackIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
   '/home/announcements/': typeof HomeAnnouncementsIndexRoute
@@ -232,6 +259,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth'
     | '/home'
+    | '/contact'
     | '/help'
     | '/auth/setup'
     | '/auth/sign-in'
@@ -240,12 +268,14 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/home/'
     | '/admin/announcements/$announcementId'
+    | '/admin/contacts/$contactId'
     | '/admin/feedback/$feedbackId'
     | '/admin/users/$userId'
     | '/home/announcements/$announcementId'
     | '/home/feedback/$feedbackId'
     | '/home/notes/$noteId'
     | '/admin/announcements/'
+    | '/admin/contacts/'
     | '/admin/feedback/'
     | '/admin/users/'
     | '/home/announcements/'
@@ -255,6 +285,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/contact'
     | '/help'
     | '/auth/setup'
     | '/auth/sign-in'
@@ -263,12 +294,14 @@ export interface FileRouteTypes {
     | '/admin'
     | '/home'
     | '/admin/announcements/$announcementId'
+    | '/admin/contacts/$contactId'
     | '/admin/feedback/$feedbackId'
     | '/admin/users/$userId'
     | '/home/announcements/$announcementId'
     | '/home/feedback/$feedbackId'
     | '/home/notes/$noteId'
     | '/admin/announcements'
+    | '/admin/contacts'
     | '/admin/feedback'
     | '/admin/users'
     | '/home/announcements'
@@ -280,6 +313,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth'
     | '/home'
+    | '/contact'
     | '/help'
     | '/auth/setup'
     | '/auth/sign-in'
@@ -288,12 +322,14 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/home/'
     | '/admin/announcements/$announcementId'
+    | '/admin/contacts/$contactId'
     | '/admin/feedback/$feedbackId'
     | '/admin/users/$userId'
     | '/home/announcements/$announcementId'
     | '/home/feedback/$feedbackId'
     | '/home/notes/$noteId'
     | '/admin/announcements/'
+    | '/admin/contacts/'
     | '/admin/feedback/'
     | '/admin/users/'
     | '/home/announcements/'
@@ -306,6 +342,7 @@ export interface RootRouteChildren {
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   HomeRouteRoute: typeof HomeRouteRouteWithChildren
+  ContactRoute: typeof ContactRoute
   HelpRoute: typeof HelpRoute
 }
 
@@ -330,6 +367,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/help': {
@@ -400,6 +444,20 @@ declare module '@tanstack/react-router' {
       path: '/announcements/$announcementId'
       fullPath: '/admin/announcements/$announcementId'
       preLoaderRoute: typeof AdminAnnouncementsAnnouncementIdRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/contacts/': {
+      id: '/admin/contacts/'
+      path: '/contacts'
+      fullPath: '/admin/contacts/'
+      preLoaderRoute: typeof AdminContactsIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/contacts/$contactId': {
+      id: '/admin/contacts/$contactId'
+      path: '/contacts/$contactId'
+      fullPath: '/admin/contacts/$contactId'
+      preLoaderRoute: typeof AdminContactsContactIdRouteImport
       parentRoute: typeof AdminRouteRoute
     }
     '/admin/feedback/': {
@@ -478,9 +536,11 @@ declare module '@tanstack/react-router' {
 interface AdminRouteRouteChildren {
   AdminIndexRoute: typeof AdminIndexRoute
   AdminAnnouncementsAnnouncementIdRoute: typeof AdminAnnouncementsAnnouncementIdRoute
+  AdminContactsContactIdRoute: typeof AdminContactsContactIdRoute
   AdminFeedbackFeedbackIdRoute: typeof AdminFeedbackFeedbackIdRoute
   AdminUsersUserIdRoute: typeof AdminUsersUserIdRoute
   AdminAnnouncementsIndexRoute: typeof AdminAnnouncementsIndexRoute
+  AdminContactsIndexRoute: typeof AdminContactsIndexRoute
   AdminFeedbackIndexRoute: typeof AdminFeedbackIndexRoute
   AdminUsersIndexRoute: typeof AdminUsersIndexRoute
 }
@@ -488,9 +548,11 @@ interface AdminRouteRouteChildren {
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminIndexRoute: AdminIndexRoute,
   AdminAnnouncementsAnnouncementIdRoute: AdminAnnouncementsAnnouncementIdRoute,
+  AdminContactsContactIdRoute: AdminContactsContactIdRoute,
   AdminFeedbackFeedbackIdRoute: AdminFeedbackFeedbackIdRoute,
   AdminUsersUserIdRoute: AdminUsersUserIdRoute,
   AdminAnnouncementsIndexRoute: AdminAnnouncementsIndexRoute,
+  AdminContactsIndexRoute: AdminContactsIndexRoute,
   AdminFeedbackIndexRoute: AdminFeedbackIndexRoute,
   AdminUsersIndexRoute: AdminUsersIndexRoute,
 }
@@ -546,6 +608,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRouteRoute: AdminRouteRouteWithChildren,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   HomeRouteRoute: HomeRouteRouteWithChildren,
+  ContactRoute: ContactRoute,
   HelpRoute: HelpRoute,
 }
 export const routeTree = rootRouteImport

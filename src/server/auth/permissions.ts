@@ -10,6 +10,7 @@ const statement = {
   notes: ['create', 'read', 'update', 'delete'],
   announcements: ['create', 'read', 'update', 'delete'],
   feedback: ['create', 'read', 'update', 'delete'],
+  contact: ['read', 'delete'],
 } as const
 
 export const ac = createAccessControl(statement)
@@ -19,6 +20,7 @@ export const admin = ac.newRole({
   notes: ['create', 'read', 'update', 'delete'],
   announcements: ['create', 'read', 'update', 'delete'],
   feedback: ['create', 'read', 'update', 'delete'],
+  contact: ['read', 'delete'],
 })
 
 export const user = ac.newRole({

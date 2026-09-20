@@ -64,6 +64,13 @@
       "when": 1789881228844,
       "tag": "0008_shocking_war_machine",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "6",
+      "when": 1789881866251,
+      "tag": "0009_black_firelord",
+      "breakpoints": true
     }
   ]
 }

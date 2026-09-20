@@ -69,7 +69,11 @@ function Help() {
           </Accordion>
 
           <Text size="sm" c="dimmed">
-            Still need help? Contact our support team, or head{' '}
+            Still need help?{' '}
+            <Anchor component={Link} to="/contact">
+              Contact our support team
+            </Anchor>
+            , or head{' '}
             <Anchor component={Link} to="/">
               back to home
             </Anchor>

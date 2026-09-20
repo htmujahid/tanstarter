@@ -14,6 +14,7 @@ import {
   IconChevronLeft,
   IconChevronRight,
   IconLayoutDashboard,
+  IconMailbox,
   IconMessageCircle,
   IconShieldLock,
   IconUsers,
@@ -32,6 +33,11 @@ const navItems = [
     label: 'Feedback',
     icon: IconMessageCircle,
     to: '/admin/feedback' as const,
+  },
+  {
+    label: 'Contact submissions',
+    icon: IconMailbox,
+    to: '/admin/contacts' as const,
   },
 ]
 
