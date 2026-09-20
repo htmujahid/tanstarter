@@ -1,13 +1,9 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { registerSecuritySchemes, mountDocs } from '#/server/openapi/mount'
-import admin from './admin'
 import announcements from './announcements'
-import apiKey from './api-key'
 import contact from './contact'
 import feedback from './feedback'
 import notes from './notes'
-import passkey from './passkey'
-import session from './session'
 import setup from './setup'
 
 /**
@@ -16,12 +12,15 @@ import setup from './setup'
  * behalf of a signed-in user (session cookie or API key — both work here
  * since `requireAuth` resolves either transparently), not for the
  * storefront (see `v1` for that).
+ *
+ * Session/passkey/api-key/admin management deliberately aren't mirrored
+ * here — they were pure passthroughs to better-auth's own API
+ * (`getAuth().api.listUsers`, `.listPasskeys`, `.listApiKeys`,
+ * `.getSession`, etc.), which is already reachable directly at `/api/auth`
+ * (see the `openAPI()` plugin in `src/server/auth/auth.ts`). Proxying that
+ * through this router added an extra hop with no behavior of its own.
  */
 const platform = new OpenAPIHono<{ Bindings: Env }>()
-  .route('/session', session)
-  .route('/passkeys', passkey)
-  .route('/api-keys', apiKey)
-  .route('/admin', admin)
   .route('/setup', setup)
   .route('/contact', contact)
   .route('/feedback', feedback)
