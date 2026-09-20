@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import {
   ActionIcon,
   Alert,
@@ -7,7 +7,6 @@ import {
   Button,
   Card,
   Group,
-  Skeleton,
   Stack,
   Table,
   Text,
@@ -46,6 +45,15 @@ function describeUserAgent(userAgent?: string | null) {
   return `${browser} on ${os}`
 }
 
+/**
+ * Explicit UTC avoids a server/client hydration mismatch: this table is
+ * suspense-rendered during SSR (Cloudflare Workers, UTC) and would
+ * otherwise reformat in the visitor's local timezone on the client.
+ */
+function formatTimestamp(value: string | Date) {
+  return `${new Date(value).toLocaleString(undefined, { timeZone: 'UTC' })} UTC`
+}
+
 export function UserSessionsCard({
   userId,
   currentSessionToken,
@@ -54,11 +62,7 @@ export function UserSessionsCard({
   currentSessionToken?: string
 }) {
   const queryClient = useQueryClient()
-  const {
-    data: sessions,
-    isLoading,
-    isError,
-  } = useQuery(userSessionsQueryOptions(userId))
+  const { data: sessions } = useSuspenseQuery(userSessionsQueryOptions(userId))
 
   const [actionError, setActionError] = useState<string | null>(null)
   const [pendingToken, setPendingToken] = useState<string | null>(null)
@@ -110,7 +114,7 @@ export function UserSessionsCard({
             </Text>
           </Stack>
 
-          {sessions && sessions.length > 0 && (
+          {sessions.length > 0 && (
             <Button
               variant="light"
               color="red"
@@ -134,26 +138,11 @@ export function UserSessionsCard({
           </Alert>
         )}
 
-        {isLoading && (
-          <Stack gap="xs">
-            <Skeleton height={36} />
-            <Skeleton height={36} />
-          </Stack>
-        )}
-
-        {isError && (
-          <Text size="sm" c="dimmed">
-            Unable to load sessions.
-          </Text>
-        )}
-
-        {!isLoading && !isError && sessions && sessions.length === 0 && (
+        {sessions.length === 0 ? (
           <Text size="sm" c="dimmed">
             No active sessions.
           </Text>
-        )}
-
-        {!isLoading && !isError && sessions && sessions.length > 0 && (
+        ) : (
           <Table.ScrollContainer minWidth={480}>
             <Table verticalSpacing="sm">
               <Table.Thead>
@@ -194,7 +183,7 @@ export function UserSessionsCard({
                       </Table.Td>
                       <Table.Td>
                         <Text size="sm" c="dimmed">
-                          {new Date(session.expiresAt).toLocaleString()}
+                          {formatTimestamp(session.expiresAt)}
                         </Text>
                       </Table.Td>
                       <Table.Td ta="right">

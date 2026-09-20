@@ -32,14 +32,10 @@ export const Route = createFileRoute('/admin/users/$userId')({
       throw notFound()
     }
 
-    // Fire-and-forget: sessions render in via UserSessionsCard's own
-    // loading state instead of blocking navigation on this query.
-    void context.queryClient
-      .query({
-        ...userSessionsQueryOptions(params.userId),
-        staleTime: 'static',
-      })
-      .catch(() => undefined)
+    await context.queryClient.query({
+      ...userSessionsQueryOptions(params.userId),
+      staleTime: 'static',
+    })
   },
   pendingComponent: UserDetailPending,
   notFoundComponent: UserNotFound,

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import {
   ActionIcon,
   Alert,
@@ -7,7 +7,6 @@ import {
   Button,
   Card,
   Group,
-  Skeleton,
   Stack,
   Table,
   Text,
@@ -46,17 +45,22 @@ function describeUserAgent(userAgent?: string | null) {
   return `${browser} on ${os}`
 }
 
+/**
+ * Explicit UTC avoids a server/client hydration mismatch: this table is
+ * suspense-rendered during SSR (Cloudflare Workers, UTC) and would
+ * otherwise reformat in the visitor's local timezone on the client.
+ */
+function formatTimestamp(value: string | Date) {
+  return `${new Date(value).toLocaleString(undefined, { timeZone: 'UTC' })} UTC`
+}
+
 export function SessionsList({
   currentSessionToken,
 }: {
   currentSessionToken?: string
 }) {
   const queryClient = useQueryClient()
-  const {
-    data: sessions,
-    isLoading,
-    isError,
-  } = useQuery(sessionsQueryOptions())
+  const { data: sessions } = useSuspenseQuery(sessionsQueryOptions())
 
   const [actionError, setActionError] = useState<string | null>(null)
   const [pendingToken, setPendingToken] = useState<string | null>(null)
@@ -93,9 +97,9 @@ export function SessionsList({
     invalidate()
   }
 
-  const otherSessionsCount =
-    sessions?.filter((session) => session.token !== currentSessionToken)
-      .length ?? 0
+  const otherSessionsCount = sessions.filter(
+    (session) => session.token !== currentSessionToken,
+  ).length
 
   return (
     <Card withBorder radius="md" padding="lg">
@@ -132,26 +136,11 @@ export function SessionsList({
           </Alert>
         )}
 
-        {isLoading && (
-          <Stack gap="xs">
-            <Skeleton height={36} />
-            <Skeleton height={36} />
-          </Stack>
-        )}
-
-        {isError && (
-          <Text size="sm" c="dimmed">
-            Unable to load sessions.
-          </Text>
-        )}
-
-        {!isLoading && !isError && sessions && sessions.length === 0 && (
+        {sessions.length === 0 ? (
           <Text size="sm" c="dimmed">
             No active sessions.
           </Text>
-        )}
-
-        {!isLoading && !isError && sessions && sessions.length > 0 && (
+        ) : (
           <Table.ScrollContainer minWidth={480}>
             <Table verticalSpacing="sm">
               <Table.Thead>
@@ -192,7 +181,7 @@ export function SessionsList({
                       </Table.Td>
                       <Table.Td>
                         <Text size="sm" c="dimmed">
-                          {new Date(session.expiresAt).toLocaleString()}
+                          {formatTimestamp(session.expiresAt)}
                         </Text>
                       </Table.Td>
                       <Table.Td ta="right">

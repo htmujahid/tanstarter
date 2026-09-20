@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import {
   ActionIcon,
   Alert,
@@ -8,7 +8,6 @@ import {
   Card,
   Group,
   Modal,
-  Skeleton,
   Stack,
   Table,
   Text,
@@ -16,17 +15,17 @@ import {
   Title,
   Tooltip,
 } from '@mantine/core'
-import { IconAlertCircle, IconFingerprint, IconTrash } from '@tabler/icons-react'
+import {
+  IconAlertCircle,
+  IconFingerprint,
+  IconTrash,
+} from '@tabler/icons-react'
 import { authClient } from '#/lib/auth-client'
 import { passkeysQueryOptions } from '#/lib/queries/passkey'
 
 export function PasskeysList() {
   const queryClient = useQueryClient()
-  const {
-    data: passkeys,
-    isLoading,
-    isError,
-  } = useQuery(passkeysQueryOptions())
+  const { data: passkeys } = useSuspenseQuery(passkeysQueryOptions())
 
   const [actionError, setActionError] = useState<string | null>(null)
   const [pendingId, setPendingId] = useState<string | null>(null)
@@ -76,8 +75,8 @@ export function PasskeysList() {
           <Stack gap={2}>
             <Title order={3}>Passkeys</Title>
             <Text c="dimmed" size="sm">
-              Sign in with Face ID, Touch ID, Windows Hello, or a security
-              key instead of a password.
+              Sign in with Face ID, Touch ID, Windows Hello, or a security key
+              instead of a password.
             </Text>
           </Stack>
 
@@ -102,26 +101,11 @@ export function PasskeysList() {
           </Alert>
         )}
 
-        {isLoading && (
-          <Stack gap="xs">
-            <Skeleton height={36} />
-            <Skeleton height={36} />
-          </Stack>
-        )}
-
-        {isError && (
-          <Text size="sm" c="dimmed">
-            Unable to load passkeys.
-          </Text>
-        )}
-
-        {!isLoading && !isError && passkeys && passkeys.length === 0 && (
+        {passkeys.length === 0 ? (
           <Text size="sm" c="dimmed">
             No passkeys registered yet.
           </Text>
-        )}
-
-        {!isLoading && !isError && passkeys && passkeys.length > 0 && (
+        ) : (
           <Table.ScrollContainer minWidth={480}>
             <Table verticalSpacing="sm">
               <Table.Thead>
