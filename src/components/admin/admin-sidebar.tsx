@@ -10,6 +10,7 @@ import {
 } from '@mantine/core'
 import {
   IconArrowLeft,
+  IconBellRinging,
   IconChevronLeft,
   IconChevronRight,
   IconLayoutDashboard,
@@ -21,6 +22,11 @@ import {
 const navItems = [
   { label: 'Overview', icon: IconLayoutDashboard, to: '/admin' as const },
   { label: 'Users', icon: IconUsers, to: '/admin/users' as const },
+  {
+    label: 'Announcements',
+    icon: IconBellRinging,
+    to: '/admin/announcements' as const,
+  },
 ]
 
 export function AdminSidebar({

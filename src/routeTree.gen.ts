@@ -20,8 +20,12 @@ import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
 import { Route as HomeIndexRouteImport } from './routes/home/index'
 import { Route as HomeApiKeysRouteImport } from './routes/home/api-keys'
 import { Route as HomeProfileRouteImport } from './routes/home/profile'
+import { Route as AdminAnnouncementsIndexRouteImport } from './routes/admin/announcements/index'
+import { Route as AdminAnnouncementsAnnouncementIdRouteImport } from './routes/admin/announcements/$announcementId'
 import { Route as AdminUsersIndexRouteImport } from './routes/admin/users/index'
 import { Route as AdminUsersUserIdRouteImport } from './routes/admin/users/$userId'
+import { Route as HomeAnnouncementsIndexRouteImport } from './routes/home/announcements/index'
+import { Route as HomeAnnouncementsAnnouncementIdRouteImport } from './routes/home/announcements/$announcementId'
 import { Route as HomeNotesIndexRouteImport } from './routes/home/notes/index'
 import { Route as HomeNotesNoteIdRouteImport } from './routes/home/notes/$noteId'
 
@@ -80,6 +84,17 @@ const HomeProfileRoute = HomeProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => HomeRouteRoute,
 } as any)
+const AdminAnnouncementsIndexRoute = AdminAnnouncementsIndexRouteImport.update({
+  id: '/announcements/',
+  path: '/announcements/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminAnnouncementsAnnouncementIdRoute =
+  AdminAnnouncementsAnnouncementIdRouteImport.update({
+    id: '/announcements/$announcementId',
+    path: '/announcements/$announcementId',
+    getParentRoute: () => AdminRouteRoute,
+  } as any)
 const AdminUsersIndexRoute = AdminUsersIndexRouteImport.update({
   id: '/users/',
   path: '/users/',
@@ -90,6 +105,17 @@ const AdminUsersUserIdRoute = AdminUsersUserIdRouteImport.update({
   path: '/users/$userId',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const HomeAnnouncementsIndexRoute = HomeAnnouncementsIndexRouteImport.update({
+  id: '/announcements/',
+  path: '/announcements/',
+  getParentRoute: () => HomeRouteRoute,
+} as any)
+const HomeAnnouncementsAnnouncementIdRoute =
+  HomeAnnouncementsAnnouncementIdRouteImport.update({
+    id: '/announcements/$announcementId',
+    path: '/announcements/$announcementId',
+    getParentRoute: () => HomeRouteRoute,
+  } as any)
 const HomeNotesIndexRoute = HomeNotesIndexRouteImport.update({
   id: '/notes/',
   path: '/notes/',
@@ -113,9 +139,13 @@ export interface FileRoutesByFullPath {
   '/home/profile': typeof HomeProfileRoute
   '/admin/': typeof AdminIndexRoute
   '/home/': typeof HomeIndexRoute
+  '/admin/announcements/$announcementId': typeof AdminAnnouncementsAnnouncementIdRoute
   '/admin/users/$userId': typeof AdminUsersUserIdRoute
+  '/home/announcements/$announcementId': typeof HomeAnnouncementsAnnouncementIdRoute
   '/home/notes/$noteId': typeof HomeNotesNoteIdRoute
+  '/admin/announcements/': typeof AdminAnnouncementsIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
+  '/home/announcements/': typeof HomeAnnouncementsIndexRoute
   '/home/notes/': typeof HomeNotesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -128,9 +158,13 @@ export interface FileRoutesByTo {
   '/home/profile': typeof HomeProfileRoute
   '/admin': typeof AdminIndexRoute
   '/home': typeof HomeIndexRoute
+  '/admin/announcements/$announcementId': typeof AdminAnnouncementsAnnouncementIdRoute
   '/admin/users/$userId': typeof AdminUsersUserIdRoute
+  '/home/announcements/$announcementId': typeof HomeAnnouncementsAnnouncementIdRoute
   '/home/notes/$noteId': typeof HomeNotesNoteIdRoute
+  '/admin/announcements': typeof AdminAnnouncementsIndexRoute
   '/admin/users': typeof AdminUsersIndexRoute
+  '/home/announcements': typeof HomeAnnouncementsIndexRoute
   '/home/notes': typeof HomeNotesIndexRoute
 }
 export interface FileRoutesById {
@@ -146,9 +180,13 @@ export interface FileRoutesById {
   '/home/profile': typeof HomeProfileRoute
   '/admin/': typeof AdminIndexRoute
   '/home/': typeof HomeIndexRoute
+  '/admin/announcements/$announcementId': typeof AdminAnnouncementsAnnouncementIdRoute
   '/admin/users/$userId': typeof AdminUsersUserIdRoute
+  '/home/announcements/$announcementId': typeof HomeAnnouncementsAnnouncementIdRoute
   '/home/notes/$noteId': typeof HomeNotesNoteIdRoute
+  '/admin/announcements/': typeof AdminAnnouncementsIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
+  '/home/announcements/': typeof HomeAnnouncementsIndexRoute
   '/home/notes/': typeof HomeNotesIndexRoute
 }
 export interface FileRouteTypes {
@@ -165,9 +203,13 @@ export interface FileRouteTypes {
     | '/home/profile'
     | '/admin/'
     | '/home/'
+    | '/admin/announcements/$announcementId'
     | '/admin/users/$userId'
+    | '/home/announcements/$announcementId'
     | '/home/notes/$noteId'
+    | '/admin/announcements/'
     | '/admin/users/'
+    | '/home/announcements/'
     | '/home/notes/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -180,9 +222,13 @@ export interface FileRouteTypes {
     | '/home/profile'
     | '/admin'
     | '/home'
+    | '/admin/announcements/$announcementId'
     | '/admin/users/$userId'
+    | '/home/announcements/$announcementId'
     | '/home/notes/$noteId'
+    | '/admin/announcements'
     | '/admin/users'
+    | '/home/announcements'
     | '/home/notes'
   id:
     | '__root__'
@@ -197,9 +243,13 @@ export interface FileRouteTypes {
     | '/home/profile'
     | '/admin/'
     | '/home/'
+    | '/admin/announcements/$announcementId'
     | '/admin/users/$userId'
+    | '/home/announcements/$announcementId'
     | '/home/notes/$noteId'
+    | '/admin/announcements/'
     | '/admin/users/'
+    | '/home/announcements/'
     | '/home/notes/'
   fileRoutesById: FileRoutesById
 }
@@ -290,6 +340,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HomeProfileRouteImport
       parentRoute: typeof HomeRouteRoute
     }
+    '/admin/announcements/': {
+      id: '/admin/announcements/'
+      path: '/announcements'
+      fullPath: '/admin/announcements/'
+      preLoaderRoute: typeof AdminAnnouncementsIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/announcements/$announcementId': {
+      id: '/admin/announcements/$announcementId'
+      path: '/announcements/$announcementId'
+      fullPath: '/admin/announcements/$announcementId'
+      preLoaderRoute: typeof AdminAnnouncementsAnnouncementIdRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/users/': {
       id: '/admin/users/'
       path: '/users'
@@ -303,6 +367,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/users/$userId'
       preLoaderRoute: typeof AdminUsersUserIdRouteImport
       parentRoute: typeof AdminRouteRoute
+    }
+    '/home/announcements/': {
+      id: '/home/announcements/'
+      path: '/announcements'
+      fullPath: '/home/announcements/'
+      preLoaderRoute: typeof HomeAnnouncementsIndexRouteImport
+      parentRoute: typeof HomeRouteRoute
+    }
+    '/home/announcements/$announcementId': {
+      id: '/home/announcements/$announcementId'
+      path: '/announcements/$announcementId'
+      fullPath: '/home/announcements/$announcementId'
+      preLoaderRoute: typeof HomeAnnouncementsAnnouncementIdRouteImport
+      parentRoute: typeof HomeRouteRoute
     }
     '/home/notes/': {
       id: '/home/notes/'
@@ -323,13 +401,17 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteRouteChildren {
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminAnnouncementsAnnouncementIdRoute: typeof AdminAnnouncementsAnnouncementIdRoute
   AdminUsersUserIdRoute: typeof AdminUsersUserIdRoute
+  AdminAnnouncementsIndexRoute: typeof AdminAnnouncementsIndexRoute
   AdminUsersIndexRoute: typeof AdminUsersIndexRoute
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminIndexRoute: AdminIndexRoute,
+  AdminAnnouncementsAnnouncementIdRoute: AdminAnnouncementsAnnouncementIdRoute,
   AdminUsersUserIdRoute: AdminUsersUserIdRoute,
+  AdminAnnouncementsIndexRoute: AdminAnnouncementsIndexRoute,
   AdminUsersIndexRoute: AdminUsersIndexRoute,
 }
 
@@ -355,7 +437,9 @@ interface HomeRouteRouteChildren {
   HomeApiKeysRoute: typeof HomeApiKeysRoute
   HomeProfileRoute: typeof HomeProfileRoute
   HomeIndexRoute: typeof HomeIndexRoute
+  HomeAnnouncementsAnnouncementIdRoute: typeof HomeAnnouncementsAnnouncementIdRoute
   HomeNotesNoteIdRoute: typeof HomeNotesNoteIdRoute
+  HomeAnnouncementsIndexRoute: typeof HomeAnnouncementsIndexRoute
   HomeNotesIndexRoute: typeof HomeNotesIndexRoute
 }
 
@@ -363,7 +447,9 @@ const HomeRouteRouteChildren: HomeRouteRouteChildren = {
   HomeApiKeysRoute: HomeApiKeysRoute,
   HomeProfileRoute: HomeProfileRoute,
   HomeIndexRoute: HomeIndexRoute,
+  HomeAnnouncementsAnnouncementIdRoute: HomeAnnouncementsAnnouncementIdRoute,
   HomeNotesNoteIdRoute: HomeNotesNoteIdRoute,
+  HomeAnnouncementsIndexRoute: HomeAnnouncementsIndexRoute,
   HomeNotesIndexRoute: HomeNotesIndexRoute,
 }
 

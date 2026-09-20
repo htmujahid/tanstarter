@@ -9,6 +9,7 @@ import {
   Tooltip,
 } from '@mantine/core'
 import {
+  IconBellRinging,
   IconChartBar,
   IconChevronLeft,
   IconChevronRight,
@@ -26,13 +27,14 @@ import {
 type NavItem = {
   label: string
   icon: typeof IconLayoutDashboard
-  to?: '/home' | '/home/notes'
+  to?: '/home' | '/home/notes' | '/home/announcements'
   children?: Array<{ label: string }>
 }
 
 const navItems: NavItem[] = [
   { label: 'Dashboard', icon: IconLayoutDashboard, to: '/home' },
   { label: 'Notes', icon: IconNotes, to: '/home/notes' },
+  { label: 'Announcements', icon: IconBellRinging, to: '/home/announcements' },
   {
     label: 'Orders',
     icon: IconReceipt2,
