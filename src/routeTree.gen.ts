@@ -21,6 +21,8 @@ import { Route as HomeIndexRouteImport } from './routes/home/index'
 import { Route as HomeProfileRouteImport } from './routes/home/profile'
 import { Route as AdminUsersIndexRouteImport } from './routes/admin/users/index'
 import { Route as AdminUsersUserIdRouteImport } from './routes/admin/users/$userId'
+import { Route as HomeNotesIndexRouteImport } from './routes/home/notes/index'
+import { Route as HomeNotesNoteIdRouteImport } from './routes/home/notes/$noteId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -82,6 +84,16 @@ const AdminUsersUserIdRoute = AdminUsersUserIdRouteImport.update({
   path: '/users/$userId',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const HomeNotesIndexRoute = HomeNotesIndexRouteImport.update({
+  id: '/notes/',
+  path: '/notes/',
+  getParentRoute: () => HomeRouteRoute,
+} as any)
+const HomeNotesNoteIdRoute = HomeNotesNoteIdRouteImport.update({
+  id: '/notes/$noteId',
+  path: '/notes/$noteId',
+  getParentRoute: () => HomeRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -95,7 +107,9 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminIndexRoute
   '/home/': typeof HomeIndexRoute
   '/admin/users/$userId': typeof AdminUsersUserIdRoute
+  '/home/notes/$noteId': typeof HomeNotesNoteIdRoute
   '/admin/users/': typeof AdminUsersIndexRoute
+  '/home/notes/': typeof HomeNotesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -107,7 +121,9 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/home': typeof HomeIndexRoute
   '/admin/users/$userId': typeof AdminUsersUserIdRoute
+  '/home/notes/$noteId': typeof HomeNotesNoteIdRoute
   '/admin/users': typeof AdminUsersIndexRoute
+  '/home/notes': typeof HomeNotesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -122,7 +138,9 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/home/': typeof HomeIndexRoute
   '/admin/users/$userId': typeof AdminUsersUserIdRoute
+  '/home/notes/$noteId': typeof HomeNotesNoteIdRoute
   '/admin/users/': typeof AdminUsersIndexRoute
+  '/home/notes/': typeof HomeNotesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -138,7 +156,9 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/home/'
     | '/admin/users/$userId'
+    | '/home/notes/$noteId'
     | '/admin/users/'
+    | '/home/notes/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -150,7 +170,9 @@ export interface FileRouteTypes {
     | '/admin'
     | '/home'
     | '/admin/users/$userId'
+    | '/home/notes/$noteId'
     | '/admin/users'
+    | '/home/notes'
   id:
     | '__root__'
     | '/'
@@ -164,7 +186,9 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/home/'
     | '/admin/users/$userId'
+    | '/home/notes/$noteId'
     | '/admin/users/'
+    | '/home/notes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -261,6 +285,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminUsersUserIdRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/home/notes/': {
+      id: '/home/notes/'
+      path: '/notes'
+      fullPath: '/home/notes/'
+      preLoaderRoute: typeof HomeNotesIndexRouteImport
+      parentRoute: typeof HomeRouteRoute
+    }
+    '/home/notes/$noteId': {
+      id: '/home/notes/$noteId'
+      path: '/notes/$noteId'
+      fullPath: '/home/notes/$noteId'
+      preLoaderRoute: typeof HomeNotesNoteIdRouteImport
+      parentRoute: typeof HomeRouteRoute
+    }
   }
 }
 
@@ -297,11 +335,15 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 interface HomeRouteRouteChildren {
   HomeProfileRoute: typeof HomeProfileRoute
   HomeIndexRoute: typeof HomeIndexRoute
+  HomeNotesNoteIdRoute: typeof HomeNotesNoteIdRoute
+  HomeNotesIndexRoute: typeof HomeNotesIndexRoute
 }
 
 const HomeRouteRouteChildren: HomeRouteRouteChildren = {
   HomeProfileRoute: HomeProfileRoute,
   HomeIndexRoute: HomeIndexRoute,
+  HomeNotesNoteIdRoute: HomeNotesNoteIdRoute,
+  HomeNotesIndexRoute: HomeNotesIndexRoute,
 }
 
 const HomeRouteRouteWithChildren = HomeRouteRoute._addFileChildren(

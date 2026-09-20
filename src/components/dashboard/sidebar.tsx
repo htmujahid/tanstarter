@@ -13,6 +13,7 @@ import {
   IconChevronLeft,
   IconChevronRight,
   IconLayoutDashboard,
+  IconNotes,
   IconPackage,
   IconReceipt2,
   IconSettings,
@@ -25,12 +26,13 @@ import {
 type NavItem = {
   label: string
   icon: typeof IconLayoutDashboard
-  to?: '/home'
+  to?: '/home' | '/home/notes'
   children?: Array<{ label: string }>
 }
 
 const navItems: NavItem[] = [
   { label: 'Dashboard', icon: IconLayoutDashboard, to: '/home' },
+  { label: 'Notes', icon: IconNotes, to: '/home/notes' },
   {
     label: 'Orders',
     icon: IconReceipt2,

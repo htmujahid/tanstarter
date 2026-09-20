@@ -3,11 +3,12 @@ import { eq } from 'drizzle-orm'
 import { APIError, betterAuth } from 'better-auth'
 import { createAuthMiddleware } from 'better-auth/api'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
-import { admin, username } from 'better-auth/plugins'
+import { admin as adminPlugin, username } from 'better-auth/plugins'
 import { passkey } from '@better-auth/passkey'
 import { createMiddleware } from 'hono/factory'
 import { createDb, user } from '#/server/db'
 import { hasAnyUser } from '#/server/services/users'
+import { ac, admin as adminRole, user as userRole } from '#/server/auth/permissions'
 
 export function createAuth(bindings: Env) {
   const db = createDb(bindings.DB)
@@ -21,7 +22,14 @@ export function createAuth(bindings: Env) {
     emailAndPassword: {
       enabled: true,
     },
-    plugins: [username(), admin(), passkey({ rpName: 'Commerce' })],
+    plugins: [
+      username(),
+      adminPlugin({
+        ac,
+        roles: { admin: adminRole, user: userRole },
+      }),
+      passkey({ rpName: 'Commerce' }),
+    ],
     hooks: {
       before: createAuthMiddleware(async (ctx) => {
         if (ctx.path !== '/sign-up/email') return
