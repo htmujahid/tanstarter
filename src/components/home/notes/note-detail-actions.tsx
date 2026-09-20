@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { Alert, Button, Group, Modal, Stack, Text } from '@mantine/core'
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
 import { deleteNoteFn } from '#/server/actions/notes'
-import type { Note } from '#/server/db'
+import { noteQueryOptions } from '#/lib/queries/notes'
 
-export function NoteDetailActions({ note }: { note: Note }) {
+export function NoteDetailActions({ noteId }: { noteId: number }) {
+  const { data: note } = useSuspenseQuery(noteQueryOptions(noteId))
   const navigate = useNavigate()
   const [actionError, setActionError] = useState<string | null>(null)
   const [pending, setPending] = useState(false)

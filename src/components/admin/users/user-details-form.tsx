@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { useForm } from '@tanstack/react-form'
 import {
   Alert,
@@ -12,15 +13,16 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { authClient } from '#/lib/auth-client'
-import type { Session } from '#/server/auth/auth'
+import { userQueryOptions } from '#/lib/queries/admin'
 
 export function UserDetailsForm({
-  user,
+  userId,
   onSaved,
 }: {
-  user: NonNullable<Session>['user']
+  userId: string
   onSaved: () => void
 }) {
+  const { data: user } = useSuspenseQuery(userQueryOptions(userId))
   const [formError, setFormError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 

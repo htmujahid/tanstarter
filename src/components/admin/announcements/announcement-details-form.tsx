@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { useForm } from '@tanstack/react-form'
 import {
   Alert,
@@ -14,15 +15,18 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { updateAnnouncementFn } from '#/server/actions/announcements'
-import type { Announcement } from '#/server/db'
+import { announcementQueryOptions } from '#/lib/queries/announcements'
 
 export function AnnouncementDetailsForm({
-  announcement,
+  announcementId,
   onSaved,
 }: {
-  announcement: Announcement
+  announcementId: number
   onSaved: () => void
 }) {
+  const { data: announcement } = useSuspenseQuery(
+    announcementQueryOptions(announcementId),
+  )
   const [formError, setFormError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 

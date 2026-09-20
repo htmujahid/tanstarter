@@ -1,5 +1,5 @@
 import { Link, createFileRoute, notFound } from '@tanstack/react-router'
-import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   Anchor,
   Button,
@@ -103,7 +103,7 @@ function NoteDetailPending() {
 
 function NoteDetailPage() {
   const { noteId } = Route.useParams()
-  const { data: note } = useSuspenseQuery(noteQueryOptions(Number(noteId)))
+  const id = Number(noteId)
   const queryClient = useQueryClient()
 
   const invalidate = () =>
@@ -112,8 +112,8 @@ function NoteDetailPage() {
   return (
     <DetailPageLayout
       backLink={<BackLink />}
-      actions={<NoteDetailActions note={note} />}
-      main={<NoteDetailsForm note={note} onSaved={invalidate} />}
+      actions={<NoteDetailActions noteId={id} />}
+      main={<NoteDetailsForm noteId={id} onSaved={invalidate} />}
     />
   )
 }

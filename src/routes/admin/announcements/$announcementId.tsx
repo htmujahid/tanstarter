@@ -1,5 +1,5 @@
 import { Link, createFileRoute, notFound } from '@tanstack/react-router'
-import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   Anchor,
   Button,
@@ -109,9 +109,7 @@ function AnnouncementDetailPending() {
 
 function AnnouncementDetailPage() {
   const { announcementId } = Route.useParams()
-  const { data: announcement } = useSuspenseQuery(
-    announcementQueryOptions(Number(announcementId)),
-  )
+  const id = Number(announcementId)
   const queryClient = useQueryClient()
 
   const invalidate = () =>
@@ -120,12 +118,9 @@ function AnnouncementDetailPage() {
   return (
     <DetailPageLayout
       backLink={<BackLink />}
-      actions={<AnnouncementDetailActions announcement={announcement} />}
+      actions={<AnnouncementDetailActions announcementId={id} />}
       main={
-        <AnnouncementDetailsForm
-          announcement={announcement}
-          onSaved={invalidate}
-        />
+        <AnnouncementDetailsForm announcementId={id} onSaved={invalidate} />
       }
     />
   )

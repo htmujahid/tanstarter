@@ -1,5 +1,5 @@
 import { Link, createFileRoute, notFound } from '@tanstack/react-router'
-import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   Anchor,
   Button,
@@ -109,9 +109,7 @@ function FeedbackDetailPending() {
 
 function FeedbackDetailPage() {
   const { feedbackId } = Route.useParams()
-  const { data: feedback } = useSuspenseQuery(
-    feedbackQueryOptions(Number(feedbackId)),
-  )
+  const id = Number(feedbackId)
   const queryClient = useQueryClient()
 
   const invalidate = () =>
@@ -120,8 +118,8 @@ function FeedbackDetailPage() {
   return (
     <DetailPageLayout
       backLink={<BackLink />}
-      actions={<FeedbackDetailActions feedbackId={feedback.id} />}
-      main={<FeedbackDetailForm feedback={feedback} onSaved={invalidate} />}
+      actions={<FeedbackDetailActions feedbackId={id} />}
+      main={<FeedbackDetailForm feedbackId={id} onSaved={invalidate} />}
     />
   )
 }

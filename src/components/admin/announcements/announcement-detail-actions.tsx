@@ -1,15 +1,19 @@
 import { useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { Alert, Button, Group, Modal, Stack, Text } from '@mantine/core'
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
 import { deleteAnnouncementFn } from '#/server/actions/announcements'
-import type { Announcement } from '#/server/db'
+import { announcementQueryOptions } from '#/lib/queries/announcements'
 
 export function AnnouncementDetailActions({
-  announcement,
+  announcementId,
 }: {
-  announcement: Announcement
+  announcementId: number
 }) {
+  const { data: announcement } = useSuspenseQuery(
+    announcementQueryOptions(announcementId),
+  )
   const navigate = useNavigate()
   const [actionError, setActionError] = useState<string | null>(null)
   const [pending, setPending] = useState(false)

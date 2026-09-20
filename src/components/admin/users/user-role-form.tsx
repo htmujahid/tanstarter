@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import {
   Alert,
   Button,
@@ -11,17 +12,20 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { authClient } from '#/lib/auth-client'
-import type { Session } from '#/server/auth/auth'
+import { useSession } from '#/hooks/use-session'
+import { userQueryOptions } from '#/lib/queries/admin'
 
 export function UserRoleForm({
-  user,
-  disabled,
+  userId,
   onSaved,
 }: {
-  user: NonNullable<Session>['user']
-  disabled?: boolean
+  userId: string
   onSaved: () => void
 }) {
+  const { data: user } = useSuspenseQuery(userQueryOptions(userId))
+  const session = useSession()
+  const disabled = user.id === session?.user.id
+
   const [role, setRole] = useState(user.role ?? 'user')
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)

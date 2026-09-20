@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { useForm } from '@tanstack/react-form'
 import {
   Alert,
@@ -13,15 +14,16 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { updateNoteFn } from '#/server/actions/notes'
-import type { Note } from '#/server/db'
+import { noteQueryOptions } from '#/lib/queries/notes'
 
 export function NoteDetailsForm({
-  note,
+  noteId,
   onSaved,
 }: {
-  note: Note
+  noteId: number
   onSaved: () => void
 }) {
+  const { data: note } = useSuspenseQuery(noteQueryOptions(noteId))
   const [formError, setFormError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 

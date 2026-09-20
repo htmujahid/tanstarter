@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { Alert, Button, Group, Modal, Stack, Text } from '@mantine/core'
 import {
   IconAlertCircle,
@@ -10,17 +11,19 @@ import {
 } from '@tabler/icons-react'
 import { authClient } from '#/lib/auth-client'
 import { BanUserModal } from '#/components/admin/users/ban-user-modal'
-import type { AdminUser } from '#/components/admin/users/users-table-column'
+import { useSession } from '#/hooks/use-session'
+import { userQueryOptions } from '#/lib/queries/admin'
 
 export function UserDetailActions({
-  user,
-  isSelf,
+  userId,
   onChanged,
 }: {
-  user: AdminUser
-  isSelf: boolean
+  userId: string
   onChanged: () => void
 }) {
+  const { data: user } = useSuspenseQuery(userQueryOptions(userId))
+  const session = useSession()
+  const isSelf = user.id === session?.user.id
   const navigate = useNavigate()
   const [actionError, setActionError] = useState<string | null>(null)
   const [pending, setPending] = useState<

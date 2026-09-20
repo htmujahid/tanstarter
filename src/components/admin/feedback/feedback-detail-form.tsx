@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { useForm } from '@tanstack/react-form'
 import {
   Alert,
@@ -13,11 +14,9 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { updateFeedbackStatusFn } from '#/server/actions/feedback'
+import { feedbackQueryOptions } from '#/lib/queries/feedback'
 import { FEEDBACK_STATUSES } from '#/server/db/schemas'
 import type { FeedbackStatus } from '#/server/db/schemas'
-import type { listFeedback } from '#/server/services/feedback'
-
-type FeedbackRow = Awaited<ReturnType<typeof listFeedback>>['feedback'][number]
 
 const CATEGORY_COLORS: Record<string, string> = {
   bug: 'red',
@@ -26,12 +25,13 @@ const CATEGORY_COLORS: Record<string, string> = {
 }
 
 export function FeedbackDetailForm({
-  feedback,
+  feedbackId,
   onSaved,
 }: {
-  feedback: FeedbackRow
+  feedbackId: number
   onSaved: () => void
 }) {
+  const { data: feedback } = useSuspenseQuery(feedbackQueryOptions(feedbackId))
   const [formError, setFormError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 

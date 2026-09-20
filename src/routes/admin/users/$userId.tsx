@@ -1,5 +1,5 @@
 import { Link, createFileRoute, notFound } from '@tanstack/react-router'
-import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   Anchor,
   Button,
@@ -122,33 +122,29 @@ function UserDetailPending() {
 
 function UserDetailPage() {
   const { userId } = Route.useParams()
-  const { data: user } = useSuspenseQuery(userQueryOptions(userId))
   const { session } = Route.useRouteContext()
   const queryClient = useQueryClient()
 
-  const isSelf = user.id === session.user.id
   const invalidate = () =>
     queryClient.invalidateQueries({ queryKey: ['admin'] })
 
   return (
     <DetailPageLayout
       backLink={<BackLink />}
-      actions={
-        <UserDetailActions user={user} isSelf={isSelf} onChanged={invalidate} />
-      }
+      actions={<UserDetailActions userId={userId} onChanged={invalidate} />}
       main={
         <>
-          <UserDetailsForm user={user} onSaved={invalidate} />
+          <UserDetailsForm userId={userId} onSaved={invalidate} />
           <UserSessionsCard
-            userId={user.id}
+            userId={userId}
             currentSessionToken={session.session.token}
           />
         </>
       }
       sidebar={
         <>
-          <UserRoleForm user={user} disabled={isSelf} onSaved={invalidate} />
-          <SetUserPasswordForm userId={user.id} />
+          <UserRoleForm userId={userId} onSaved={invalidate} />
+          <SetUserPasswordForm userId={userId} />
         </>
       }
     />
