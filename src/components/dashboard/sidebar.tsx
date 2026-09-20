@@ -14,6 +14,7 @@ import {
   IconChevronLeft,
   IconChevronRight,
   IconLayoutDashboard,
+  IconMessageCircle,
   IconNotes,
   IconPackage,
   IconReceipt2,
@@ -27,7 +28,7 @@ import {
 type NavItem = {
   label: string
   icon: typeof IconLayoutDashboard
-  to?: '/home' | '/home/notes' | '/home/announcements'
+  to?: '/home' | '/home/notes' | '/home/announcements' | '/home/feedback'
   children?: Array<{ label: string }>
 }
 
@@ -35,6 +36,7 @@ const navItems: NavItem[] = [
   { label: 'Dashboard', icon: IconLayoutDashboard, to: '/home' },
   { label: 'Notes', icon: IconNotes, to: '/home/notes' },
   { label: 'Announcements', icon: IconBellRinging, to: '/home/announcements' },
+  { label: 'Feedback', icon: IconMessageCircle, to: '/home/feedback' },
   {
     label: 'Orders',
     icon: IconReceipt2,

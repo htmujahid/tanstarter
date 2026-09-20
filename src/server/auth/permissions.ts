@@ -9,6 +9,7 @@ const statement = {
   ...defaultStatements,
   notes: ['create', 'read', 'update', 'delete'],
   announcements: ['create', 'read', 'update', 'delete'],
+  feedback: ['create', 'read', 'update', 'delete'],
 } as const
 
 export const ac = createAccessControl(statement)
@@ -17,12 +18,14 @@ export const admin = ac.newRole({
   ...adminAc.statements,
   notes: ['create', 'read', 'update', 'delete'],
   announcements: ['create', 'read', 'update', 'delete'],
+  feedback: ['create', 'read', 'update', 'delete'],
 })
 
 export const user = ac.newRole({
   ...userAc.statements,
   notes: ['create', 'read', 'update', 'delete'],
   announcements: ['read'],
+  feedback: ['create', 'read'],
 })
 
 /** A permissions check keyed by resource, e.g. `{ notes: ['create'] }`. */

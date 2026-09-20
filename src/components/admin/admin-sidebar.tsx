@@ -14,6 +14,7 @@ import {
   IconChevronLeft,
   IconChevronRight,
   IconLayoutDashboard,
+  IconMessageCircle,
   IconShieldLock,
   IconUsers,
   IconX,
@@ -26,6 +27,11 @@ const navItems = [
     label: 'Announcements',
     icon: IconBellRinging,
     to: '/admin/announcements' as const,
+  },
+  {
+    label: 'Feedback',
+    icon: IconMessageCircle,
+    to: '/admin/feedback' as const,
   },
 ]
 

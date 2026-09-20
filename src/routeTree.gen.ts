@@ -22,10 +22,14 @@ import { Route as HomeApiKeysRouteImport } from './routes/home/api-keys'
 import { Route as HomeProfileRouteImport } from './routes/home/profile'
 import { Route as AdminAnnouncementsIndexRouteImport } from './routes/admin/announcements/index'
 import { Route as AdminAnnouncementsAnnouncementIdRouteImport } from './routes/admin/announcements/$announcementId'
+import { Route as AdminFeedbackIndexRouteImport } from './routes/admin/feedback/index'
+import { Route as AdminFeedbackFeedbackIdRouteImport } from './routes/admin/feedback/$feedbackId'
 import { Route as AdminUsersIndexRouteImport } from './routes/admin/users/index'
 import { Route as AdminUsersUserIdRouteImport } from './routes/admin/users/$userId'
 import { Route as HomeAnnouncementsIndexRouteImport } from './routes/home/announcements/index'
 import { Route as HomeAnnouncementsAnnouncementIdRouteImport } from './routes/home/announcements/$announcementId'
+import { Route as HomeFeedbackIndexRouteImport } from './routes/home/feedback/index'
+import { Route as HomeFeedbackFeedbackIdRouteImport } from './routes/home/feedback/$feedbackId'
 import { Route as HomeNotesIndexRouteImport } from './routes/home/notes/index'
 import { Route as HomeNotesNoteIdRouteImport } from './routes/home/notes/$noteId'
 
@@ -95,6 +99,16 @@ const AdminAnnouncementsAnnouncementIdRoute =
     path: '/announcements/$announcementId',
     getParentRoute: () => AdminRouteRoute,
   } as any)
+const AdminFeedbackIndexRoute = AdminFeedbackIndexRouteImport.update({
+  id: '/feedback/',
+  path: '/feedback/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminFeedbackFeedbackIdRoute = AdminFeedbackFeedbackIdRouteImport.update({
+  id: '/feedback/$feedbackId',
+  path: '/feedback/$feedbackId',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const AdminUsersIndexRoute = AdminUsersIndexRouteImport.update({
   id: '/users/',
   path: '/users/',
@@ -116,6 +130,16 @@ const HomeAnnouncementsAnnouncementIdRoute =
     path: '/announcements/$announcementId',
     getParentRoute: () => HomeRouteRoute,
   } as any)
+const HomeFeedbackIndexRoute = HomeFeedbackIndexRouteImport.update({
+  id: '/feedback/',
+  path: '/feedback/',
+  getParentRoute: () => HomeRouteRoute,
+} as any)
+const HomeFeedbackFeedbackIdRoute = HomeFeedbackFeedbackIdRouteImport.update({
+  id: '/feedback/$feedbackId',
+  path: '/feedback/$feedbackId',
+  getParentRoute: () => HomeRouteRoute,
+} as any)
 const HomeNotesIndexRoute = HomeNotesIndexRouteImport.update({
   id: '/notes/',
   path: '/notes/',
@@ -140,12 +164,16 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminIndexRoute
   '/home/': typeof HomeIndexRoute
   '/admin/announcements/$announcementId': typeof AdminAnnouncementsAnnouncementIdRoute
+  '/admin/feedback/$feedbackId': typeof AdminFeedbackFeedbackIdRoute
   '/admin/users/$userId': typeof AdminUsersUserIdRoute
   '/home/announcements/$announcementId': typeof HomeAnnouncementsAnnouncementIdRoute
+  '/home/feedback/$feedbackId': typeof HomeFeedbackFeedbackIdRoute
   '/home/notes/$noteId': typeof HomeNotesNoteIdRoute
   '/admin/announcements/': typeof AdminAnnouncementsIndexRoute
+  '/admin/feedback/': typeof AdminFeedbackIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
   '/home/announcements/': typeof HomeAnnouncementsIndexRoute
+  '/home/feedback/': typeof HomeFeedbackIndexRoute
   '/home/notes/': typeof HomeNotesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -159,12 +187,16 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/home': typeof HomeIndexRoute
   '/admin/announcements/$announcementId': typeof AdminAnnouncementsAnnouncementIdRoute
+  '/admin/feedback/$feedbackId': typeof AdminFeedbackFeedbackIdRoute
   '/admin/users/$userId': typeof AdminUsersUserIdRoute
   '/home/announcements/$announcementId': typeof HomeAnnouncementsAnnouncementIdRoute
+  '/home/feedback/$feedbackId': typeof HomeFeedbackFeedbackIdRoute
   '/home/notes/$noteId': typeof HomeNotesNoteIdRoute
   '/admin/announcements': typeof AdminAnnouncementsIndexRoute
+  '/admin/feedback': typeof AdminFeedbackIndexRoute
   '/admin/users': typeof AdminUsersIndexRoute
   '/home/announcements': typeof HomeAnnouncementsIndexRoute
+  '/home/feedback': typeof HomeFeedbackIndexRoute
   '/home/notes': typeof HomeNotesIndexRoute
 }
 export interface FileRoutesById {
@@ -181,12 +213,16 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/home/': typeof HomeIndexRoute
   '/admin/announcements/$announcementId': typeof AdminAnnouncementsAnnouncementIdRoute
+  '/admin/feedback/$feedbackId': typeof AdminFeedbackFeedbackIdRoute
   '/admin/users/$userId': typeof AdminUsersUserIdRoute
   '/home/announcements/$announcementId': typeof HomeAnnouncementsAnnouncementIdRoute
+  '/home/feedback/$feedbackId': typeof HomeFeedbackFeedbackIdRoute
   '/home/notes/$noteId': typeof HomeNotesNoteIdRoute
   '/admin/announcements/': typeof AdminAnnouncementsIndexRoute
+  '/admin/feedback/': typeof AdminFeedbackIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
   '/home/announcements/': typeof HomeAnnouncementsIndexRoute
+  '/home/feedback/': typeof HomeFeedbackIndexRoute
   '/home/notes/': typeof HomeNotesIndexRoute
 }
 export interface FileRouteTypes {
@@ -204,12 +240,16 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/home/'
     | '/admin/announcements/$announcementId'
+    | '/admin/feedback/$feedbackId'
     | '/admin/users/$userId'
     | '/home/announcements/$announcementId'
+    | '/home/feedback/$feedbackId'
     | '/home/notes/$noteId'
     | '/admin/announcements/'
+    | '/admin/feedback/'
     | '/admin/users/'
     | '/home/announcements/'
+    | '/home/feedback/'
     | '/home/notes/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -223,12 +263,16 @@ export interface FileRouteTypes {
     | '/admin'
     | '/home'
     | '/admin/announcements/$announcementId'
+    | '/admin/feedback/$feedbackId'
     | '/admin/users/$userId'
     | '/home/announcements/$announcementId'
+    | '/home/feedback/$feedbackId'
     | '/home/notes/$noteId'
     | '/admin/announcements'
+    | '/admin/feedback'
     | '/admin/users'
     | '/home/announcements'
+    | '/home/feedback'
     | '/home/notes'
   id:
     | '__root__'
@@ -244,12 +288,16 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/home/'
     | '/admin/announcements/$announcementId'
+    | '/admin/feedback/$feedbackId'
     | '/admin/users/$userId'
     | '/home/announcements/$announcementId'
+    | '/home/feedback/$feedbackId'
     | '/home/notes/$noteId'
     | '/admin/announcements/'
+    | '/admin/feedback/'
     | '/admin/users/'
     | '/home/announcements/'
+    | '/home/feedback/'
     | '/home/notes/'
   fileRoutesById: FileRoutesById
 }
@@ -354,6 +402,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAnnouncementsAnnouncementIdRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/feedback/': {
+      id: '/admin/feedback/'
+      path: '/feedback'
+      fullPath: '/admin/feedback/'
+      preLoaderRoute: typeof AdminFeedbackIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/feedback/$feedbackId': {
+      id: '/admin/feedback/$feedbackId'
+      path: '/feedback/$feedbackId'
+      fullPath: '/admin/feedback/$feedbackId'
+      preLoaderRoute: typeof AdminFeedbackFeedbackIdRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/users/': {
       id: '/admin/users/'
       path: '/users'
@@ -382,6 +444,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HomeAnnouncementsAnnouncementIdRouteImport
       parentRoute: typeof HomeRouteRoute
     }
+    '/home/feedback/': {
+      id: '/home/feedback/'
+      path: '/feedback'
+      fullPath: '/home/feedback/'
+      preLoaderRoute: typeof HomeFeedbackIndexRouteImport
+      parentRoute: typeof HomeRouteRoute
+    }
+    '/home/feedback/$feedbackId': {
+      id: '/home/feedback/$feedbackId'
+      path: '/feedback/$feedbackId'
+      fullPath: '/home/feedback/$feedbackId'
+      preLoaderRoute: typeof HomeFeedbackFeedbackIdRouteImport
+      parentRoute: typeof HomeRouteRoute
+    }
     '/home/notes/': {
       id: '/home/notes/'
       path: '/notes'
@@ -402,16 +478,20 @@ declare module '@tanstack/react-router' {
 interface AdminRouteRouteChildren {
   AdminIndexRoute: typeof AdminIndexRoute
   AdminAnnouncementsAnnouncementIdRoute: typeof AdminAnnouncementsAnnouncementIdRoute
+  AdminFeedbackFeedbackIdRoute: typeof AdminFeedbackFeedbackIdRoute
   AdminUsersUserIdRoute: typeof AdminUsersUserIdRoute
   AdminAnnouncementsIndexRoute: typeof AdminAnnouncementsIndexRoute
+  AdminFeedbackIndexRoute: typeof AdminFeedbackIndexRoute
   AdminUsersIndexRoute: typeof AdminUsersIndexRoute
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminIndexRoute: AdminIndexRoute,
   AdminAnnouncementsAnnouncementIdRoute: AdminAnnouncementsAnnouncementIdRoute,
+  AdminFeedbackFeedbackIdRoute: AdminFeedbackFeedbackIdRoute,
   AdminUsersUserIdRoute: AdminUsersUserIdRoute,
   AdminAnnouncementsIndexRoute: AdminAnnouncementsIndexRoute,
+  AdminFeedbackIndexRoute: AdminFeedbackIndexRoute,
   AdminUsersIndexRoute: AdminUsersIndexRoute,
 }
 
@@ -438,8 +518,10 @@ interface HomeRouteRouteChildren {
   HomeProfileRoute: typeof HomeProfileRoute
   HomeIndexRoute: typeof HomeIndexRoute
   HomeAnnouncementsAnnouncementIdRoute: typeof HomeAnnouncementsAnnouncementIdRoute
+  HomeFeedbackFeedbackIdRoute: typeof HomeFeedbackFeedbackIdRoute
   HomeNotesNoteIdRoute: typeof HomeNotesNoteIdRoute
   HomeAnnouncementsIndexRoute: typeof HomeAnnouncementsIndexRoute
+  HomeFeedbackIndexRoute: typeof HomeFeedbackIndexRoute
   HomeNotesIndexRoute: typeof HomeNotesIndexRoute
 }
 
@@ -448,8 +530,10 @@ const HomeRouteRouteChildren: HomeRouteRouteChildren = {
   HomeProfileRoute: HomeProfileRoute,
   HomeIndexRoute: HomeIndexRoute,
   HomeAnnouncementsAnnouncementIdRoute: HomeAnnouncementsAnnouncementIdRoute,
+  HomeFeedbackFeedbackIdRoute: HomeFeedbackFeedbackIdRoute,
   HomeNotesNoteIdRoute: HomeNotesNoteIdRoute,
   HomeAnnouncementsIndexRoute: HomeAnnouncementsIndexRoute,
+  HomeFeedbackIndexRoute: HomeFeedbackIndexRoute,
   HomeNotesIndexRoute: HomeNotesIndexRoute,
 }
 
