@@ -3,59 +3,55 @@ import { useForm } from '@tanstack/react-form'
 import {
   Alert,
   Button,
+  Card,
+  Checkbox,
   Group,
-  Modal,
   PasswordInput,
-  Select,
   Stack,
-  TextInput,
+  Text,
+  Title,
 } from '@mantine/core'
-import { IconAlertCircle } from '@tabler/icons-react'
+import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { authClient } from '#/lib/auth-client'
 
-export default function CreateUserForm({
-  opened,
-  onClose,
-  onCreated,
-}: {
-  opened: boolean
-  onClose: () => void
-  onCreated: () => void
-}) {
+export function ChangePasswordForm() {
   const [formError, setFormError] = useState<string | null>(null)
+  const [success, setSuccess] = useState(false)
 
   const form = useForm({
-    defaultValues: { name: '', email: '', password: '', role: 'user' },
+    defaultValues: {
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+      revokeOtherSessions: false,
+    },
     onSubmit: async ({ value }) => {
       setFormError(null)
+      setSuccess(false)
 
-      const { error } = await authClient.admin.createUser({
-        name: value.name,
-        email: value.email,
-        password: value.password,
-        role: value.role as 'admin' | 'user',
-      })
-
-      if (error) {
-        setFormError(error.message ?? 'Unable to create user')
+      if (value.newPassword !== value.confirmPassword) {
+        setFormError('New passwords do not match')
         return
       }
 
+      const { error } = await authClient.changePassword({
+        currentPassword: value.currentPassword,
+        newPassword: value.newPassword,
+        revokeOtherSessions: value.revokeOtherSessions,
+      })
+
+      if (error) {
+        setFormError(error.message ?? 'Unable to change password')
+        return
+      }
+
+      setSuccess(true)
       form.reset()
-      onCreated()
     },
   })
 
   return (
-    <Modal
-      opened={opened}
-      onClose={() => {
-        form.reset()
-        setFormError(null)
-        onClose()
-      }}
-      title="Add user"
-    >
+    <Card withBorder radius="md" padding="lg">
       <form
         onSubmit={(event) => {
           event.preventDefault()
@@ -64,51 +60,42 @@ export default function CreateUserForm({
         }}
       >
         <Stack gap="md">
+          <Stack gap={2}>
+            <Title order={3}>Change password</Title>
+            <Text c="dimmed" size="sm">
+              Choose a strong password you don&apos;t use elsewhere.
+            </Text>
+          </Stack>
+
           {formError && (
             <Alert color="red" icon={<IconAlertCircle size={16} />}>
               {formError}
             </Alert>
           )}
 
-          <form.Field
-            name="name"
-            validators={{
-              onChange: ({ value }) => (value ? undefined : 'Name is required'),
-            }}
-          >
-            {(field) => (
-              <TextInput
-                label="Name"
-                placeholder="Jane Doe"
-                autoComplete="off"
-                required
-                value={field.state.value}
-                onChange={(event) =>
-                  field.handleChange(event.currentTarget.value)
-                }
-                onBlur={field.handleBlur}
-                error={field.state.meta.errors[0]}
-              />
-            )}
-          </form.Field>
+          {success && (
+            <Alert color="green" icon={<IconCircleCheck size={16} />}>
+              Password changed successfully
+            </Alert>
+          )}
 
           <form.Field
-            name="email"
+            name="currentPassword"
             validators={{
               onChange: ({ value }) =>
-                value ? undefined : 'Email is required',
+                value ? undefined : 'Current password is required',
             }}
           >
             {(field) => (
-              <TextInput
-                label="Email"
-                placeholder="you@example.com"
-                autoComplete="off"
+              <PasswordInput
+                label="Current password"
+                autoComplete="current-password"
                 required
                 value={field.state.value}
-                onChange={(event) =>
+                onChange={(event) => {
+                  setSuccess(false)
                   field.handleChange(event.currentTarget.value)
-                }
+                }}
                 onBlur={field.handleBlur}
                 error={field.state.meta.errors[0]}
               />
@@ -116,7 +103,7 @@ export default function CreateUserForm({
           </form.Field>
 
           <form.Field
-            name="password"
+            name="newPassword"
             validators={{
               onChange: ({ value }) =>
                 value.length >= 8
@@ -126,39 +113,58 @@ export default function CreateUserForm({
           >
             {(field) => (
               <PasswordInput
-                label="Password"
+                label="New password"
                 placeholder="At least 8 characters"
                 autoComplete="new-password"
                 required
                 value={field.state.value}
-                onChange={(event) =>
+                onChange={(event) => {
+                  setSuccess(false)
                   field.handleChange(event.currentTarget.value)
-                }
+                }}
                 onBlur={field.handleBlur}
                 error={field.state.meta.errors[0]}
               />
             )}
           </form.Field>
 
-          <form.Field name="role">
+          <form.Field
+            name="confirmPassword"
+            validators={{
+              onChange: ({ value }) =>
+                value ? undefined : 'Confirm your new password',
+            }}
+          >
             {(field) => (
-              <Select
-                label="Role"
-                data={[
-                  { value: 'user', label: 'User' },
-                  { value: 'admin', label: 'Admin' },
-                ]}
+              <PasswordInput
+                label="Confirm new password"
+                placeholder="Re-enter your new password"
+                autoComplete="new-password"
+                required
                 value={field.state.value}
-                onChange={(value) => field.handleChange(value ?? 'user')}
-                allowDeselect={false}
+                onChange={(event) => {
+                  setSuccess(false)
+                  field.handleChange(event.currentTarget.value)
+                }}
+                onBlur={field.handleBlur}
+                error={field.state.meta.errors[0]}
+              />
+            )}
+          </form.Field>
+
+          <form.Field name="revokeOtherSessions">
+            {(field) => (
+              <Checkbox
+                label="Sign out of all other devices"
+                checked={field.state.value}
+                onChange={(event) =>
+                  field.handleChange(event.currentTarget.checked)
+                }
               />
             )}
           </form.Field>
 
           <Group justify="flex-end">
-            <Button variant="subtle" onClick={onClose}>
-              Cancel
-            </Button>
             <form.Subscribe
               selector={(state) =>
                 [state.canSubmit, state.isSubmitting] as const
@@ -170,13 +176,13 @@ export default function CreateUserForm({
                   loading={isSubmitting}
                   disabled={!canSubmit}
                 >
-                  Create user
+                  Update password
                 </Button>
               )}
             </form.Subscribe>
           </Group>
         </Stack>
       </form>
-    </Modal>
+    </Card>
   )
 }

@@ -19,7 +19,7 @@ import {
   IconTrendingUp,
   IconUsers,
 } from '@tabler/icons-react'
-import StatCard from '#/components/dashboard/StatCard'
+import { StatCard } from '#/components/dashboard/stat-card'
 import {
   formatCurrency,
   recentOrders,

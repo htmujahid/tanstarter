@@ -78,7 +78,7 @@ const navItems: NavItem[] = [
   },
 ]
 
-export default function Sidebar({
+export function Sidebar({
   collapsed,
   onToggleCollapse,
   onNavigate,

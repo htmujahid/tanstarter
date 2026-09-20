@@ -10,9 +10,9 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { authClient } from '#/lib/auth-client'
-import type { AdminUser } from '#/components/admin/users/UsersTableColumn'
+import type { AdminUser } from '#/components/admin/users/users-table-column'
 
-export default function BanUserModal({
+export function BanUserModal({
   users,
   onClose,
   onChanged,

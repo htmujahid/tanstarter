@@ -13,7 +13,7 @@ import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { authClient } from '#/lib/auth-client'
 import type { Session } from '#/server/auth/auth'
 
-export default function UserRoleForm({
+export function UserRoleForm({
   user,
   disabled,
   onSaved,

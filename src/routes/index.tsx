@@ -10,7 +10,7 @@ import {
 } from '@mantine/core'
 import { IconArrowRight, IconSparkles } from '@tabler/icons-react'
 
-import Header from '#/components/Header'
+import { Header } from '#/components/header'
 import { features } from '#/lib/features'
 
 export const Route = createFileRoute('/')({ component: App })

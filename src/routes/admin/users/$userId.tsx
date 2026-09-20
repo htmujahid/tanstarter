@@ -13,12 +13,12 @@ import {
   Title,
 } from '@mantine/core'
 import { IconArrowLeft, IconUserOff } from '@tabler/icons-react'
-import DetailPageLayout from '#/components/layout/DetailPageLayout'
-import SetUserPasswordForm from '#/components/admin/users/SetUserPasswordForm'
-import UserDetailActions from '#/components/admin/users/UserDetailActions'
-import UserDetailsForm from '#/components/admin/users/UserDetailsForm'
-import UserRoleForm from '#/components/admin/users/UserRoleForm'
-import UserSessionsCard from '#/components/admin/users/UserSessionsCard'
+import { DetailPageLayout } from '#/components/layout/detail-page-layout'
+import { SetUserPasswordForm } from '#/components/admin/users/set-user-password-form'
+import { UserDetailActions } from '#/components/admin/users/user-detail-actions'
+import { UserDetailsForm } from '#/components/admin/users/user-details-form'
+import { UserRoleForm } from '#/components/admin/users/user-role-form'
+import { UserSessionsCard } from '#/components/admin/users/user-sessions-card'
 import { userQueryOptions, userSessionsQueryOptions } from '#/lib/queries/admin'
 
 export const Route = createFileRoute('/admin/users/$userId')({

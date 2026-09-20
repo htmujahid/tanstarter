@@ -1,7 +1,7 @@
 import { Link, useMatches } from '@tanstack/react-router'
 import { Anchor, Breadcrumbs, Text } from '@mantine/core'
 
-export default function HeaderBreadcrumbs() {
+export function HeaderBreadcrumbs() {
   const matches = useMatches()
 
   const items = matches

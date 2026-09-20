@@ -13,7 +13,7 @@ import {
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { authClient } from '#/lib/auth-client'
 
-export default function SetUserPasswordForm({ userId }: { userId: string }) {
+export function SetUserPasswordForm({ userId }: { userId: string }) {
   const [formError, setFormError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 

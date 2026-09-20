@@ -2,14 +2,14 @@ import { useMemo, useState } from 'react'
 import { flexRender, functionalUpdate, useTable } from '@tanstack/react-table'
 import type { RowSelectionState, SortingState } from '@tanstack/react-table'
 import { Stack, Table } from '@mantine/core'
-import UsersBulkActionBar from '#/components/admin/users/UsersBulkActionBar'
+import { UsersBulkActionBar } from '#/components/admin/users/users-bulk-action-bar'
 import {
   getUsersTableColumns,
   usersTableFeatures,
-} from '#/components/admin/users/UsersTableColumn'
-import type { AdminUser } from '#/components/admin/users/UsersTableColumn'
+} from '#/components/admin/users/users-table-column'
+import type { AdminUser } from '#/components/admin/users/users-table-column'
 
-export default function UsersTable({
+export function UsersTable({
   users,
   currentUserId,
   sortBy,

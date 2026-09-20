@@ -1,6 +1,6 @@
 import { Skeleton, Table } from '@mantine/core'
 
-export default function UsersTableSkeleton({ rows = 5 }: { rows?: number }) {
+export function UsersTableSkeleton({ rows = 5 }: { rows?: number }) {
   return (
     <Table.ScrollContainer minWidth={640}>
       <Table verticalSpacing="sm">

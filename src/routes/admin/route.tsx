@@ -1,8 +1,8 @@
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 import { AppShell } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import AdminSidebar from '#/components/admin/AdminSidebar'
-import DashboardHeader from '#/components/dashboard/DashboardHeader'
+import { AdminSidebar } from '#/components/admin/admin-sidebar'
+import { DashboardHeader } from '#/components/dashboard/dashboard-header'
 
 const NAVBAR_WIDTH_EXPANDED = 260
 const NAVBAR_WIDTH_COLLAPSED = 80

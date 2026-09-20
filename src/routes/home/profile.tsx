@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Container, Grid, Stack } from '@mantine/core'
-import ChangePasswordForm from '#/components/profile/ChangePasswordForm'
-import ProfileForm from '#/components/profile/ProfileForm'
-import SessionsList from '#/components/profile/SessionsList'
+import { ChangePasswordForm } from '#/components/profile/change-password-form'
+import { ProfileForm } from '#/components/profile/profile-form'
+import { SessionsList } from '#/components/profile/sessions-list'
 import { sessionsQueryOptions } from '#/lib/queries/session'
 
 export const Route = createFileRoute('/home/profile')({

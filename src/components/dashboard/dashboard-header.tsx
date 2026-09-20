@@ -13,12 +13,12 @@ import {
   IconShieldLock,
   IconUserCircle,
 } from '@tabler/icons-react'
-import HeaderBreadcrumbs from '#/components/dashboard/HeaderBreadcrumbs'
-import ThemeToggle from '#/components/ThemeToggle'
+import { HeaderBreadcrumbs } from '#/components/dashboard/header-breadcrumbs'
+import { ThemeToggle } from '#/components/theme-toggle'
 import { signOut } from '#/lib/auth-client'
 import type { Session } from '#/server/auth/auth'
 
-export default function DashboardHeader({
+export function DashboardHeader({
   session,
   navbarOpened,
   onBurgerClick,

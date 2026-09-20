@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Stack, Text, Title } from '@mantine/core'
-import SignInForm from '#/components/auth/SignInForm'
+import { SignInForm } from '#/components/auth/sign-in-form'
 
 export const Route = createFileRoute('/auth/sign-in')({ component: SignIn })
 

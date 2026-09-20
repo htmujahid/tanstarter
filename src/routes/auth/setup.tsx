@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { Stack, Text, Title } from '@mantine/core'
-import SetupForm from '#/components/auth/SetupForm'
+import { SetupForm } from '#/components/auth/setup-form'
 import { getSetupStatusFn } from '#/server/actions/setup'
 
 export const Route = createFileRoute('/auth/setup')({

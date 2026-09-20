@@ -7,8 +7,8 @@ import {
 import { AppShell, Button, Group, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconUserShield } from '@tabler/icons-react'
-import DashboardHeader from '#/components/dashboard/DashboardHeader'
-import Sidebar from '#/components/dashboard/Sidebar'
+import { DashboardHeader } from '#/components/dashboard/dashboard-header'
+import { Sidebar } from '#/components/dashboard/sidebar'
 import { authClient } from '#/lib/auth-client'
 
 const NAVBAR_WIDTH_EXPANDED = 260

@@ -2,7 +2,7 @@ import { Card, Group, Text, ThemeIcon } from '@mantine/core'
 import { IconArrowDownRight, IconArrowUpRight } from '@tabler/icons-react'
 import type { Icon } from '@tabler/icons-react'
 
-export default function StatCard({
+export function StatCard({
   label,
   value,
   change,

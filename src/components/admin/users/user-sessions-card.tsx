@@ -46,7 +46,7 @@ function describeUserAgent(userAgent?: string | null) {
   return `${browser} on ${os}`
 }
 
-export default function UserSessionsCard({
+export function UserSessionsCard({
   userId,
   currentSessionToken,
 }: {

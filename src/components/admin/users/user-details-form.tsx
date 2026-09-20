@@ -4,49 +4,52 @@ import {
   Alert,
   Button,
   Card,
-  Checkbox,
   Group,
-  PasswordInput,
   Stack,
   Text,
+  TextInput,
   Title,
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { authClient } from '#/lib/auth-client'
+import type { Session } from '#/server/auth/auth'
 
-export default function ChangePasswordForm() {
+export function UserDetailsForm({
+  user,
+  onSaved,
+}: {
+  user: NonNullable<Session>['user']
+  onSaved: () => void
+}) {
   const [formError, setFormError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 
   const form = useForm({
     defaultValues: {
-      currentPassword: '',
-      newPassword: '',
-      confirmPassword: '',
-      revokeOtherSessions: false,
+      name: user.name,
+      email: user.email,
+      username: user.username ?? '',
     },
     onSubmit: async ({ value }) => {
       setFormError(null)
       setSuccess(false)
 
-      if (value.newPassword !== value.confirmPassword) {
-        setFormError('New passwords do not match')
-        return
-      }
-
-      const { error } = await authClient.changePassword({
-        currentPassword: value.currentPassword,
-        newPassword: value.newPassword,
-        revokeOtherSessions: value.revokeOtherSessions,
+      const { error } = await authClient.admin.updateUser({
+        userId: user.id,
+        data: {
+          name: value.name,
+          email: value.email,
+          username: value.username || null,
+        },
       })
 
       if (error) {
-        setFormError(error.message ?? 'Unable to change password')
+        setFormError(error.message ?? 'Unable to update user')
         return
       }
 
       setSuccess(true)
-      form.reset()
+      onSaved()
     },
   })
 
@@ -61,9 +64,9 @@ export default function ChangePasswordForm() {
       >
         <Stack gap="md">
           <Stack gap={2}>
-            <Title order={3}>Change password</Title>
+            <Title order={4}>User details</Title>
             <Text c="dimmed" size="sm">
-              Choose a strong password you don&apos;t use elsewhere.
+              Update this user&apos;s name, email, and username.
             </Text>
           </Stack>
 
@@ -75,21 +78,19 @@ export default function ChangePasswordForm() {
 
           {success && (
             <Alert color="green" icon={<IconCircleCheck size={16} />}>
-              Password changed successfully
+              User updated successfully
             </Alert>
           )}
 
           <form.Field
-            name="currentPassword"
+            name="name"
             validators={{
-              onChange: ({ value }) =>
-                value ? undefined : 'Current password is required',
+              onChange: ({ value }) => (value ? undefined : 'Name is required'),
             }}
           >
             {(field) => (
-              <PasswordInput
-                label="Current password"
-                autoComplete="current-password"
+              <TextInput
+                label="Name"
                 required
                 value={field.state.value}
                 onChange={(event) => {
@@ -103,19 +104,15 @@ export default function ChangePasswordForm() {
           </form.Field>
 
           <form.Field
-            name="newPassword"
+            name="email"
             validators={{
               onChange: ({ value }) =>
-                value.length >= 8
-                  ? undefined
-                  : 'Password must be at least 8 characters',
+                value ? undefined : 'Email is required',
             }}
           >
             {(field) => (
-              <PasswordInput
-                label="New password"
-                placeholder="At least 8 characters"
-                autoComplete="new-password"
+              <TextInput
+                label="Email"
                 required
                 value={field.state.value}
                 onChange={(event) => {
@@ -128,38 +125,17 @@ export default function ChangePasswordForm() {
             )}
           </form.Field>
 
-          <form.Field
-            name="confirmPassword"
-            validators={{
-              onChange: ({ value }) =>
-                value ? undefined : 'Confirm your new password',
-            }}
-          >
+          <form.Field name="username">
             {(field) => (
-              <PasswordInput
-                label="Confirm new password"
-                placeholder="Re-enter your new password"
-                autoComplete="new-password"
-                required
+              <TextInput
+                label="Username"
+                placeholder="Optional"
                 value={field.state.value}
                 onChange={(event) => {
                   setSuccess(false)
                   field.handleChange(event.currentTarget.value)
                 }}
                 onBlur={field.handleBlur}
-                error={field.state.meta.errors[0]}
-              />
-            )}
-          </form.Field>
-
-          <form.Field name="revokeOtherSessions">
-            {(field) => (
-              <Checkbox
-                label="Sign out of all other devices"
-                checked={field.state.value}
-                onChange={(event) =>
-                  field.handleChange(event.currentTarget.checked)
-                }
               />
             )}
           </form.Field>
@@ -176,7 +152,7 @@ export default function ChangePasswordForm() {
                   loading={isSubmitting}
                   disabled={!canSubmit}
                 >
-                  Update password
+                  Save changes
                 </Button>
               )}
             </form.Subscribe>

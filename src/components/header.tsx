@@ -13,10 +13,10 @@ import {
   IconLogout,
   IconShoppingBag,
 } from '@tabler/icons-react'
-import ThemeToggle from '#/components/ThemeToggle'
+import { ThemeToggle } from '#/components/theme-toggle'
 import { signOut, useSession } from '#/lib/auth-client'
 
-export default function Header() {
+export function Header() {
   const { data: session, isPending } = useSession()
 
   return (

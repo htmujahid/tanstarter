@@ -7,7 +7,7 @@ import type { ReactNode } from 'react'
  * and a two-column body. Keep page-specific content in `main`/`sidebar` so
  * new detail pages (products, orders, ...) stay visually consistent.
  */
-export default function DetailPageLayout({
+export function DetailPageLayout({
   backLink,
   title,
   description,

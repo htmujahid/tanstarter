@@ -1,13 +1,21 @@
-import { ActionIcon, useComputedColorScheme, useMantineColorScheme } from '@mantine/core'
+import {
+  ActionIcon,
+  useComputedColorScheme,
+  useMantineColorScheme,
+} from '@mantine/core'
 import { IconMoon, IconSun, IconSunMoon } from '@tabler/icons-react'
 
-export default function ThemeToggle() {
+export function ThemeToggle() {
   const { colorScheme, setColorScheme } = useMantineColorScheme()
   const computedColorScheme = useComputedColorScheme('light')
 
   function cycleColorScheme() {
     const next =
-      colorScheme === 'light' ? 'dark' : colorScheme === 'dark' ? 'auto' : 'light'
+      colorScheme === 'light'
+        ? 'dark'
+        : colorScheme === 'dark'
+          ? 'auto'
+          : 'light'
     setColorScheme(next)
   }
 
@@ -17,7 +25,11 @@ export default function ThemeToggle() {
       : `Theme mode: ${colorScheme}. Click to switch mode.`
 
   const Icon =
-    colorScheme === 'auto' ? IconSunMoon : computedColorScheme === 'dark' ? IconMoon : IconSun
+    colorScheme === 'auto'
+      ? IconSunMoon
+      : computedColorScheme === 'dark'
+        ? IconMoon
+        : IconSun
 
   return (
     <ActionIcon

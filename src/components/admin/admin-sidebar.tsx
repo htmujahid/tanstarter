@@ -23,7 +23,7 @@ const navItems = [
   { label: 'Users', icon: IconUsers, to: '/admin/users' as const },
 ]
 
-export default function AdminSidebar({
+export function AdminSidebar({
   collapsed,
   onToggleCollapse,
   onNavigate,

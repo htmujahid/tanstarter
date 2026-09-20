@@ -17,10 +17,10 @@ import {
   IconUserShield,
 } from '@tabler/icons-react'
 import { authClient } from '#/lib/auth-client'
-import BanUserModal from '#/components/admin/users/BanUserModal'
-import type { AdminUser } from '#/components/admin/users/UsersTableColumn'
+import { BanUserModal } from '#/components/admin/users/ban-user-modal'
+import type { AdminUser } from '#/components/admin/users/users-table-column'
 
-export default function UsersBulkActionBar({
+export function UsersBulkActionBar({
   users,
   onClearSelection,
   onChanged,

@@ -1,7 +1,7 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { Accordion, Anchor, Container, Stack, Text, Title } from '@mantine/core'
 
-import Header from '#/components/Header'
+import { Header } from '#/components/header'
 
 export const Route = createFileRoute('/help')({ component: Help })
 

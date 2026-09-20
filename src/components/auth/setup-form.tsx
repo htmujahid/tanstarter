@@ -5,7 +5,7 @@ import { Alert, Button, PasswordInput, Stack, TextInput } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { signUp } from '#/lib/auth-client'
 
-export default function SetupForm() {
+export function SetupForm() {
   const navigate = useNavigate()
   const [formError, setFormError] = useState<string | null>(null)
 

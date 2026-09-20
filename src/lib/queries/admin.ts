@@ -5,7 +5,7 @@ import {
   listUserSessionsFn,
   listUsersFn,
 } from '#/server/actions/admin'
-import type { SortableField } from '#/components/admin/users/UsersTableColumn'
+import type { SortableField } from '#/components/admin/users/users-table-column'
 
 export const USERS_PAGE_SIZE = 10
 
