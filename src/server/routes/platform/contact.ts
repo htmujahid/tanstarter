@@ -1,8 +1,15 @@
-import { Hono } from 'hono'
+import { createRoute } from '@hono/zod-openapi'
 import { requireAuth } from '#/server/auth/auth'
-import type { AuthEnv } from '#/server/auth/auth'
 import { requirePermissionRoute } from '#/server/auth/require-permission'
 import { createDb } from '#/server/db'
+import { createAuthOpenApiApp } from '#/server/openapi/factory'
+import { idParam, idParamHook } from '#/server/openapi/params'
+import { errorResponse, jsonResponse } from '#/server/openapi/responses'
+import {
+  ContactSubmissionListSchema,
+  ContactSubmissionSchema,
+  CreateContactSubmissionSchema,
+} from '#/server/openapi/models/contact'
 import {
   createContactSubmission,
   deleteContactSubmission,
@@ -18,89 +25,127 @@ import {
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-const app = new Hono<AuthEnv>()
+const app = createAuthOpenApiApp()
 
-function parseId(idParam: string) {
-  const id = Number(idParam)
-  return Number.isInteger(id) ? id : undefined
-}
+app.openapi(
+  createRoute({
+    method: 'post',
+    path: '/',
+    tags: ['Contact'],
+    security: [],
+    request: {
+      body: {
+        content: {
+          'application/json': { schema: CreateContactSubmissionSchema },
+        },
+      },
+    },
+    responses: {
+      201: jsonResponse(ContactSubmissionSchema, 'Created contact submission'),
+      400: errorResponse('Missing fields or invalid email address'),
+    },
+  }),
+  async (c) => {
+    const body = c.req.valid('json')
 
-app.post('/', async (c) => {
-  const body = await c.req.json<{
-    name?: string
-    email?: string
-    message?: string
-  }>()
+    if (!body.name || !body.email || !body.message) {
+      return c.json({ error: 'name, email, and message are required' }, 400)
+    }
+    if (!EMAIL_PATTERN.test(body.email)) {
+      return c.json({ error: 'invalid email address' }, 400)
+    }
 
-  if (!body.name || !body.email || !body.message) {
-    return c.json({ error: 'name, email, and message are required' }, 400)
-  }
-  if (!EMAIL_PATTERN.test(body.email)) {
-    return c.json({ error: 'invalid email address' }, 400)
-  }
+    const db = createDb(c.env.DB)
+    const row = await createContactSubmission(db, {
+      name: body.name,
+      email: body.email,
+      message: body.message,
+    })
 
-  const db = createDb(c.env.DB)
-  const row = await createContactSubmission(db, {
-    name: body.name,
-    email: body.email,
-    message: body.message,
-  })
+    return c.json(row, 201)
+  },
+)
 
-  return c.json(row, 201)
-})
-
-app.get(
-  '/',
-  requireAuth,
-  requirePermissionRoute({ contact: ['read'] }),
+app.openapi(
+  createRoute({
+    method: 'get',
+    path: '/',
+    tags: ['Contact'],
+    middleware: [
+      requireAuth,
+      requirePermissionRoute({ contact: ['read'] }),
+    ] as const,
+    responses: {
+      200: jsonResponse(
+        ContactSubmissionListSchema,
+        'List of contact submissions',
+      ),
+    },
+  }),
   async (c) => {
     const db = createDb(c.env.DB)
     const { contactSubmissions } = await listContactSubmissions(db, {
       limit: Number.MAX_SAFE_INTEGER,
       offset: 0,
     })
-    return c.json(contactSubmissions)
+    return c.json(contactSubmissions, 200)
   },
 )
 
-app.get(
-  '/:id',
-  requireAuth,
-  requirePermissionRoute({ contact: ['read'] }),
+app.openapi(
+  createRoute({
+    method: 'get',
+    path: '/{id}',
+    tags: ['Contact'],
+    middleware: [
+      requireAuth,
+      requirePermissionRoute({ contact: ['read'] }),
+    ] as const,
+    request: { params: idParam },
+    responses: {
+      200: jsonResponse(ContactSubmissionSchema, 'A single contact submission'),
+      400: errorResponse('Invalid id'),
+      404: errorResponse('Contact submission not found'),
+    },
+  }),
   async (c) => {
-    const id = parseId(c.req.param('id'))
-    if (id === undefined) {
-      return c.json({ error: 'invalid id' }, 400)
-    }
-
+    const { id } = c.req.valid('param')
     const db = createDb(c.env.DB)
     const row = await getContactSubmissionById(db, id)
     if (!row) {
       return c.json({ error: 'contact submission not found' }, 404)
     }
-
-    return c.json(row)
+    return c.json(row, 200)
   },
+  idParamHook,
 )
 
-app.delete(
-  '/:id',
-  requireAuth,
-  requirePermissionRoute({ contact: ['delete'] }),
+app.openapi(
+  createRoute({
+    method: 'delete',
+    path: '/{id}',
+    tags: ['Contact'],
+    middleware: [
+      requireAuth,
+      requirePermissionRoute({ contact: ['delete'] }),
+    ] as const,
+    request: { params: idParam },
+    responses: {
+      200: jsonResponse(ContactSubmissionSchema, 'Deleted contact submission'),
+      400: errorResponse('Invalid id'),
+      404: errorResponse('Contact submission not found'),
+    },
+  }),
   async (c) => {
-    const id = parseId(c.req.param('id'))
-    if (id === undefined) {
-      return c.json({ error: 'invalid id' }, 400)
-    }
-
+    const { id } = c.req.valid('param')
     const db = createDb(c.env.DB)
     const row = await deleteContactSubmission(db, id)
     if (!row) {
       return c.json({ error: 'contact submission not found' }, 404)
     }
-
-    return c.json(row)
+    return c.json(row, 200)
   },
+  idParamHook,
 )
 
 export default app

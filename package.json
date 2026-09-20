@@ -22,9 +22,11 @@
   "dependencies": {
     "@better-auth/api-key": "^1.7.5",
     "@better-auth/passkey": "^1.7.5",
+    "@hono/zod-openapi": "^1.6.3",
     "@mantine/charts": "^9.6.1",
     "@mantine/core": "^9.6.1",
     "@mantine/hooks": "^9.6.1",
+    "@scalar/hono-api-reference": "^0.12.2",
     "@tabler/icons-react": "^3.46.0",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-devtools": "latest",
@@ -42,7 +44,8 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "recharts": "^3.10.1",
-    "tailwindcss": "^4.1.18"
+    "tailwindcss": "^4.1.18",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@better-auth/cli": "^1.4.22",

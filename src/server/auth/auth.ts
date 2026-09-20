@@ -3,7 +3,7 @@ import { eq } from 'drizzle-orm'
 import { APIError, betterAuth } from 'better-auth'
 import { createAuthMiddleware } from 'better-auth/api'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
-import { admin as adminPlugin, username } from 'better-auth/plugins'
+import { admin as adminPlugin, openAPI, username } from 'better-auth/plugins'
 import { apiKey } from '@better-auth/api-key'
 import { passkey } from '@better-auth/passkey'
 import { createMiddleware } from 'hono/factory'
@@ -42,6 +42,7 @@ export function createAuth(bindings: Env) {
         // distinguishes keys instead of just echoing the shared prefix.
         startingCharactersConfig: { charactersLength: 15 },
       }),
+      openAPI(),
     ],
     hooks: {
       before: createAuthMiddleware(async (ctx) => {

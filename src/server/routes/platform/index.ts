@@ -1,4 +1,5 @@
-import { Hono } from 'hono'
+import { OpenAPIHono } from '@hono/zod-openapi'
+import { registerSecuritySchemes, mountDocs } from '#/server/openapi/mount'
 import admin from './admin'
 import announcements from './announcements'
 import apiKey from './api-key'
@@ -16,7 +17,7 @@ import setup from './setup'
  * since `requireAuth` resolves either transparently), not for the
  * storefront (see `v1` for that).
  */
-const platform = new Hono<{ Bindings: Env }>()
+const platform = new OpenAPIHono<{ Bindings: Env }>()
   .route('/session', session)
   .route('/passkeys', passkey)
   .route('/api-keys', apiKey)
@@ -26,5 +27,8 @@ const platform = new Hono<{ Bindings: Env }>()
   .route('/feedback', feedback)
   .route('/announcements', announcements)
   .route('/notes', notes)
+
+registerSecuritySchemes(platform)
+mountDocs(platform, 'Commerce API — Platform')
 
 export default platform

@@ -1,8 +1,16 @@
-import { Hono } from 'hono'
+import { createRoute } from '@hono/zod-openapi'
 import { requireAuth } from '#/server/auth/auth'
-import type { AuthEnv } from '#/server/auth/auth'
 import { requirePermissionRoute } from '#/server/auth/require-permission'
 import { createDb } from '#/server/db'
+import { createAuthOpenApiApp } from '#/server/openapi/factory'
+import { idParam, idParamHook } from '#/server/openapi/params'
+import { errorResponse, jsonResponse } from '#/server/openapi/responses'
+import {
+  AnnouncementListSchema,
+  AnnouncementSchema,
+  CreateAnnouncementSchema,
+  UpdateAnnouncementSchema,
+} from '#/server/openapi/models/announcements'
 import {
   createAnnouncement,
   deleteAnnouncement,
@@ -20,55 +28,78 @@ import {
  * under this namespace too would be pure redundancy.
  */
 
-const app = new Hono<AuthEnv>()
+const app = createAuthOpenApiApp()
 
 app.use(requireAuth)
 
-function parseId(idParam: string) {
-  const id = Number(idParam)
-  return Number.isInteger(id) ? id : undefined
-}
-
-app.get('/', requirePermissionRoute({ announcements: ['read'] }), async (c) => {
-  const db = createDb(c.env.DB)
-  const onlyPublished = c.var.session!.user.role !== 'admin'
-  const { announcements: all } = await listAnnouncements(db, {
-    onlyPublished,
-    limit: Number.MAX_SAFE_INTEGER,
-    offset: 0,
-  })
-  return c.json(all)
-})
-
-app.get(
-  '/:id',
-  requirePermissionRoute({ announcements: ['read'] }),
+app.openapi(
+  createRoute({
+    method: 'get',
+    path: '/',
+    tags: ['Announcements'],
+    middleware: [requirePermissionRoute({ announcements: ['read'] })] as const,
+    responses: {
+      200: jsonResponse(AnnouncementListSchema, 'List of announcements'),
+    },
+  }),
   async (c) => {
-    const id = parseId(c.req.param('id'))
-    if (id === undefined) {
-      return c.json({ error: 'invalid id' }, 400)
-    }
+    const db = createDb(c.env.DB)
+    const onlyPublished = c.var.session!.user.role !== 'admin'
+    const { announcements: all } = await listAnnouncements(db, {
+      onlyPublished,
+      limit: Number.MAX_SAFE_INTEGER,
+      offset: 0,
+    })
+    return c.json(all, 200)
+  },
+)
 
+app.openapi(
+  createRoute({
+    method: 'get',
+    path: '/{id}',
+    tags: ['Announcements'],
+    middleware: [requirePermissionRoute({ announcements: ['read'] })] as const,
+    request: { params: idParam },
+    responses: {
+      200: jsonResponse(AnnouncementSchema, 'A single announcement'),
+      400: errorResponse('Invalid id'),
+      404: errorResponse('Announcement not found'),
+    },
+  }),
+  async (c) => {
+    const { id } = c.req.valid('param')
     const db = createDb(c.env.DB)
     const onlyPublished = c.var.session!.user.role !== 'admin'
     const announcement = await getAnnouncementById(db, id, { onlyPublished })
     if (!announcement) {
       return c.json({ error: 'announcement not found' }, 404)
     }
-
-    return c.json(announcement)
+    return c.json(announcement, 200)
   },
+  idParamHook,
 )
 
-app.post(
-  '/',
-  requirePermissionRoute({ announcements: ['create'] }),
+app.openapi(
+  createRoute({
+    method: 'post',
+    path: '/',
+    tags: ['Announcements'],
+    middleware: [
+      requirePermissionRoute({ announcements: ['create'] }),
+    ] as const,
+    request: {
+      body: {
+        content: { 'application/json': { schema: CreateAnnouncementSchema } },
+      },
+    },
+    responses: {
+      201: jsonResponse(AnnouncementSchema, 'Created announcement'),
+      400: errorResponse('title is required'),
+    },
+  }),
   async (c) => {
-    const body = await c.req.json<{
-      title?: string
-      body?: string
-      published?: boolean
-    }>()
+    const body = c.req.valid('json')
 
     if (!body.title) {
       return c.json({ error: 'title is required' }, 400)
@@ -85,20 +116,29 @@ app.post(
   },
 )
 
-app.patch(
-  '/:id',
-  requirePermissionRoute({ announcements: ['update'] }),
+app.openapi(
+  createRoute({
+    method: 'patch',
+    path: '/{id}',
+    tags: ['Announcements'],
+    middleware: [
+      requirePermissionRoute({ announcements: ['update'] }),
+    ] as const,
+    request: {
+      params: idParam,
+      body: {
+        content: { 'application/json': { schema: UpdateAnnouncementSchema } },
+      },
+    },
+    responses: {
+      200: jsonResponse(AnnouncementSchema, 'Updated announcement'),
+      400: errorResponse('Invalid id'),
+      404: errorResponse('Announcement not found'),
+    },
+  }),
   async (c) => {
-    const id = parseId(c.req.param('id'))
-    if (id === undefined) {
-      return c.json({ error: 'invalid id' }, 400)
-    }
-
-    const body = await c.req.json<{
-      title?: string
-      body?: string
-      published?: boolean
-    }>()
+    const { id } = c.req.valid('param')
+    const body = c.req.valid('json')
 
     const db = createDb(c.env.DB)
     const announcement = await updateAnnouncement(db, id, body)
@@ -106,27 +146,36 @@ app.patch(
       return c.json({ error: 'announcement not found' }, 404)
     }
 
-    return c.json(announcement)
+    return c.json(announcement, 200)
   },
+  idParamHook,
 )
 
-app.delete(
-  '/:id',
-  requirePermissionRoute({ announcements: ['delete'] }),
+app.openapi(
+  createRoute({
+    method: 'delete',
+    path: '/{id}',
+    tags: ['Announcements'],
+    middleware: [
+      requirePermissionRoute({ announcements: ['delete'] }),
+    ] as const,
+    request: { params: idParam },
+    responses: {
+      200: jsonResponse(AnnouncementSchema, 'Deleted announcement'),
+      400: errorResponse('Invalid id'),
+      404: errorResponse('Announcement not found'),
+    },
+  }),
   async (c) => {
-    const id = parseId(c.req.param('id'))
-    if (id === undefined) {
-      return c.json({ error: 'invalid id' }, 400)
-    }
-
+    const { id } = c.req.valid('param')
     const db = createDb(c.env.DB)
     const announcement = await deleteAnnouncement(db, id)
     if (!announcement) {
       return c.json({ error: 'announcement not found' }, 404)
     }
-
-    return c.json(announcement)
+    return c.json(announcement, 200)
   },
+  idParamHook,
 )
 
 export default app

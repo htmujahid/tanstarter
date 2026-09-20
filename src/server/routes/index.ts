@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+import { apiReferencePage } from '#/server/openapi/reference'
 import auth from './auth'
 import health from './health'
 import platform from './platform'
@@ -9,6 +10,7 @@ const api = new Hono<{ Bindings: Env }>()
   .route('/auth', auth)
   .route('/v1', v1)
   .route('/platform', platform)
+  .get('/reference', apiReferencePage)
 
 export type ApiType = typeof api
 export default api
