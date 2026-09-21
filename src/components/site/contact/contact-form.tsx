@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useForm } from '@tanstack/react-form'
+import { useLiveQuery } from '@tanstack/react-db'
 import {
   Alert,
   Button,
@@ -14,17 +15,63 @@ import {
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { createContactSubmissionFn } from '#/server/actions/contact'
+import { contactDraftCollection } from '#/lib/collections/contact-draft'
+import type { ContactDraft } from '#/lib/collections/contact-draft'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
+const CONTACT_DRAFT_EMPTY: Omit<ContactDraft, 'id'> = {
+  name: '',
+  email: '',
+  message: '',
+}
+
 export function ContactForm() {
+  const { data: draftRows, isReady } = useLiveQuery({
+    query: (q) => q.from({ draft: contactDraftCollection }),
+  })
+
+  // Wait for the local-storage collection to sync before mounting the form,
+  // so `useForm`'s defaultValues (captured once at hook-call time) already
+  // reflect any restored draft instead of needing a later form.reset(values)
+  // — which doesn't reliably update bound field values after the fact.
+  if (!isReady) {
+    return <Card withBorder radius="md" padding="lg" mih={340} />
+  }
+
+  return <ContactFormBody draftRows={draftRows} />
+}
+
+function ContactFormBody({ draftRows }: { draftRows: ContactDraft[] }) {
   const { t } = useTranslation('site')
   const { t: tCommon } = useTranslation('common')
   const [formError, setFormError] = useState<string | null>(null)
   const [submitted, setSubmitted] = useState(false)
+  const existingDraft = draftRows[0]
+
+  function patchDraft(patch: Partial<Omit<ContactDraft, 'id'>>) {
+    if (draftRows.length === 0) {
+      contactDraftCollection.insert({
+        id: 'contact',
+        ...CONTACT_DRAFT_EMPTY,
+        ...patch,
+      })
+    } else {
+      contactDraftCollection.update('contact', (draft) => {
+        Object.assign(draft, patch)
+      })
+    }
+  }
 
   const form = useForm({
-    defaultValues: { name: '', email: '', message: '' },
+    defaultValues:
+      draftRows.length === 0
+        ? CONTACT_DRAFT_EMPTY
+        : {
+            name: existingDraft.name,
+            email: existingDraft.email,
+            message: existingDraft.message,
+          },
     onSubmit: async ({ value }) => {
       setFormError(null)
 
@@ -38,6 +85,7 @@ export function ContactForm() {
       }
 
       form.reset()
+      if (draftRows.length > 0) contactDraftCollection.delete('contact')
       setSubmitted(true)
     },
   })
@@ -84,9 +132,11 @@ export function ContactForm() {
                   autoComplete="name"
                   required
                   value={field.state.value}
-                  onChange={(event) =>
-                    field.handleChange(event.currentTarget.value)
-                  }
+                  onChange={(event) => {
+                    const value = event.currentTarget.value
+                    field.handleChange(value)
+                    patchDraft({ name: value })
+                  }}
                   onBlur={field.handleBlur}
                   error={field.state.meta.errors[0]}
                 />
@@ -112,9 +162,11 @@ export function ContactForm() {
                   autoComplete="email"
                   required
                   value={field.state.value}
-                  onChange={(event) =>
-                    field.handleChange(event.currentTarget.value)
-                  }
+                  onChange={(event) => {
+                    const value = event.currentTarget.value
+                    field.handleChange(value)
+                    patchDraft({ email: value })
+                  }}
                   onBlur={field.handleBlur}
                   error={field.state.meta.errors[0]}
                 />
@@ -136,9 +188,11 @@ export function ContactForm() {
                   minRows={4}
                   required
                   value={field.state.value}
-                  onChange={(event) =>
-                    field.handleChange(event.currentTarget.value)
-                  }
+                  onChange={(event) => {
+                    const value = event.currentTarget.value
+                    field.handleChange(value)
+                    patchDraft({ message: value })
+                  }}
                   onBlur={field.handleBlur}
                   error={field.state.meta.errors[0]}
                 />

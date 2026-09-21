@@ -1,6 +1,6 @@
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 import { AppShell } from '@mantine/core'
-import { useDisclosure } from '@mantine/hooks'
+import { useDisclosure, useLocalStorage } from '@mantine/hooks'
 import { AdminSidebar } from '#/components/admin/admin-sidebar'
 import { DashboardHeader } from '#/components/dashboard/dashboard-header'
 
@@ -27,7 +27,11 @@ function AdminLayout() {
   const { session } = Route.useRouteContext()
   const [mobileOpened, { toggle: toggleMobile, close: closeMobile }] =
     useDisclosure()
-  const [collapsed, { toggle: toggleCollapsed }] = useDisclosure(false)
+  const [collapsed, setCollapsed] = useLocalStorage({
+    key: 'admin-sidebar-collapsed',
+    defaultValue: false,
+  })
+  const toggleCollapsed = () => setCollapsed((value) => !value)
 
   return (
     <AppShell

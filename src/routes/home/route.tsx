@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
 import { AppShell, Button, Group, Text } from '@mantine/core'
-import { useDisclosure } from '@mantine/hooks'
+import { useDisclosure, useLocalStorage } from '@mantine/hooks'
 import { IconUserShield } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { DashboardHeader } from '#/components/dashboard/dashboard-header'
@@ -36,7 +36,11 @@ function HomeLayout() {
   const queryClient = useQueryClient()
   const [mobileOpened, { toggle: toggleMobile, close: closeMobile }] =
     useDisclosure()
-  const [collapsed, { toggle: toggleCollapsed }] = useDisclosure(false)
+  const [collapsed, setCollapsed] = useLocalStorage({
+    key: 'home-sidebar-collapsed',
+    defaultValue: false,
+  })
+  const toggleCollapsed = () => setCollapsed((value) => !value)
 
   const impersonatedBy = session.session.impersonatedBy
 
