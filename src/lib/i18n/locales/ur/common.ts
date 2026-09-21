@@ -96,4 +96,7 @@ export const common: CommonTranslations = {
   statCard: {
     vsLastPeriod: 'پچھلی مدت کے مقابلے میں',
   },
+  offline: {
+    label: 'آف لائن',
+  },
 }

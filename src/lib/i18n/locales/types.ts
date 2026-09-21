@@ -93,6 +93,10 @@ export interface CommonTranslations {
   statCard: {
     vsLastPeriod: string
   }
+  // Header badge shown when the browser reports it has no network connection.
+  offline: {
+    label: string
+  }
 }
 
 export interface AuthTranslations {

@@ -10,6 +10,7 @@ import {
 } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { HeaderBreadcrumbs } from '#/components/dashboard/header-breadcrumbs'
+import { OfflineStatusBadge } from '#/components/dashboard/offline-status-badge'
 import { ThemeToggle } from '#/components/theme-toggle'
 import { LocaleToggle } from '#/components/locale-toggle'
 import { signOut } from '#/lib/auth-client'
@@ -44,6 +45,7 @@ export function DashboardHeader({
       </Group>
 
       <Group gap="xs" wrap="nowrap">
+        <OfflineStatusBadge />
         <LocaleToggle />
         <ThemeToggle />
         <Menu position="bottom-end" shadow="md" width={240}>
