@@ -45,6 +45,10 @@ export const common: CommonTranslations = {
     title: '404 - صفحہ نہیں ملا',
     description: 'آپ جو صفحہ ڈھونڈ رہے ہیں وہ موجود نہیں ہے۔',
   },
+  error: {
+    title: 'کچھ غلط ہو گیا',
+    description: 'ایک غیر متوقع خرابی پیش آگئی۔ براہ کرم دوبارہ کوشش کریں۔',
+  },
   impersonation: {
     viewingAs: '{{name}} کے طور پر دیکھ رہے ہیں',
   },

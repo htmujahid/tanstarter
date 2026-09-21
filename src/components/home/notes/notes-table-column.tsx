@@ -25,11 +25,15 @@ export const notesTableFeatures = tableFeatures({
 
 const columnHelper = createColumnHelper<typeof notesTableFeatures, Note>()
 
+function parseTimestamp(value: string): Date {
+  return new Date(value.endsWith('Z') ? value : `${value.replace(' ', 'T')}Z`)
+}
+
 function FormattedTimestamp({ value }: { value: string }) {
   const [display, setDisplay] = useState<string | null>(null)
 
   useEffect(() => {
-    setDisplay(new Date(value.replace(' ', 'T') + 'Z').toLocaleString())
+    setDisplay(parseTimestamp(value).toLocaleString())
   }, [value])
 
   return display ?? '—'

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import {
   HeadContent,
+  Link,
   Scripts,
   createRootRouteWithContext,
 } from '@tanstack/react-router'
@@ -8,11 +9,18 @@ import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import {
+  Button,
+  Card,
   ColorSchemeScript,
+  Container,
   DirectionProvider,
   MantineProvider,
+  Stack,
+  Text,
+  Title,
   mantineHtmlProps,
 } from '@mantine/core'
+import { IconError404 } from '@tabler/icons-react'
 import { I18nextProvider, useTranslation } from 'react-i18next'
 
 import mantineCss from '@mantine/core/styles.css?url'
@@ -22,6 +30,7 @@ import { getLocaleFn } from '#/server/actions/locale'
 import { currentSessionQueryOptions } from '#/lib/queries/session'
 import { createI18nInstance } from '#/lib/i18n/create-instance'
 import { isRtl } from '#/lib/i18n/config'
+import { RouteError } from '#/components/layout/route-error'
 import type { QueryClient } from '@tanstack/react-query'
 import type { DbClient } from '@tanstack/react-db'
 
@@ -75,6 +84,10 @@ export const Route = createRootRouteWithContext<{
     }),
     shellComponent: RootDocument,
     notFoundComponent: NotFound,
+    errorComponent: RouteError,
+    onCatch: (error) => {
+      console.error(error)
+    },
   },
 )
 
@@ -82,9 +95,24 @@ function NotFound() {
   const { t } = useTranslation()
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-2 text-center">
-      <h1 className="text-2xl font-semibold">{t('notFound.title')}</h1>
-      <p className="text-muted-foreground">{t('notFound.description')}</p>
+    <div className="flex min-h-screen flex-col items-center justify-center p-6">
+      <Container size="xs" px={0}>
+        <Card withBorder radius="md" padding="xl">
+          <Stack align="center" gap="xs" py="md">
+            <IconError404
+              size={32}
+              className="text-[var(--mantine-color-dimmed)]"
+            />
+            <Title order={4}>{t('notFound.title')}</Title>
+            <Text c="dimmed" size="sm" ta="center">
+              {t('notFound.description')}
+            </Text>
+            <Button component={Link} to="/" variant="light" mt="sm">
+              {t('nav.home')}
+            </Button>
+          </Stack>
+        </Card>
+      </Container>
     </div>
   )
 }

@@ -3,6 +3,7 @@ import { Group, Stack, Text, Title } from '@mantine/core'
 import { IconShoppingBag } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { features } from '#/lib/features'
+import { RouteError } from '#/components/layout/route-error'
 
 export const Route = createFileRoute('/auth')({
   beforeLoad: ({ context }) => {
@@ -11,6 +12,7 @@ export const Route = createFileRoute('/auth')({
     }
   },
   component: AuthLayout,
+  errorComponent: RouteError,
 })
 
 function AuthLayout() {

@@ -1,8 +1,11 @@
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 import { AppShell } from '@mantine/core'
 import { useDisclosure, useLocalStorage } from '@mantine/hooks'
+import { useTranslation } from 'react-i18next'
 import { AdminSidebar } from '#/components/admin/admin-sidebar'
 import { DashboardHeader } from '#/components/dashboard/dashboard-header'
+import { RouteError } from '#/components/layout/route-error'
+import { SectionNotFound } from '#/components/layout/section-not-found'
 
 const NAVBAR_WIDTH_EXPANDED = 260
 const NAVBAR_WIDTH_COLLAPSED = 80
@@ -21,7 +24,17 @@ export const Route = createFileRoute('/admin')({
   },
   staticData: { breadcrumb: 'Admin' },
   component: AdminLayout,
+  notFoundComponent: AdminNotFound,
+  errorComponent: RouteError,
 })
+
+function AdminNotFound() {
+  const { t } = useTranslation('admin')
+
+  return (
+    <SectionNotFound backTo="/admin" backLabel={t('sidebar.overview')} />
+  )
+}
 
 function AdminLayout() {
   const { session } = Route.useRouteContext()

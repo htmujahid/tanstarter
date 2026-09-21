@@ -11,6 +11,8 @@ import { IconUserShield } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { DashboardHeader } from '#/components/dashboard/dashboard-header'
 import { Sidebar } from '#/components/dashboard/sidebar'
+import { RouteError } from '#/components/layout/route-error'
+import { SectionNotFound } from '#/components/layout/section-not-found'
 import { authClient } from '#/lib/auth-client'
 import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session'
 
@@ -27,7 +29,17 @@ export const Route = createFileRoute('/home')({
   },
   staticData: { breadcrumb: 'Home' },
   component: HomeLayout,
+  notFoundComponent: HomeNotFound,
+  errorComponent: RouteError,
 })
+
+function HomeNotFound() {
+  const { t } = useTranslation('home')
+
+  return (
+    <SectionNotFound backTo="/home" backLabel={t('sidebar.dashboard')} />
+  )
+}
 
 function HomeLayout() {
   const { t } = useTranslation()

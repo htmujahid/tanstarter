@@ -48,6 +48,12 @@ export interface CommonTranslations {
     title: string
     description: string
   }
+  // Shown by the root and section-level `errorComponent`s when a loader or
+  // render throws; kept generic since the underlying error is unpredictable.
+  error: {
+    title: string
+    description: string
+  }
   impersonation: {
     viewingAs: string
   }
