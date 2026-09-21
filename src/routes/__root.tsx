@@ -31,6 +31,7 @@ import { currentSessionQueryOptions } from '#/lib/queries/session.query'
 import { createI18nInstance } from '#/lib/i18n/create-instance'
 import { isRtl } from '#/lib/i18n/config'
 import { RouteError } from '#/components/layout/route-error'
+import { RegisterServiceWorker } from '#/components/pwa/register-service-worker'
 import type { QueryClient } from '@tanstack/react-query'
 import type { DbClient } from '@tanstack/react-db'
 
@@ -70,6 +71,22 @@ export const Route = createRootRouteWithContext<{
           name: 'theme-color',
           content: '#228be6',
         },
+        {
+          name: 'application-name',
+          content: 'Commerce',
+        },
+        {
+          name: 'apple-mobile-web-app-title',
+          content: 'Commerce',
+        },
+        {
+          name: 'apple-mobile-web-app-capable',
+          content: 'yes',
+        },
+        {
+          name: 'mobile-web-app-capable',
+          content: 'yes',
+        },
       ],
       links: [
         {
@@ -79,6 +96,32 @@ export const Route = createRootRouteWithContext<{
         {
           rel: 'stylesheet',
           href: appCss,
+        },
+        {
+          rel: 'icon',
+          type: 'image/svg+xml',
+          href: '/favicon.svg',
+        },
+        {
+          rel: 'icon',
+          type: 'image/png',
+          sizes: '32x32',
+          href: '/favicon-32x32.png',
+        },
+        {
+          rel: 'icon',
+          type: 'image/png',
+          sizes: '16x16',
+          href: '/favicon-16x16.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          sizes: '180x180',
+          href: '/apple-touch-icon.png',
+        },
+        {
+          rel: 'manifest',
+          href: '/site.webmanifest',
         },
       ],
     }),
@@ -151,6 +194,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             </MantineProvider>
           </DirectionProvider>
         </I18nextProvider>
+        <RegisterServiceWorker />
         <Scripts />
       </body>
     </html>

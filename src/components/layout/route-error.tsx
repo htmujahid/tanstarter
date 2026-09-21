@@ -1,6 +1,7 @@
 import { Link, useRouter } from '@tanstack/react-router'
 import { Button, Card, Code, Container, Group, Stack, Text, Title } from '@mantine/core'
-import { IconAlertTriangle } from '@tabler/icons-react'
+import { useNetwork } from '@mantine/hooks'
+import { IconAlertTriangle, IconWifiOff } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import type { ErrorComponentProps } from '@tanstack/react-router'
 
@@ -9,11 +10,49 @@ import type { ErrorComponentProps } from '@tanstack/react-router'
  * (admin/home/site/auth). Section layouts pass this as-is so a loader or
  * render error inside a section still leaves its shell (sidebar/header)
  * intact instead of falling back to the root's full-page boundary.
+ *
+ * A loader/render throw while offline is almost always "this page wasn't
+ * cached by the service worker" rather than a real bug, so it gets its own
+ * copy instead of the generic error message.
  */
 export function RouteError({ error, reset }: ErrorComponentProps) {
   const { t } = useTranslation()
   const router = useRouter()
+  const { online } = useNetwork()
   const message = error instanceof Error ? error.message : String(error)
+
+  if (!online) {
+    return (
+      <Container size="lg" px={0} py="xl">
+        <Card withBorder radius="md" padding="xl">
+          <Stack align="center" gap="xs" py="md">
+            <IconWifiOff
+              size={32}
+              className="text-[var(--mantine-color-dimmed)]"
+            />
+            <Title order={4}>{t('offline.title')}</Title>
+            <Text c="dimmed" size="sm" ta="center">
+              {t('offline.description')}
+            </Text>
+            <Group gap="xs" mt="sm">
+              <Button
+                variant="light"
+                onClick={() => {
+                  reset()
+                  router.invalidate()
+                }}
+              >
+                {t('actions.retry')}
+              </Button>
+              <Button component={Link} to="/" variant="subtle">
+                {t('nav.home')}
+              </Button>
+            </Group>
+          </Stack>
+        </Card>
+      </Container>
+    )
+  }
 
   return (
     <Container size="lg" px={0} py="xl">

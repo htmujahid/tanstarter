@@ -102,6 +102,8 @@ export interface CommonTranslations {
   // Header badge shown when the browser reports it has no network connection.
   offline: {
     label: string
+    title: string
+    description: string
   }
 }
 

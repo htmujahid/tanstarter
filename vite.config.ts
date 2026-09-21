@@ -6,6 +6,55 @@ import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import viteReact from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { cloudflare } from '@cloudflare/vite-plugin'
+import type { Plugin } from 'vite'
+
+function pwaServiceWorker(): Plugin {
+  return {
+    name: 'pwa-service-worker',
+    apply: 'build',
+    async closeBundle() {
+      // Vite splits the build into per-environment bundles (client/ssr); this
+      // hook fires once per environment, but the precache manifest only
+      // makes sense once against the finished client output.
+      if (this.environment.name !== 'client') return
+
+      const { generateSW } = await import('workbox-build')
+      const { count, size, warnings } = await generateSW({
+        globDirectory: 'dist/client',
+        globPatterns: ['**/*.{js,css,woff2,png,svg,ico,webmanifest}'],
+        swDest: 'dist/client/sw.js',
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+        skipWaiting: true,
+        runtimeCaching: [
+          {
+            urlPattern: ({ request }) => request.mode === 'navigate',
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'pages',
+              networkTimeoutSeconds: 3,
+              expiration: { maxEntries: 40, maxAgeSeconds: 30 * 24 * 60 * 60 },
+            },
+          },
+          {
+            urlPattern: ({ request }) => request.destination === 'image',
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'images',
+              expiration: { maxEntries: 60, maxAgeSeconds: 30 * 24 * 60 * 60 },
+            },
+          },
+        ],
+      })
+      if (warnings.length > 0) {
+        console.warn('[pwa] generateSW warnings:\n' + warnings.join('\n'))
+      }
+      console.log(
+        `[pwa] sw.js generated — ${count} files precached (${(size / 1024).toFixed(0)} KiB)`,
+      )
+    },
+  }
+}
 
 const config = defineConfig({
   resolve: { tsconfigPaths: true },
@@ -15,6 +64,7 @@ const config = defineConfig({
     tailwindcss(),
     tanstackStart(),
     viteReact(),
+    pwaServiceWorker(),
   ],
 })
 

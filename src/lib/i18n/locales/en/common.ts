@@ -102,5 +102,8 @@ export const common: CommonTranslations = {
   },
   offline: {
     label: 'Offline',
+    title: "You're offline",
+    description:
+      "This page hasn't been loaded before, so it isn't available offline. Reconnect and try again.",
   },
 }

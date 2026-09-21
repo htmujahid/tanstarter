@@ -73,9 +73,11 @@
     "postcss-preset-mantine": "^1.18.0",
     "postcss-simple-vars": "^7.0.1",
     "prettier": "^3.8.1",
+    "sharp": "^0.35.4",
     "tsx": "^4.23.13",
     "typescript": "^6.0.2",
     "vite": "^8.0.0",
+    "workbox-build": "^7.4.1",
     "wrangler": "^4.70.0"
   },
   "pnpm": {
