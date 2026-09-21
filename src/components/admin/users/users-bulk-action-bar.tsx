@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   ActionBar,
   Alert,
@@ -19,6 +20,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import { authClient } from '#/lib/auth-client'
 import { BanUserModal } from '#/components/admin/users/ban-user-modal'
+import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session'
 import type { AdminUser } from '#/components/admin/users/users-table-column'
 
 export function UsersBulkActionBar({
@@ -33,6 +35,7 @@ export function UsersBulkActionBar({
   const { t } = useTranslation('admin')
   const { t: tCommon } = useTranslation('common')
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const [actionError, setActionError] = useState<string | null>(null)
   const [banUsers, setBanUsers] = useState<AdminUser[]>([])
   const [deleteUsers, setDeleteUsers] = useState<AdminUser[]>([])
@@ -64,7 +67,12 @@ export function UsersBulkActionBar({
       authClient.admin.impersonateUser({ userId: target.id }),
     )
     setPending(null)
-    if (ok) await navigate({ to: '/home' })
+    if (ok) {
+      await queryClient.invalidateQueries({
+        queryKey: CURRENT_SESSION_QUERY_KEY,
+      })
+      await navigate({ to: '/home' })
+    }
   }
 
   async function handleBulkUnban() {

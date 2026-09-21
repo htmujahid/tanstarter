@@ -18,17 +18,20 @@ import { I18nextProvider, useTranslation } from 'react-i18next'
 import mantineCss from '@mantine/core/styles.css?url'
 import appCss from '../styles.css?url'
 import { theme } from '../theme'
-import { getSessionFn } from '#/server/actions/session'
 import { getLocaleFn } from '#/server/actions/locale'
+import { currentSessionQueryOptions } from '#/lib/queries/session'
 import { createI18nInstance } from '#/lib/i18n/create-instance'
 import { isRtl } from '#/lib/i18n/config'
 import type { QueryClient } from '@tanstack/react-query'
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   {
-    beforeLoad: async () => {
+    beforeLoad: async ({ context }) => {
       const [session, locale] = await Promise.all([
-        getSessionFn(),
+        context.queryClient.query({
+          ...currentSessionQueryOptions(),
+          staleTime: 'static',
+        }),
         getLocaleFn(),
       ])
       return { session, locale }

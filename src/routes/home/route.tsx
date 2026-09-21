@@ -4,6 +4,7 @@ import {
   redirect,
   useRouter,
 } from '@tanstack/react-router'
+import { useQueryClient } from '@tanstack/react-query'
 import { AppShell, Button, Group, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconUserShield } from '@tabler/icons-react'
@@ -11,6 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { DashboardHeader } from '#/components/dashboard/dashboard-header'
 import { Sidebar } from '#/components/dashboard/sidebar'
 import { authClient } from '#/lib/auth-client'
+import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session'
 
 const NAVBAR_WIDTH_EXPANDED = 260
 const NAVBAR_WIDTH_COLLAPSED = 80
@@ -31,6 +33,7 @@ function HomeLayout() {
   const { t } = useTranslation()
   const { session } = Route.useRouteContext()
   const router = useRouter()
+  const queryClient = useQueryClient()
   const [mobileOpened, { toggle: toggleMobile, close: closeMobile }] =
     useDisclosure()
   const [collapsed, { toggle: toggleCollapsed }] = useDisclosure(false)
@@ -82,6 +85,9 @@ function HomeLayout() {
               variant="white"
               onClick={async () => {
                 await authClient.admin.stopImpersonating()
+                await queryClient.invalidateQueries({
+                  queryKey: CURRENT_SESSION_QUERY_KEY,
+                })
                 await router.invalidate()
                 await router.navigate({ to: '/admin' })
               }}

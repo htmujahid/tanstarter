@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
+import { useQueryClient } from '@tanstack/react-query'
 import { Alert, Button, Divider, Stack } from '@mantine/core'
 import { IconAlertCircle, IconFingerprint } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { signIn } from '#/lib/auth-client'
+import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session'
 
 export function PasskeySignInButton() {
   const { t } = useTranslation('auth')
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
@@ -26,18 +29,23 @@ export function PasskeySignInButton() {
 
     void isConditionalMediationAvailable().then((available) => {
       if (available && !cancelled) {
-        void signIn.passkey({ autoFill: true }).then(({ error: signInError }) => {
-          if (!cancelled && !signInError) {
-            void navigate({ to: '/home' })
-          }
-        })
+        void signIn.passkey({ autoFill: true }).then(
+          async ({ error: signInError }) => {
+            if (!cancelled && !signInError) {
+              await queryClient.invalidateQueries({
+                queryKey: CURRENT_SESSION_QUERY_KEY,
+              })
+              void navigate({ to: '/home' })
+            }
+          },
+        )
       }
     })
 
     return () => {
       cancelled = true
     }
-  }, [navigate])
+  }, [navigate, queryClient])
 
   async function handleClick() {
     setError(null)
@@ -50,6 +58,9 @@ export function PasskeySignInButton() {
       return
     }
 
+    await queryClient.invalidateQueries({
+      queryKey: CURRENT_SESSION_QUERY_KEY,
+    })
     await navigate({ to: '/home' })
   }
 

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import { Alert, Button, Group, Modal, Stack, Text } from '@mantine/core'
 import {
   IconAlertCircle,
@@ -14,6 +14,7 @@ import { authClient } from '#/lib/auth-client'
 import { BanUserModal } from '#/components/admin/users/ban-user-modal'
 import { useSession } from '#/hooks/use-session'
 import { userQueryOptions } from '#/lib/queries/admin'
+import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session'
 
 export function UserDetailActions({
   userId,
@@ -28,6 +29,7 @@ export function UserDetailActions({
   const session = useSession()
   const isSelf = user.id === session?.user.id
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const [actionError, setActionError] = useState<string | null>(null)
   const [pending, setPending] = useState<
     'impersonate' | 'unban' | 'delete' | null
@@ -61,7 +63,12 @@ export function UserDetailActions({
     const ok = await run('impersonate', () =>
       authClient.admin.impersonateUser({ userId: user.id }),
     )
-    if (ok) await navigate({ to: '/home' })
+    if (ok) {
+      await queryClient.invalidateQueries({
+        queryKey: CURRENT_SESSION_QUERY_KEY,
+      })
+      await navigate({ to: '/home' })
+    }
   }
 
   async function handleUnban() {

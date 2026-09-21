@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useRouter } from '@tanstack/react-router'
+import { useQueryClient } from '@tanstack/react-query'
 import { useForm } from '@tanstack/react-form'
 import {
   Alert,
@@ -14,6 +15,7 @@ import {
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { authClient } from '#/lib/auth-client'
+import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session'
 import type { Session } from '#/server/auth/auth'
 
 const USERNAME_PATTERN = /^[a-zA-Z0-9_]+$/
@@ -21,6 +23,7 @@ const USERNAME_PATTERN = /^[a-zA-Z0-9_]+$/
 export function ProfileForm({ user }: { user: NonNullable<Session>['user'] }) {
   const { t } = useTranslation('profile')
   const router = useRouter()
+  const queryClient = useQueryClient()
   const [formError, setFormError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 
@@ -52,6 +55,9 @@ export function ProfileForm({ user }: { user: NonNullable<Session>['user'] }) {
       }
 
       setSuccess(true)
+      await queryClient.invalidateQueries({
+        queryKey: CURRENT_SESSION_QUERY_KEY,
+      })
       await router.invalidate()
     },
   })

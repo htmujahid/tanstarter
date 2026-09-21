@@ -1,4 +1,5 @@
 import { Link, useRouter } from '@tanstack/react-router'
+import { useQueryClient } from '@tanstack/react-query'
 import { Avatar, Burger, Group, Menu, Text } from '@mantine/core'
 import {
   IconHome,
@@ -12,6 +13,7 @@ import { HeaderBreadcrumbs } from '#/components/dashboard/header-breadcrumbs'
 import { ThemeToggle } from '#/components/theme-toggle'
 import { LocaleToggle } from '#/components/locale-toggle'
 import { signOut } from '#/lib/auth-client'
+import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session'
 import type { Session } from '#/server/auth/auth'
 
 export function DashboardHeader({
@@ -25,6 +27,7 @@ export function DashboardHeader({
 }) {
   const { t } = useTranslation()
   const router = useRouter()
+  const queryClient = useQueryClient()
 
   return (
     <Group h="100%" px="md" justify="space-between" wrap="nowrap">
@@ -98,6 +101,9 @@ export function DashboardHeader({
               leftSection={<IconLogout size={16} />}
               onClick={async () => {
                 await signOut()
+                await queryClient.invalidateQueries({
+                  queryKey: CURRENT_SESSION_QUERY_KEY,
+                })
                 await router.invalidate()
               }}
             >

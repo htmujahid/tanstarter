@@ -1,14 +1,17 @@
 import { useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
+import { useQueryClient } from '@tanstack/react-query'
 import { useForm } from '@tanstack/react-form'
 import { Alert, Button, PasswordInput, Stack, TextInput } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { signUp } from '#/lib/auth-client'
+import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session'
 
 export function SetupForm() {
   const { t } = useTranslation('auth')
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const [formError, setFormError] = useState<string | null>(null)
 
   const form = useForm({
@@ -32,6 +35,9 @@ export function SetupForm() {
         return
       }
 
+      await queryClient.invalidateQueries({
+        queryKey: CURRENT_SESSION_QUERY_KEY,
+      })
       await navigate({ to: '/home' })
     },
   })
