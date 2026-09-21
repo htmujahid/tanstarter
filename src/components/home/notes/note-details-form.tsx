@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { eq, useLiveQuery } from '@tanstack/react-db'
 import { useForm } from '@tanstack/react-form'
 import {
   Alert,
@@ -14,38 +14,52 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { updateNoteFn } from '#/server/actions/notes'
-import { noteQueryOptions } from '#/lib/queries/notes'
+import {
+  notesCollectionOptions,
+  useNotesCollection,
+} from '#/lib/collections/notes'
+import { useOfflineExecutor } from '#/lib/db/offline-executor'
 
-export function NoteDetailsForm({
-  noteId,
-  onSaved,
-}: {
-  noteId: number
-  onSaved: () => void
-}) {
+export function NoteDetailsForm({ noteId }: { noteId: number }) {
   const { t } = useTranslation('home')
-  const { data: note } = useSuspenseQuery(noteQueryOptions(noteId))
+  const executor = useOfflineExecutor()
+  const collection = useNotesCollection()
+  const { data } = useLiveQuery({
+    query: (q) =>
+      q
+        .from({ note: notesCollectionOptions })
+        .where(({ note }) => eq(note.id, noteId)),
+  })
+  const note = data[0]
   const [formError, setFormError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 
   const form = useForm({
-    defaultValues: {
-      title: note.title,
-      body: note.body ?? '',
-    },
+    defaultValues:
+      data.length === 0
+        ? { title: '', body: '' }
+        : { title: note.title, body: note.body ?? '' },
     onSubmit: async ({ value }) => {
       setFormError(null)
       setSuccess(false)
 
-      try {
-        await updateNoteFn({
-          data: {
-            id: note.id,
-            title: value.title,
-            body: value.body || undefined,
-          },
+      if (!executor) {
+        setFormError(t('notes.detailsForm.genericError'))
+        return
+      }
+
+      const offlineTx = executor.createOfflineTransaction({
+        mutationFnName: 'updateNote',
+      })
+      const tx = offlineTx.mutate(() => {
+        collection.update(note.id, (draft) => {
+          draft.title = value.title
+          draft.body = value.body || null
         })
+      })
+
+      try {
+        await tx.isPersisted.promise
       } catch (error) {
         setFormError(
           error instanceof Error
@@ -56,7 +70,6 @@ export function NoteDetailsForm({
       }
 
       setSuccess(true)
-      onSaved()
     },
   })
 

@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { flexRender, functionalUpdate, useTable } from '@tanstack/react-table'
 import type { RowSelectionState, SortingState } from '@tanstack/react-table'
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { ilike, useLiveQuery } from '@tanstack/react-db'
 import {
   Button,
   EmptyState,
@@ -18,7 +18,9 @@ import {
   notesTableFeatures,
 } from '#/components/home/notes/notes-table-column'
 import type { SortableField } from '#/components/home/notes/notes-table-column'
-import { NOTES_PAGE_SIZE, notesQueryOptions } from '#/lib/queries/notes'
+import { notesCollectionOptions } from '#/lib/collections/notes'
+
+const NOTES_PAGE_SIZE = 10
 
 export function NotesTable({
   q,
@@ -26,7 +28,6 @@ export function NotesTable({
   sortDirection,
   page,
   onSortChange,
-  onChanged,
   onAddNote,
   onClearFilters,
   onPageChange,
@@ -36,7 +37,6 @@ export function NotesTable({
   sortDirection?: 'asc' | 'desc'
   page: number
   onSortChange: (sortBy?: string, sortDirection?: 'asc' | 'desc') => void
-  onChanged: () => void
   onAddNote: () => void
   onClearFilters: () => void
   onPageChange: (page: number) => void
@@ -45,10 +45,30 @@ export function NotesTable({
   const { t: tCommon } = useTranslation('common')
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
-  const {
-    data: { notes, total },
-  } = useSuspenseQuery(notesQueryOptions({ q, sortBy, sortDirection, page }))
+  const { data } = useLiveQuery({
+    query: (query) => {
+      let liveQuery = query.from({ note: notesCollectionOptions })
+
+      if (q) {
+        liveQuery = liveQuery.where(({ note }) => ilike(note.title, `%${q}%`))
+      }
+
+      return liveQuery.orderBy(({ note }) => {
+        switch (sortBy) {
+          case 'title':
+            return note.title
+          case 'updatedAt':
+            return note.updatedAt
+          default:
+            return note.createdAt
+        }
+      }, sortDirection ?? 'desc')
+    },
+  })
+
+  const total = data.length
   const totalPages = Math.max(1, Math.ceil(total / NOTES_PAGE_SIZE))
+  const notes = data.slice((page - 1) * NOTES_PAGE_SIZE, page * NOTES_PAGE_SIZE)
   const hasFilters = Boolean(q)
 
   const columns = useMemo(() => getNotesTableColumns(t), [t])
@@ -162,7 +182,6 @@ export function NotesTable({
       <NotesBulkActionBar
         notes={selectedNotes}
         onClearSelection={() => setRowSelection({})}
-        onChanged={onChanged}
       />
 
       {totalPages > 1 && notes.length > 0 && (

@@ -1,27 +1,53 @@
 import { useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { eq, useLiveQuery } from '@tanstack/react-db'
 import { Alert, Button, Group, Modal, Stack, Text } from '@mantine/core'
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { deleteNoteFn } from '#/server/actions/notes'
-import { noteQueryOptions } from '#/lib/queries/notes'
+import {
+  notesCollectionOptions,
+  useNotesCollection,
+} from '#/lib/collections/notes'
+import { useOfflineExecutor } from '#/lib/db/offline-executor'
 
 export function NoteDetailActions({ noteId }: { noteId: number }) {
   const { t } = useTranslation('home')
   const { t: tCommon } = useTranslation('common')
-  const { data: note } = useSuspenseQuery(noteQueryOptions(noteId))
+  const executor = useOfflineExecutor()
+  const collection = useNotesCollection()
+  const { data } = useLiveQuery({
+    query: (q) =>
+      q
+        .from({ note: notesCollectionOptions })
+        .where(({ note }) => eq(note.id, noteId)),
+  })
   const navigate = useNavigate()
   const [actionError, setActionError] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
 
+  if (data.length === 0) return null
+  const note = data[0]
+
   async function handleDelete() {
     setActionError(null)
+
+    if (!executor) {
+      setActionError(tCommon('messages.somethingWentWrong'))
+      return
+    }
+
     setPending(true)
 
+    const offlineTx = executor.createOfflineTransaction({
+      mutationFnName: 'deleteNote',
+    })
+    const tx = offlineTx.mutate(() => {
+      collection.delete(note.id)
+    })
+
     try {
-      await deleteNoteFn({ data: { id: note.id } })
+      await tx.isPersisted.promise
     } catch (error) {
       setPending(false)
       setActionError(

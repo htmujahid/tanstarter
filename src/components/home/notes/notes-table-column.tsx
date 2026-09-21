@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import {
   createColumnHelper,
   rowSelectionFeature,
@@ -24,8 +25,14 @@ export const notesTableFeatures = tableFeatures({
 
 const columnHelper = createColumnHelper<typeof notesTableFeatures, Note>()
 
-function formatTimestamp(value: string) {
-  return new Date(value.replace(' ', 'T') + 'Z').toLocaleString()
+function FormattedTimestamp({ value }: { value: string }) {
+  const [display, setDisplay] = useState<string | null>(null)
+
+  useEffect(() => {
+    setDisplay(new Date(value.replace(' ', 'T') + 'Z').toLocaleString())
+  }, [value])
+
+  return display ?? '—'
 }
 
 function SortableHeader({
@@ -117,7 +124,7 @@ export function getNotesTableColumns(t: TFunction<'home'>) {
       ),
       cell: ({ getValue }) => (
         <Text size="sm" c="dimmed">
-          {formatTimestamp(getValue())}
+          <FormattedTimestamp value={getValue()} />
         </Text>
       ),
     }),
@@ -130,7 +137,7 @@ export function getNotesTableColumns(t: TFunction<'home'>) {
       ),
       cell: ({ getValue }) => (
         <Text size="sm" c="dimmed">
-          {formatTimestamp(getValue())}
+          <FormattedTimestamp value={getValue()} />
         </Text>
       ),
     }),

@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useQueryClient } from '@tanstack/react-query'
 import { Button, Group, Stack, TextInput } from '@mantine/core'
 import { IconPlus, IconSearch } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
@@ -9,7 +8,7 @@ import { NotesTable } from '#/components/home/notes/notes-table'
 import { NotesTableSkeleton } from '#/components/home/notes/notes-table-skeleton'
 import { SORTABLE_FIELDS } from '#/components/home/notes/notes-table-column'
 import type { SortableField } from '#/components/home/notes/notes-table-column'
-import { notesQueryOptions } from '#/lib/queries/notes'
+import { notesCollectionOptions } from '#/lib/collections/notes'
 
 type NotesSearch = {
   q?: string
@@ -30,17 +29,8 @@ export const Route = createFileRoute('/home/notes/')({
         : undefined,
     page: typeof search.page === 'number' && search.page > 0 ? search.page : 1,
   }),
-  loaderDeps: ({ search }) => ({
-    q: search.q,
-    sortBy: search.sortBy,
-    sortDirection: search.sortDirection,
-    page: search.page,
-  }),
-  loader: ({ context, deps }) =>
-    context.queryClient.query({
-      ...notesQueryOptions(deps),
-      staleTime: 'static',
-    }),
+  loader: ({ context }) =>
+    context.dbClient.collection(notesCollectionOptions).preload(),
   pendingComponent: () => <NotesTableSkeleton />,
   staticData: { breadcrumb: 'Notes' },
   component: NotesPage,
@@ -50,11 +40,7 @@ function NotesPage() {
   const { t } = useTranslation('home')
   const { q, sortBy, sortDirection, page } = Route.useSearch()
   const navigate = useNavigate({ from: Route.fullPath })
-  const queryClient = useQueryClient()
   const [createOpened, setCreateOpened] = useState(false)
-
-  const invalidate = () =>
-    queryClient.invalidateQueries({ queryKey: ['notes'] })
 
   return (
     <Stack gap="md">
@@ -100,7 +86,6 @@ function NotesPage() {
             },
           })
         }
-        onChanged={invalidate}
         onAddNote={() => setCreateOpened(true)}
         onClearFilters={() =>
           void navigate({
@@ -115,10 +100,7 @@ function NotesPage() {
       <CreateNoteForm
         opened={createOpened}
         onClose={() => setCreateOpened(false)}
-        onCreated={() => {
-          setCreateOpened(false)
-          void invalidate()
-        }}
+        onCreated={() => setCreateOpened(false)}
       />
     </Stack>
   )

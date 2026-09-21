@@ -1,31 +1,54 @@
 import { useState } from 'react'
-import { ActionBar, Alert, Button, Group, Modal, Stack, Text } from '@mantine/core'
+import {
+  ActionBar,
+  Alert,
+  Button,
+  Group,
+  Modal,
+  Stack,
+  Text,
+} from '@mantine/core'
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { deleteNoteFn } from '#/server/actions/notes'
+import { useNotesCollection } from '#/lib/collections/notes'
+import { useOfflineExecutor } from '#/lib/db/offline-executor'
 import type { Note } from '#/server/db'
 
 export function NotesBulkActionBar({
   notes,
   onClearSelection,
-  onChanged,
 }: {
   notes: Note[]
   onClearSelection: () => void
-  onChanged: () => void
 }) {
   const { t } = useTranslation('home')
   const { t: tCommon } = useTranslation('common')
+  const executor = useOfflineExecutor()
+  const collection = useNotesCollection()
   const [actionError, setActionError] = useState<string | null>(null)
   const [deleteNotes, setDeleteNotes] = useState<Note[]>([])
   const [pending, setPending] = useState(false)
 
   async function handleBulkDelete() {
     setActionError(null)
+
+    if (!executor) {
+      setActionError(tCommon('messages.somethingWentWrong'))
+      return
+    }
+
     setPending(true)
 
     const results = await Promise.allSettled(
-      deleteNotes.map((note) => deleteNoteFn({ data: { id: note.id } })),
+      deleteNotes.map((note) => {
+        const offlineTx = executor.createOfflineTransaction({
+          mutationFnName: 'deleteNote',
+        })
+        const tx = offlineTx.mutate(() => {
+          collection.delete(note.id)
+        })
+        return tx.isPersisted.promise
+      }),
     )
     setPending(false)
 
@@ -43,7 +66,6 @@ export function NotesBulkActionBar({
 
     setDeleteNotes([])
     onClearSelection()
-    onChanged()
   }
 
   return (

@@ -11,7 +11,8 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { createNoteFn } from '#/server/actions/notes'
+import { useNotesCollection } from '#/lib/collections/notes'
+import { useOfflineExecutor } from '#/lib/db/offline-executor'
 
 export function CreateNoteForm({
   opened,
@@ -24,6 +25,8 @@ export function CreateNoteForm({
 }) {
   const { t } = useTranslation('home')
   const { t: tCommon } = useTranslation('common')
+  const executor = useOfflineExecutor()
+  const collection = useNotesCollection()
   const [formError, setFormError] = useState<string | null>(null)
 
   const form = useForm({
@@ -31,10 +34,28 @@ export function CreateNoteForm({
     onSubmit: async ({ value }) => {
       setFormError(null)
 
-      try {
-        await createNoteFn({
-          data: { title: value.title, body: value.body || undefined },
+      if (!executor) {
+        setFormError(t('notes.createForm.genericError'))
+        return
+      }
+
+      const now = new Date().toISOString()
+      const offlineTx = executor.createOfflineTransaction({
+        mutationFnName: 'createNote',
+      })
+      const tx = offlineTx.mutate(() => {
+        collection.insert({
+          id: -Date.now(),
+          title: value.title,
+          body: value.body || null,
+          userId: '',
+          createdAt: now,
+          updatedAt: now,
         })
+      })
+
+      try {
+        await tx.isPersisted.promise
       } catch (error) {
         setFormError(
           error instanceof Error

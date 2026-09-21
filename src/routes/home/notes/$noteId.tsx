@@ -1,5 +1,4 @@
 import { Link, createFileRoute, notFound } from '@tanstack/react-router'
-import { useQueryClient } from '@tanstack/react-query'
 import {
   Anchor,
   Button,
@@ -17,7 +16,7 @@ import { useTranslation } from 'react-i18next'
 import { DetailPageLayout } from '#/components/layout/detail-page-layout'
 import { NoteDetailActions } from '#/components/home/notes/note-detail-actions'
 import { NoteDetailsForm } from '#/components/home/notes/note-details-form'
-import { noteQueryOptions } from '#/lib/queries/notes'
+import { notesCollectionOptions } from '#/lib/collections/notes'
 
 export const Route = createFileRoute('/home/notes/$noteId')({
   loader: async ({ context, params }) => {
@@ -26,12 +25,10 @@ export const Route = createFileRoute('/home/notes/$noteId')({
       throw notFound()
     }
 
-    try {
-      await context.queryClient.query({
-        ...noteQueryOptions(id),
-        staleTime: 'static',
-      })
-    } catch {
+    const collection = context.dbClient.collection(notesCollectionOptions)
+    await collection.preload()
+
+    if (!collection.has(id)) {
       throw notFound()
     }
   },
@@ -109,17 +106,13 @@ function NoteDetailPending() {
 function NoteDetailPage() {
   const { noteId } = Route.useParams()
   const id = Number(noteId)
-  const queryClient = useQueryClient()
-
-  const invalidate = () =>
-    queryClient.invalidateQueries({ queryKey: ['notes'] })
 
   return (
     <DetailPageLayout
       backLink={<BackLink />}
       actions={<NoteDetailActions noteId={id} />}
     >
-      <NoteDetailsForm noteId={id} onSaved={invalidate} />
+      <NoteDetailsForm noteId={id} />
     </DetailPageLayout>
   )
 }
