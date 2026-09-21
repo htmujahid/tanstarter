@@ -1,205 +1,110 @@
-Welcome to your new TanStack Start app!
+# Starter Kit
 
-# Getting Started
+A batteries-included [TanStack Start](https://tanstack.com/start) admin panel starter kit, deployed to Cloudflare Workers. Authentication, role-based permissions, offline-first data, and a Cloudflare-native REST API come wired up — adapt it for any domain (ecommerce, CRM, property, health, etc.) rather than building the plumbing from scratch.
 
-To run this application:
+For the full architecture writeup — server layering, the frontend data-access decision matrix, naming conventions, and the PWA setup — see **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**. This README is the quick-start summary.
 
-```bash
-npm install
-npm run dev
-```
+## Tech stack
 
-# Building For Production
+| Layer | Tools |
+|---|---|
+| Frontend | React, [TanStack Router](https://tanstack.com/router) (file-based), [TanStack Query](https://tanstack.com/query), [TanStack DB](https://tanstack.com/db), [TanStack Form](https://tanstack.com/form), [Mantine](https://mantine.dev), Tailwind CSS |
+| Server | [TanStack Start](https://tanstack.com/start) (SSR), [Hono](https://hono.dev) + [`@hono/zod-openapi`](https://github.com/honojs/middleware/tree/main/packages/zod-openapi) for the REST API |
+| Data | [Drizzle ORM](https://orm.drizzle.team) + Cloudflare D1, [`@tanstack/browser-db-sqlite-persistence`](https://tanstack.com/db) (offline SQLite) + [`@tanstack/offline-transactions`](https://tanstack.com/db) |
+| Auth | [better-auth](https://www.better-auth.com) — email/password, passkeys, API keys, role-based permissions, i18n |
+| Infra | Cloudflare Workers, D1, Vite, Wrangler |
+| i18n | [i18next](https://www.i18next.com) (English + Urdu, RTL-aware) |
+| PWA | Installable manifest + service worker (`workbox-build`), offline app shell |
 
-To build this application for production:
+## Quick start
 
-```bash
-npm run build
-```
-
-## Styling
-
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
-
-### Removing Tailwind CSS
-
-If you prefer not to use Tailwind CSS:
-
-1. Remove the demo pages in `src/routes/demo/`
-2. Replace the Tailwind import in `src/styles.css` with your own styles
-3. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
-4. Remove `@tailwindcss/vite` and `tailwindcss` from `package.json`
-
-## Linting & Formatting
-
-This project uses [eslint](https://eslint.org/) and [prettier](https://prettier.io/) for linting and formatting. Eslint is configured using [tanstack/eslint-config](https://tanstack.com/config/latest/docs/eslint). The following scripts are available:
+Requires Node.js and [pnpm](https://pnpm.io).
 
 ```bash
-npm run lint
-npm run format
-npm run check
+pnpm install
 ```
 
-## Deploy to Cloudflare Workers
+Create `.dev.vars` at the project root with the secrets better-auth needs locally:
 
-This project uses the Cloudflare Vite plugin (configured in `vite.config.ts`) and `wrangler.jsonc`:
-
-1. Install Wrangler: `npm install -g wrangler`
-2. Authenticate: `wrangler login`
-3. Deploy: `npx wrangler deploy`
-
-For production env vars, run `wrangler secret put MY_VAR` for each secret listed in `.env.example`. Public (non-secret) vars go in `wrangler.jsonc` under `vars`.
-
-KV, D1, R2, and Durable Object bindings are configured in `wrangler.jsonc` — see https://developers.cloudflare.com/workers/wrangler/configuration/.
-
-## Routing
-
-This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Routes are managed as files in `src/routes`.
-
-### Adding A Route
-
-To add a new route to your application just add a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from '@tanstack/react-router'
+```
+BETTER_AUTH_SECRET=<any random string>
+BETTER_AUTH_URL=http://localhost:3000
 ```
 
-Then anywhere in your JSX you can use it like so:
+Apply the database migrations to your local D1 instance:
 
-```tsx
-<Link to="/about">About</Link>
+```bash
+pnpm db:migrate:local
 ```
 
-This will create a link that will navigate to the `/about` route.
+Start the dev server:
 
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `{children}` in the `shellComponent`.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { createRootRoute, HeadContent, Scripts } from '@tanstack/react-router'
-
-export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'My App' },
-    ],
-  }),
-  shellComponent: ({ children }) => (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <header>
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-          </nav>
-        </header>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  ),
-})
+```bash
+pnpm dev
 ```
 
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
+Open `http://localhost:3000` and go through `/auth/setup` to create the first account — it's automatically granted admin (sign-up is disabled for everyone after that). Alternatively, seed a batch of demo users with `pnpm db:seed` (creates 20 users, 4 of them admins, all with the password `Password123!` — local/demo use only).
 
-## Server Functions
+## Project structure
 
-TanStack Start provides server functions that allow you to write server-side code that seamlessly integrates with your client components.
-
-```tsx
-import { createServerFn } from '@tanstack/react-start'
-
-const getServerTime = createServerFn({
-  method: 'GET',
-}).handler(async () => {
-  return new Date().toISOString()
-})
-
-// Use in a component
-function MyComponent() {
-  const [time, setTime] = useState('')
-
-  useEffect(() => {
-    getServerTime().then(setTime)
-  }, [])
-
-  return <div>Server time: {time}</div>
-}
+```
+src/
+├── routes/            File-based TanStack Router routes — presentation + wiring only
+├── components/        UI + interaction/mutation logic, grouped by area (admin/home/site/...)
+├── hooks/             Small, generic, cross-cutting React hooks
+├── lib/
+│   ├── collections/   TanStack DB collection definitions (one file per domain)
+│   ├── queries/       Plain TanStack Query `queryOptions` factories
+│   ├── mutations/     Offline-transactions mutation functions
+│   ├── db/            Browser persistence + the offline executor
+│   └── i18n/          i18next config + en/ur locale resources
+└── server/
+    ├── services/      Pure Drizzle queries — no auth, no framework
+    ├── actions/       TanStack Start server functions, consumed by the frontend
+    ├── routes/
+    │   ├── platform/  Hono + OpenAPI — 1:1 mirror of actions, for automation/agent consumers
+    │   └── v1/        Hono + OpenAPI — public, versioned API for third parties
+    ├── auth/          better-auth config, session/permission middleware
+    ├── db/            Drizzle schema, migrations, D1 client
+    └── openapi/       Shared OpenAPI plumbing (docs UI, request/response models)
 ```
 
-## API Routes
+Every one-file-per-domain layer above is named `<domain>.<category>.ts` (e.g. `notes.service.ts`, `notes.action.ts`, `notes.collection.ts`) — see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#naming-convention) for why.
 
-You can create API routes by using the `server` property in your route definitions:
+## API docs
 
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { json } from '@tanstack/react-start'
+Once the dev server is running, interactive OpenAPI docs are served at:
 
-export const Route = createFileRoute('/api/hello')({
-  server: {
-    handlers: {
-      GET: () => json({ message: 'Hello, World!' }),
-    },
-  },
-})
+- `/api/reference` — combined reference (Auth, `v1`, and `platform`)
+- `/api/v1/doc`, `/api/platform/doc` — raw OpenAPI JSON per surface
+
+## Available scripts
+
+| Script | What it does |
+|---|---|
+| `pnpm dev` | Start the Vite dev server (port 3000) |
+| `pnpm build` | Production build (also generates the PWA service worker) |
+| `pnpm preview` | Preview the production build locally |
+| `pnpm deploy` | Build and deploy to Cloudflare Workers |
+| `pnpm lint` / `pnpm format` / `pnpm check` | Lint, auto-fix + format, or check formatting |
+| `pnpm db:generate` | Generate a new Drizzle migration from schema changes |
+| `pnpm db:migrate:local` / `pnpm db:migrate:remote` | Apply migrations to the local or remote D1 database |
+| `pnpm db:seed` | Seed demo users (local dev only) |
+| `pnpm generate-routes` | Regenerate `src/routeTree.gen.ts` |
+
+## Deploying
+
+This project deploys to Cloudflare Workers via the [Cloudflare Vite plugin](https://developers.cloudflare.com/workers/framework-guides/web-apps/tanstack/) and `wrangler.jsonc` (D1 binding, compatibility flags). To deploy:
+
+```bash
+wrangler login
+pnpm db:migrate:remote
+pnpm deploy
 ```
 
-## Data Fetching
+Set the same secrets `.dev.vars` holds locally as Worker secrets first:
 
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-
-export const Route = createFileRoute('/people')({
-  loader: async () => {
-    const response = await fetch('https://swapi.dev/api/people')
-    return response.json()
-  },
-  component: PeopleComponent,
-})
-
-function PeopleComponent() {
-  const data = Route.useLoaderData()
-  return (
-    <ul>
-      {data.results.map((person) => (
-        <li key={person.name}>{person.name}</li>
-      ))}
-    </ul>
-  )
-}
+```bash
+wrangler secret put BETTER_AUTH_SECRET
+wrangler secret put BETTER_AUTH_URL
 ```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-# Demo files
-
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
-
-For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
