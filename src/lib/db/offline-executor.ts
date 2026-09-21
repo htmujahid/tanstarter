@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { startOfflineExecutor } from '@tanstack/offline-transactions'
 import { useDbClient } from '@tanstack/react-db'
-import { notesCollectionOptions } from '#/lib/collections/notes'
-import { notesMutationFns } from '#/lib/mutations/notes'
+import { notesCollectionOptions } from '#/lib/collections/notes.collection'
+import { notesMutationFns } from '#/lib/mutations/notes.mutation'
 import type { OfflineExecutor } from '@tanstack/offline-transactions'
 import type { DbClient } from '@tanstack/react-db'
 

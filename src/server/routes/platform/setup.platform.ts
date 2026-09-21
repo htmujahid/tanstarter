@@ -2,8 +2,8 @@ import { createRoute } from '@hono/zod-openapi'
 import { createDb } from '#/server/db'
 import { createPublicOpenApiApp } from '#/server/openapi/factory'
 import { jsonResponse } from '#/server/openapi/responses'
-import { SetupStatusSchema } from '#/server/openapi/models/setup'
-import { hasAnyUser } from '#/server/services/users'
+import { SetupStatusSchema } from '#/server/openapi/models/setup.model'
+import { hasAnyUser } from '#/server/services/users.service'
 
 /** Mirrors `src/server/actions/setup.ts` 1:1. Public — used to decide
  * whether sign-up should be offered at all. */

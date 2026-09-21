@@ -20,7 +20,7 @@ import {
 } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import type { Icon } from '@tabler/icons-react'
-import { adminStatsQueryOptions } from '#/lib/queries/admin'
+import { adminStatsQueryOptions } from '#/lib/queries/admin.query'
 
 export const Route = createFileRoute('/admin/')({
   loader: ({ context }) => {

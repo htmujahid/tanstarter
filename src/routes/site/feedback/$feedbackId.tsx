@@ -13,7 +13,7 @@ import {
 import { IconArrowLeft, IconMessageOff } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { FeedbackDetail } from '#/components/site/feedback/feedback-detail'
-import { feedbackQueryOptions } from '#/lib/queries/feedback'
+import { feedbackQueryOptions } from '#/lib/queries/feedback.query'
 
 export const Route = createFileRoute('/site/feedback/$feedbackId')({
   loader: async ({ context, params }) => {

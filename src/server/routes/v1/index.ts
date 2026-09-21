@@ -1,8 +1,8 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { registerSecuritySchemes, mountDocs } from '#/server/openapi/mount'
-import announcements from './announcements'
-import contact from './contact'
-import feedback from './feedback'
+import announcements from './announcements.v1'
+import contact from './contact.v1'
+import feedback from './feedback.v1'
 
 /**
  * Public storefront-facing REST API. Stable, versioned contract mirroring

@@ -13,7 +13,7 @@ import { ThemeToggle } from '#/components/theme-toggle'
 import { LocaleToggle } from '#/components/locale-toggle'
 import { signOut } from '#/lib/auth-client'
 import { useSession } from '#/hooks/use-session'
-import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session'
+import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session.query'
 
 export function Header() {
   const { t } = useTranslation()

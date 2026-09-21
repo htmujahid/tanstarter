@@ -14,9 +14,9 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { createContactSubmissionFn } from '#/server/actions/contact'
-import { contactDraftCollection } from '#/lib/collections/contact-draft'
-import type { ContactDraft } from '#/lib/collections/contact-draft'
+import { createContactSubmissionFn } from '#/server/actions/contact.action'
+import { contactDraftCollection } from '#/lib/collections/contact-draft.collection'
+import type { ContactDraft } from '#/lib/collections/contact-draft.collection'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 

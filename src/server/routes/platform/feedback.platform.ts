@@ -11,14 +11,14 @@ import {
   FeedbackListSchema,
   FeedbackSchema,
   UpdateFeedbackStatusSchema,
-} from '#/server/openapi/models/feedback'
+} from '#/server/openapi/models/feedback.model'
 import {
   createFeedback,
   deleteFeedback,
   getFeedbackById,
   listFeedback,
   updateFeedbackStatus,
-} from '#/server/services/feedback'
+} from '#/server/services/feedback.service'
 
 /** Mirrors `src/server/actions/feedback.ts` 1:1. */
 

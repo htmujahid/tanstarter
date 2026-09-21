@@ -12,10 +12,10 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { createFeedbackFn } from '#/server/actions/feedback'
+import { createFeedbackFn } from '#/server/actions/feedback.action'
 import { FEEDBACK_CATEGORIES } from '#/server/db/schemas'
-import { feedbackDraftCollection } from '#/lib/collections/feedback-draft'
-import type { FeedbackDraft } from '#/lib/collections/feedback-draft'
+import { feedbackDraftCollection } from '#/lib/collections/feedback-draft.collection'
+import type { FeedbackDraft } from '#/lib/collections/feedback-draft.collection'
 
 const FEEDBACK_DRAFT_EMPTY: Omit<FeedbackDraft, 'id'> = {
   category: 'general',

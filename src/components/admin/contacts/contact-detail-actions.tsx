@@ -3,7 +3,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { Alert, Button, Group, Modal, Stack, Text } from '@mantine/core'
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { deleteContactSubmissionFn } from '#/server/actions/contact'
+import { deleteContactSubmissionFn } from '#/server/actions/contact.action'
 
 export function ContactDetailActions({ contactId }: { contactId: number }) {
   const { t } = useTranslation('admin')

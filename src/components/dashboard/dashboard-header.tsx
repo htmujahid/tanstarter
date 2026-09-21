@@ -14,7 +14,7 @@ import { OfflineStatusBadge } from '#/components/dashboard/offline-status-badge'
 import { ThemeToggle } from '#/components/theme-toggle'
 import { LocaleToggle } from '#/components/locale-toggle'
 import { signOut } from '#/lib/auth-client'
-import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session'
+import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session.query'
 import type { Session } from '#/server/auth/auth'
 
 export function DashboardHeader({

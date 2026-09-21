@@ -10,14 +10,14 @@ import {
   NoteListSchema,
   NoteSchema,
   UpdateNoteSchema,
-} from '#/server/openapi/models/notes'
+} from '#/server/openapi/models/notes.model'
 import {
   createNote,
   deleteNote,
   getNoteById,
   listNotes,
   updateNote,
-} from '#/server/services/notes'
+} from '#/server/services/notes.service'
 
 /** Mirrors `src/server/actions/notes.ts` 1:1. */
 

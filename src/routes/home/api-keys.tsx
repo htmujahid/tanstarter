@@ -8,7 +8,7 @@ import { ApiKeysTable } from '#/components/home/api-keys/api-keys-table'
 import { ApiKeysTableSkeleton } from '#/components/home/api-keys/api-keys-table-skeleton'
 import { CreateApiKeyForm } from '#/components/home/api-keys/create-api-key-form'
 import { RevealApiKeyModal } from '#/components/home/api-keys/reveal-api-key-modal'
-import { apiKeysQueryOptions } from '#/lib/queries/api-key'
+import { apiKeysQueryOptions } from '#/lib/queries/api-key.query'
 
 export const Route = createFileRoute('/home/api-keys')({
   loader: ({ context }) =>

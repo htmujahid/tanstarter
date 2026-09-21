@@ -7,7 +7,7 @@ import { ContactsTable } from '#/components/admin/contacts/contacts-table'
 import { ContactsTableSkeleton } from '#/components/admin/contacts/contacts-table-skeleton'
 import { SORTABLE_FIELDS } from '#/components/admin/contacts/contacts-table-column'
 import type { SortableField } from '#/components/admin/contacts/contacts-table-column'
-import { contactListQueryOptions } from '#/lib/queries/contact'
+import { contactListQueryOptions } from '#/lib/queries/contact.query'
 
 type ContactSearch = {
   q?: string

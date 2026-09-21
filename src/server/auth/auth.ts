@@ -9,7 +9,7 @@ import { passkey } from '@better-auth/passkey'
 import { i18n, locales } from '@better-auth/i18n'
 import { createMiddleware } from 'hono/factory'
 import { createDb, user } from '#/server/db'
-import { hasAnyUser } from '#/server/services/users'
+import { hasAnyUser } from '#/server/services/users.service'
 import { LOCALE_COOKIE_NAME } from '#/lib/i18n/config'
 import { ur } from '#/server/auth/locales/ur'
 import {

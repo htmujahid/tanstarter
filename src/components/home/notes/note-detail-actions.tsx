@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 import {
   notesCollectionOptions,
   useNotesCollection,
-} from '#/lib/collections/notes'
+} from '#/lib/collections/notes.collection'
 import { useOfflineExecutor, waitForTransaction } from '#/lib/db/offline-executor'
 
 export function NoteDetailActions({ noteId }: { noteId: number }) {

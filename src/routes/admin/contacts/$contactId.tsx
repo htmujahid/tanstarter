@@ -16,7 +16,7 @@ import { IconArrowLeft, IconMailOff } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { DetailPageLayout } from '#/components/layout/detail-page-layout'
 import { ContactDetailActions } from '#/components/admin/contacts/contact-detail-actions'
-import { contactQueryOptions } from '#/lib/queries/contact'
+import { contactQueryOptions } from '#/lib/queries/contact.query'
 
 export const Route = createFileRoute('/admin/contacts/$contactId')({
   loader: async ({ context, params }) => {

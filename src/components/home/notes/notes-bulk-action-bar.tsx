@@ -10,7 +10,7 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { useNotesCollection } from '#/lib/collections/notes'
+import { useNotesCollection } from '#/lib/collections/notes.collection'
 import { useOfflineExecutor, waitForTransaction } from '#/lib/db/offline-executor'
 import type { Note } from '#/server/db'
 

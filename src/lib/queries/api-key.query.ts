@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query'
-import { listApiKeysFn } from '#/server/actions/api-key'
+import { listApiKeysFn } from '#/server/actions/api-key.action'
 
 export function apiKeysQueryOptions() {
   return queryOptions({

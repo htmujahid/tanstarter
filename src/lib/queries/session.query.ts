@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query'
-import { getSessionFn, listSessionsFn } from '#/server/actions/session'
+import { getSessionFn, listSessionsFn } from '#/server/actions/session.action'
 
 export const CURRENT_SESSION_QUERY_KEY = ['session', 'current'] as const
 

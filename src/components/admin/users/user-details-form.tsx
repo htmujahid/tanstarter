@@ -14,7 +14,7 @@ import {
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { authClient } from '#/lib/auth-client'
-import { userQueryOptions } from '#/lib/queries/admin'
+import { userQueryOptions } from '#/lib/queries/admin.query'
 
 export function UserDetailsForm({
   userId,

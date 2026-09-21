@@ -4,7 +4,7 @@ import { Card, EmptyState, Stack, Text, Title } from '@mantine/core'
 import { IconBellRinging } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { formatDateTime } from '#/lib/format-date'
-import { siteAnnouncementsQueryOptions } from '#/lib/queries/announcements'
+import { siteAnnouncementsQueryOptions } from '#/lib/queries/announcements.query'
 
 export function AnnouncementsList() {
   const { t } = useTranslation('site')

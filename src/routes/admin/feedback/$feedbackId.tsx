@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next'
 import { DetailPageLayout } from '#/components/layout/detail-page-layout'
 import { FeedbackDetailActions } from '#/components/admin/feedback/feedback-detail-actions'
 import { FeedbackDetailForm } from '#/components/admin/feedback/feedback-detail-form'
-import { feedbackQueryOptions } from '#/lib/queries/feedback'
+import { feedbackQueryOptions } from '#/lib/queries/feedback.query'
 
 export const Route = createFileRoute('/admin/feedback/$feedbackId')({
   loader: async ({ context, params }) => {

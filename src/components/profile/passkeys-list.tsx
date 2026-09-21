@@ -22,7 +22,7 @@ import {
 } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { authClient } from '#/lib/auth-client'
-import { passkeysQueryOptions } from '#/lib/queries/passkey'
+import { passkeysQueryOptions } from '#/lib/queries/passkey.query'
 
 export function PasskeysList() {
   const { t } = useTranslation('profile')

@@ -2,7 +2,7 @@ import { queryOptions } from '@tanstack/react-query'
 import {
   getContactSubmissionFn,
   listContactSubmissionsFn,
-} from '#/server/actions/contact'
+} from '#/server/actions/contact.action'
 
 export const CONTACT_PAGE_SIZE = 10
 

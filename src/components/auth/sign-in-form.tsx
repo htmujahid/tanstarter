@@ -7,7 +7,7 @@ import { IconAlertCircle } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { PasskeySignInButton } from '#/components/auth/passkey-sign-in-button'
 import { signIn } from '#/lib/auth-client'
-import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session'
+import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session.query'
 
 export function SignInForm() {
   const { t } = useTranslation('auth')

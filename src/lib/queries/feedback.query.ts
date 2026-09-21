@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query'
-import { getFeedbackFn, listFeedbackFn } from '#/server/actions/feedback'
+import { getFeedbackFn, listFeedbackFn } from '#/server/actions/feedback.action'
 import type { FeedbackCategory, FeedbackStatus } from '#/server/db'
 
 export const FEEDBACK_PAGE_SIZE = 10

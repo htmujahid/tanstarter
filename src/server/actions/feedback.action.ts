@@ -8,11 +8,11 @@ import {
   getFeedbackById,
   listFeedback,
   updateFeedbackStatus,
-} from '#/server/services/feedback'
+} from '#/server/services/feedback.service'
 import type {
   CreateFeedbackInput,
   ListFeedbackInput,
-} from '#/server/services/feedback'
+} from '#/server/services/feedback.service'
 import type { FeedbackStatus } from '#/server/db'
 
 export const listFeedbackFn = createServerFn({ method: 'GET' })

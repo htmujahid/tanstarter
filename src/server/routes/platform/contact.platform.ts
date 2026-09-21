@@ -9,13 +9,13 @@ import {
   ContactSubmissionListSchema,
   ContactSubmissionSchema,
   CreateContactSubmissionSchema,
-} from '#/server/openapi/models/contact'
+} from '#/server/openapi/models/contact.model'
 import {
   createContactSubmission,
   deleteContactSubmission,
   getContactSubmissionById,
   listContactSubmissions,
-} from '#/server/services/contact'
+} from '#/server/services/contact.service'
 
 /**
  * Mirrors `src/server/actions/contact.ts` 1:1. `POST /` deliberately stays

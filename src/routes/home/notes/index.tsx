@@ -8,7 +8,7 @@ import { NotesTable } from '#/components/home/notes/notes-table'
 import { NotesTableSkeleton } from '#/components/home/notes/notes-table-skeleton'
 import { SORTABLE_FIELDS } from '#/components/home/notes/notes-table-column'
 import type { SortableField } from '#/components/home/notes/notes-table-column'
-import { notesCollectionOptions } from '#/lib/collections/notes'
+import { notesCollectionOptions } from '#/lib/collections/notes.collection'
 
 type NotesSearch = {
   q?: string

@@ -3,7 +3,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { Alert, Button, Group, Modal, Stack, Text } from '@mantine/core'
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { deleteFeedbackFn } from '#/server/actions/feedback'
+import { deleteFeedbackFn } from '#/server/actions/feedback.action'
 
 export function FeedbackDetailActions({ feedbackId }: { feedbackId: number }) {
   const { t } = useTranslation('admin')

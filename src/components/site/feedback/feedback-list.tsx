@@ -12,7 +12,7 @@ import {
 import { IconMessageCircle, IconPlus } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { formatDateTime } from '#/lib/format-date'
-import { feedbackListQueryOptions } from '#/lib/queries/feedback'
+import { feedbackListQueryOptions } from '#/lib/queries/feedback.query'
 import type { FeedbackCategory, FeedbackStatus } from '#/server/db'
 
 const CATEGORY_COLORS: Record<string, string> = {

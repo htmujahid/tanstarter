@@ -18,8 +18,8 @@ import {
   announcementsTableFeatures,
 } from '#/components/admin/announcements/announcements-table-column'
 import type { SortableField } from '#/components/admin/announcements/announcements-table-column'
-import { ANNOUNCEMENTS_PAGE_SIZE } from '#/lib/queries/announcements'
-import { announcementsCollectionOptions } from '#/lib/collections/announcements'
+import { ANNOUNCEMENTS_PAGE_SIZE } from '#/lib/queries/announcements.query'
+import { announcementsCollectionOptions } from '#/lib/collections/announcements.collection'
 
 export function AnnouncementsTable({
   q,

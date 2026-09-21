@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next'
 import { DetailPageLayout } from '#/components/layout/detail-page-layout'
 import { AnnouncementDetailActions } from '#/components/admin/announcements/announcement-detail-actions'
 import { AnnouncementDetailsForm } from '#/components/admin/announcements/announcement-details-form'
-import { announcementsCollectionOptions } from '#/lib/collections/announcements'
+import { announcementsCollectionOptions } from '#/lib/collections/announcements.collection'
 
 export const Route = createFileRoute('/admin/announcements/$announcementId')({
   loader: async ({ context, params }) => {

@@ -20,7 +20,7 @@ import { UserDetailActions } from '#/components/admin/users/user-detail-actions'
 import { UserDetailsForm } from '#/components/admin/users/user-details-form'
 import { UserRoleForm } from '#/components/admin/users/user-role-form'
 import { UserSessionsCard } from '#/components/admin/users/user-sessions-card'
-import { userQueryOptions, userSessionsQueryOptions } from '#/lib/queries/admin'
+import { userQueryOptions, userSessionsQueryOptions } from '#/lib/queries/admin.query'
 
 export const Route = createFileRoute('/admin/users/$userId')({
   loader: async ({ context, params }) => {

@@ -10,7 +10,7 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { deleteContactSubmissionFn } from '#/server/actions/contact'
+import { deleteContactSubmissionFn } from '#/server/actions/contact.action'
 import type { ContactSubmission } from '#/server/db/schemas'
 
 export function ContactsBulkActionBar({

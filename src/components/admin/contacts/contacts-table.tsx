@@ -21,7 +21,7 @@ import type { SortableField } from '#/components/admin/contacts/contacts-table-c
 import {
   CONTACT_PAGE_SIZE,
   contactListQueryOptions,
-} from '#/lib/queries/contact'
+} from '#/lib/queries/contact.query'
 
 export function ContactsTable({
   q,

@@ -3,9 +3,9 @@ import {
   createNoteFn,
   deleteNoteFn,
   updateNoteFn,
-} from '#/server/actions/notes'
+} from '#/server/actions/notes.action'
 import type { OfflineConfig } from '@tanstack/offline-transactions'
-import type { NotesCollection } from '#/lib/collections/notes'
+import type { NotesCollection } from '#/lib/collections/notes.collection'
 import type { Note } from '#/server/db'
 
 async function callOrNonRetriable<T>(fn: () => Promise<T>): Promise<T> {

@@ -18,7 +18,7 @@ import {
   notesTableFeatures,
 } from '#/components/home/notes/notes-table-column'
 import type { SortableField } from '#/components/home/notes/notes-table-column'
-import { notesCollectionOptions } from '#/lib/collections/notes'
+import { notesCollectionOptions } from '#/lib/collections/notes.collection'
 
 const NOTES_PAGE_SIZE = 10
 

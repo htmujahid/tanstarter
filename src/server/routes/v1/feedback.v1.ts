@@ -9,12 +9,12 @@ import {
   CreateFeedbackSchema,
   FeedbackListSchema,
   FeedbackSchema,
-} from '#/server/openapi/models/feedback'
+} from '#/server/openapi/models/feedback.model'
 import {
   createFeedback,
   getFeedbackById,
   listFeedback,
-} from '#/server/services/feedback'
+} from '#/server/services/feedback.service'
 
 /**
  * Storefront feedback — signed-in visitors submitting and reviewing their

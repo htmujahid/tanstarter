@@ -4,8 +4,8 @@ import { ChangePasswordForm } from '#/components/profile/change-password-form'
 import { PasskeysList } from '#/components/profile/passkeys-list'
 import { ProfileForm } from '#/components/profile/profile-form'
 import { SessionsList } from '#/components/profile/sessions-list'
-import { passkeysQueryOptions } from '#/lib/queries/passkey'
-import { sessionsQueryOptions } from '#/lib/queries/session'
+import { passkeysQueryOptions } from '#/lib/queries/passkey.query'
+import { sessionsQueryOptions } from '#/lib/queries/session.query'
 
 export const Route = createFileRoute('/home/profile')({
   loader: async ({ context }) => {

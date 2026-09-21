@@ -12,7 +12,7 @@ import {
   IconSelector,
 } from '@tabler/icons-react'
 import type { TFunction } from 'i18next'
-import type { listFeedback } from '#/server/services/feedback'
+import type { listFeedback } from '#/server/services/feedback.service'
 
 export const SORTABLE_FIELDS = ['createdAt', 'updatedAt'] as const
 export type SortableField = (typeof SORTABLE_FIELDS)[number]

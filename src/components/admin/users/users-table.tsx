@@ -19,7 +19,7 @@ import {
   usersTableFeatures,
 } from '#/components/admin/users/users-table-column'
 import type { SortableField } from '#/components/admin/users/users-table-column'
-import { USERS_PAGE_SIZE, usersQueryOptions } from '#/lib/queries/admin'
+import { USERS_PAGE_SIZE, usersQueryOptions } from '#/lib/queries/admin.query'
 
 export function UsersTable({
   q,

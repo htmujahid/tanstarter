@@ -2,7 +2,7 @@ import { queryOptions } from '@tanstack/react-query'
 import {
   getPublicAnnouncementFn,
   listPublicAnnouncementsFn,
-} from '#/server/actions/announcements'
+} from '#/server/actions/announcements.action'
 import type { SortableField } from '#/components/admin/announcements/announcements-table-column'
 
 export const ANNOUNCEMENTS_PAGE_SIZE = 10

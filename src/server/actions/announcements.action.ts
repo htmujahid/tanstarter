@@ -8,12 +8,12 @@ import {
   getAnnouncementById,
   listAnnouncements,
   updateAnnouncement,
-} from '#/server/services/announcements'
+} from '#/server/services/announcements.service'
 import type {
   CreateAnnouncementInput,
   ListAnnouncementsInput,
   UpdateAnnouncementInput,
-} from '#/server/services/announcements'
+} from '#/server/services/announcements.service'
 
 export const listAnnouncementsFn = createServerFn({ method: 'GET' })
   .middleware([authMiddleware])

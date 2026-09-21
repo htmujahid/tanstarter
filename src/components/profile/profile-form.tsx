@@ -15,7 +15,7 @@ import {
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { authClient } from '#/lib/auth-client'
-import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session'
+import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session.query'
 import type { Session } from '#/server/auth/auth'
 
 const USERNAME_PATTERN = /^[a-zA-Z0-9_]+$/

@@ -5,7 +5,7 @@ import { Alert, Button, Divider, Stack } from '@mantine/core'
 import { IconAlertCircle, IconFingerprint } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { signIn } from '#/lib/auth-client'
-import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session'
+import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session.query'
 
 export function PasskeySignInButton() {
   const { t } = useTranslation('auth')

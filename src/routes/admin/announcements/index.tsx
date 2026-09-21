@@ -8,7 +8,7 @@ import { AnnouncementsTableSkeleton } from '#/components/admin/announcements/ann
 import { CreateAnnouncementForm } from '#/components/admin/announcements/create-announcement-form'
 import { SORTABLE_FIELDS } from '#/components/admin/announcements/announcements-table-column'
 import type { SortableField } from '#/components/admin/announcements/announcements-table-column'
-import { announcementsCollectionOptions } from '#/lib/collections/announcements'
+import { announcementsCollectionOptions } from '#/lib/collections/announcements.collection'
 
 type AnnouncementsSearch = {
   q?: string

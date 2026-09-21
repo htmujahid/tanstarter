@@ -14,7 +14,7 @@ import { Sidebar } from '#/components/dashboard/sidebar'
 import { RouteError } from '#/components/layout/route-error'
 import { SectionNotFound } from '#/components/layout/section-not-found'
 import { authClient } from '#/lib/auth-client'
-import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session'
+import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session.query'
 
 const NAVBAR_WIDTH_EXPANDED = 260
 const NAVBAR_WIDTH_COLLAPSED = 80

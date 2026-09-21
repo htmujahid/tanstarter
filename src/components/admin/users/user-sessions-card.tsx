@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next'
 import type { TFunction } from 'i18next'
 import { authClient } from '#/lib/auth-client'
 import { formatDateTime } from '#/lib/format-date'
-import { userSessionsQueryOptions } from '#/lib/queries/admin'
+import { userSessionsQueryOptions } from '#/lib/queries/admin.query'
 
 function describeUserAgent(
   t: TFunction<'admin'>,

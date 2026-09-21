@@ -21,7 +21,7 @@ import type { SortableField } from '#/components/admin/feedback/feedback-table-c
 import {
   FEEDBACK_PAGE_SIZE,
   feedbackListQueryOptions,
-} from '#/lib/queries/feedback'
+} from '#/lib/queries/feedback.query'
 import type { FeedbackCategory, FeedbackStatus } from '#/server/db/schemas'
 
 export function FeedbackTable({

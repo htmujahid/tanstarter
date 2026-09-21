@@ -6,8 +6,8 @@ import { errorResponse, jsonResponse } from '#/server/openapi/responses'
 import {
   AnnouncementListSchema,
   AnnouncementSchema,
-} from '#/server/openapi/models/announcements'
-import { getAnnouncementById, listAnnouncements } from '#/server/services/announcements'
+} from '#/server/openapi/models/announcements.model'
+import { getAnnouncementById, listAnnouncements } from '#/server/services/announcements.service'
 
 const app = createAuthOpenApiApp()
 

@@ -10,14 +10,14 @@ import {
   AnnouncementSchema,
   CreateAnnouncementSchema,
   UpdateAnnouncementSchema,
-} from '#/server/openapi/models/announcements'
+} from '#/server/openapi/models/announcements.model'
 import {
   createAnnouncement,
   deleteAnnouncement,
   getAnnouncementById,
   listAnnouncements,
   updateAnnouncement,
-} from '#/server/services/announcements'
+} from '#/server/services/announcements.service'
 
 /**
  * Mirrors `src/server/actions/announcements.ts`'s authenticated functions

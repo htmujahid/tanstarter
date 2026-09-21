@@ -5,7 +5,7 @@ import { IconPencil } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { useSession } from '#/hooks/use-session'
 import { formatDateTime } from '#/lib/format-date'
-import { siteAnnouncementQueryOptions } from '#/lib/queries/announcements'
+import { siteAnnouncementQueryOptions } from '#/lib/queries/announcements.query'
 
 export function AnnouncementDetail({
   announcementId,

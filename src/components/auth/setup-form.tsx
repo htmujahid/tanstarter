@@ -6,7 +6,7 @@ import { Alert, Button, PasswordInput, Stack, TextInput } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { signUp } from '#/lib/auth-client'
-import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session'
+import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session.query'
 
 export function SetupForm() {
   const { t } = useTranslation('auth')

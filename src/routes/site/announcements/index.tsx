@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Container, Stack, Text, Title } from '@mantine/core'
 import { useTranslation } from 'react-i18next'
 import { AnnouncementsList } from '#/components/site/announcements/announcements-list'
-import { siteAnnouncementsQueryOptions } from '#/lib/queries/announcements'
+import { siteAnnouncementsQueryOptions } from '#/lib/queries/announcements.query'
 
 export const Route = createFileRoute('/site/announcements/')({
   loader: ({ context }) =>

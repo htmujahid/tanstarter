@@ -9,7 +9,7 @@ import { UsersTable } from '#/components/admin/users/users-table'
 import { UsersTableSkeleton } from '#/components/admin/users/users-table-skeleton'
 import { SORTABLE_FIELDS } from '#/components/admin/users/users-table-column'
 import type { SortableField } from '#/components/admin/users/users-table-column'
-import { usersQueryOptions } from '#/lib/queries/admin'
+import { usersQueryOptions } from '#/lib/queries/admin.query'
 
 type UsersSearch = {
   q?: string

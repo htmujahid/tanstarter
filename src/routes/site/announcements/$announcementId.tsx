@@ -13,7 +13,7 @@ import {
 import { IconArrowLeft, IconBellOff } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { AnnouncementDetail } from '#/components/site/announcements/announcement-detail'
-import { siteAnnouncementQueryOptions } from '#/lib/queries/announcements'
+import { siteAnnouncementQueryOptions } from '#/lib/queries/announcements.query'
 
 export const Route = createFileRoute('/site/announcements/$announcementId')({
   loader: async ({ context, params }) => {

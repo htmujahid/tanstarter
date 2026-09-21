@@ -2,7 +2,7 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 import { Badge, Card, Group, Stack, Text } from '@mantine/core'
 import { useTranslation } from 'react-i18next'
 import { formatDateTime } from '#/lib/format-date'
-import { feedbackQueryOptions } from '#/lib/queries/feedback'
+import { feedbackQueryOptions } from '#/lib/queries/feedback.query'
 import type { FeedbackCategory, FeedbackStatus } from '#/server/db'
 
 const CATEGORY_COLORS: Record<string, string> = {

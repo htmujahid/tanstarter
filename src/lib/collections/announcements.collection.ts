@@ -5,7 +5,7 @@ import {
   deleteAnnouncementFn,
   listAnnouncementsFn,
   updateAnnouncementFn,
-} from '#/server/actions/announcements'
+} from '#/server/actions/announcements.action'
 import type { QueryClient } from '@tanstack/react-query'
 import type { Announcement } from '#/server/db'
 

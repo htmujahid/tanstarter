@@ -6,7 +6,7 @@ import { IconPlus } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { CreateFeedbackForm } from '#/components/site/feedback/create-feedback-form'
 import { FeedbackList } from '#/components/site/feedback/feedback-list'
-import { feedbackListQueryOptions } from '#/lib/queries/feedback'
+import { feedbackListQueryOptions } from '#/lib/queries/feedback.query'
 
 export const Route = createFileRoute('/site/feedback/')({
   loader: ({ context }) =>

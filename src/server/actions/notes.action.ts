@@ -8,12 +8,12 @@ import {
   getNoteById,
   listNotes,
   updateNote,
-} from '#/server/services/notes'
+} from '#/server/services/notes.service'
 import type {
   CreateNoteInput,
   ListNotesInput,
   UpdateNoteInput,
-} from '#/server/services/notes'
+} from '#/server/services/notes.service'
 
 export const listNotesFn = createServerFn({ method: 'GET' })
   .middleware([authMiddleware])

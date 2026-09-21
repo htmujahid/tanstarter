@@ -4,7 +4,7 @@ import { eq, useDbClient, useLiveQuery } from '@tanstack/react-db'
 import { Alert, Button, Group, Modal, Stack, Text } from '@mantine/core'
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { announcementsCollectionOptions } from '#/lib/collections/announcements'
+import { announcementsCollectionOptions } from '#/lib/collections/announcements.collection'
 
 export function AnnouncementDetailActions({
   announcementId,

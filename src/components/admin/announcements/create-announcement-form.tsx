@@ -13,7 +13,7 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { announcementsCollectionOptions } from '#/lib/collections/announcements'
+import { announcementsCollectionOptions } from '#/lib/collections/announcements.collection'
 
 export function CreateAnnouncementForm({
   opened,

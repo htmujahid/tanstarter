@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next'
 import { DetailPageLayout } from '#/components/layout/detail-page-layout'
 import { NoteDetailActions } from '#/components/home/notes/note-detail-actions'
 import { NoteDetailsForm } from '#/components/home/notes/note-details-form'
-import { notesCollectionOptions } from '#/lib/collections/notes'
+import { notesCollectionOptions } from '#/lib/collections/notes.collection'
 
 export const Route = createFileRoute('/home/notes/$noteId')({
   loader: async ({ context, params }) => {

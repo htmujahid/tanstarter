@@ -5,7 +5,7 @@ import { IconSearch } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { FeedbackTable } from '#/components/admin/feedback/feedback-table'
 import { FeedbackTableSkeleton } from '#/components/admin/feedback/feedback-table-skeleton'
-import { feedbackListQueryOptions } from '#/lib/queries/feedback'
+import { feedbackListQueryOptions } from '#/lib/queries/feedback.query'
 import { FEEDBACK_CATEGORIES, FEEDBACK_STATUSES } from '#/server/db/schemas'
 import type { FeedbackCategory, FeedbackStatus } from '#/server/db/schemas'
 

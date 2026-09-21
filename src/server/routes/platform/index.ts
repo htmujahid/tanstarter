@@ -1,10 +1,10 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { registerSecuritySchemes, mountDocs } from '#/server/openapi/mount'
-import announcements from './announcements'
-import contact from './contact'
-import feedback from './feedback'
-import notes from './notes'
-import setup from './setup'
+import announcements from './announcements.platform'
+import contact from './contact.platform'
+import feedback from './feedback.platform'
+import notes from './notes.platform'
+import setup from './setup.platform'
 
 /**
  * Internal automation API — a 1:1 REST mirror of every `createServerFn` in

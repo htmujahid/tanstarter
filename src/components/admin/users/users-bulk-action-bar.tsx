@@ -20,7 +20,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import { authClient } from '#/lib/auth-client'
 import { BanUserModal } from '#/components/admin/users/ban-user-modal'
-import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session'
+import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session.query'
 import type { AdminUser } from '#/components/admin/users/users-table-column'
 
 export function UsersBulkActionBar({

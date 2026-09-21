@@ -7,11 +7,11 @@ import {
   deleteContactSubmission,
   getContactSubmissionById,
   listContactSubmissions,
-} from '#/server/services/contact'
+} from '#/server/services/contact.service'
 import type {
   CreateContactSubmissionInput,
   ListContactSubmissionsInput,
-} from '#/server/services/contact'
+} from '#/server/services/contact.service'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 

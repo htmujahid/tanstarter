@@ -3,7 +3,7 @@ import { getRequest } from '@tanstack/react-start/server'
 import { getAuth } from '#/server/auth/auth'
 import { authMiddleware } from '#/server/auth/middleware'
 import { getDb } from '#/server/db'
-import { getUserStats } from '#/server/services/users'
+import { getUserStats } from '#/server/services/users.service'
 import type { Session } from '#/server/auth/auth'
 
 export const listUsersFn = createServerFn({ method: 'GET' })

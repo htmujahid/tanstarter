@@ -2,7 +2,7 @@ import { collectionOptions, useDbClient } from '@tanstack/react-db'
 import { queryCollectionOptions } from '@tanstack/query-db-collection'
 import { persistedCollectionOptions } from '@tanstack/browser-db-sqlite-persistence'
 import { persistence } from '#/lib/db/client-persistence'
-import { listNotesFn } from '#/server/actions/notes'
+import { listNotesFn } from '#/server/actions/notes.action'
 import type { QueryClient } from '@tanstack/react-query'
 import type { Note } from '#/server/db'
 

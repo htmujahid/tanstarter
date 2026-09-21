@@ -5,8 +5,8 @@ import { errorResponse, jsonResponse } from '#/server/openapi/responses'
 import {
   ContactSubmissionSchema,
   CreateContactSubmissionSchema,
-} from '#/server/openapi/models/contact'
-import { createContactSubmission } from '#/server/services/contact'
+} from '#/server/openapi/models/contact.model'
+import { createContactSubmission } from '#/server/services/contact.service'
 
 /**
  * Public "Contact us" form submission — mirrors `createContactSubmissionFn`,

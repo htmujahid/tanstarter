@@ -24,22 +24,39 @@ request handler (`createStartHandler`), which serves the file-based routes in
 intentionally unused** — API surface is Hono, always, so there's one router,
 one auth story, and one OpenAPI doc instead of two.
 
+## Naming convention
+
+Every layer described below is one-file-per-domain inside its own folder
+(`server/services/notes.service.ts`, `server/actions/notes.action.ts`, ...).
+Files are named `<domain>.<category>.ts`, not just `<domain>.ts` — the
+category suffix (`.service`, `.action`, `.platform`, `.v1`, `.collection`,
+`.query`, `.mutation`, `.model`, `.schema`) matches the folder it lives in.
+This exists purely for editor ergonomics: with folder-only naming, a fuzzy
+"go to file" search for `notes` used to return ~9 identically-named
+`notes.ts` files with no way to tell them apart from the filename alone;
+`notes.service.ts` vs `notes.action.ts` vs `notes.platform.ts` etc. now
+disambiguate instantly. The folder still owns the actual layering semantics —
+the suffix is a search/readability aid, not a second source of truth — so a
+new domain's file always goes in the layer's folder with `.` + that folder's
+singular name (`routes/platform/<domain>.platform.ts`,
+`routes/v1/<domain>.v1.ts`) appended before `.ts`.
+
 ## Server-side layering
 
 Four layers, each with a narrow job. New domains add one file per layer.
 
 ```
-server/services/<domain>.ts        pure drizzle queries, no auth, no framework
-server/actions/<domain>.ts         createServerFn — used by src/routes/** (frontend)
-server/routes/platform/<domain>.ts Hono+OpenAPI — 1:1 REST mirror of actions, for automation
-server/routes/v1/<domain>.ts       Hono+OpenAPI — public/versioned storefront API
+server/services/<domain>.service.ts        pure drizzle queries, no auth, no framework
+server/actions/<domain>.action.ts          createServerFn — used by src/routes/** (frontend)
+server/routes/platform/<domain>.platform.ts Hono+OpenAPI — 1:1 REST mirror of actions, for automation
+server/routes/v1/<domain>.v1.ts            Hono+OpenAPI — public/versioned storefront API
 ```
 
 ### `server/services/*`
 
 Plain functions taking a `Database` (drizzle) plus plain args, returning plain
 data. No `createServerFn`, no Hono, no auth check — just query logic
-(`server/services/notes.ts`: `listNotes`, `getNoteById`, `createNote`,
+(`server/services/notes.service.ts`: `listNotes`, `getNoteById`, `createNote`,
 `updateNote`, `deleteNote`). Both the `actions` layer and the `routes/platform`
 layer call straight into these, so business logic and SQL live in exactly one
 place per domain.
@@ -48,7 +65,7 @@ place per domain.
 
 `createServerFn` calls consumed by the React frontend (`src/routes/**`,
 `src/lib/collections/**`, `src/lib/queries/**`). Pattern, every time
-(`server/actions/notes.ts`):
+(`server/actions/notes.action.ts`):
 
 ```ts
 export const createNoteFn = createServerFn({ method: 'POST' })
