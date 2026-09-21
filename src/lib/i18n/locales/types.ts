@@ -94,7 +94,7 @@ export interface CommonTranslations {
     collapse: string
     expand: string
     close: string
-    backToStore: string
+    backToHome: string
   }
   statCard: {
     vsLastPeriod: string

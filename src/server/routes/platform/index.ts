@@ -11,7 +11,7 @@ import setup from './setup.platform'
  * `src/server/actions/`. Meant for programmatic/agent consumers acting on
  * behalf of a signed-in user (session cookie or API key — both work here
  * since `requireAuth` resolves either transparently), not for the
- * storefront (see `v1` for that).
+ * public site (see `v1` for that).
  *
  * Session/passkey/api-key/admin management deliberately aren't mirrored
  * here — they were pure passthroughs to better-auth's own API
@@ -28,6 +28,6 @@ const platform = new OpenAPIHono<{ Bindings: Env }>()
   .route('/notes', notes)
 
 registerSecuritySchemes(platform)
-mountDocs(platform, 'Commerce API — Platform')
+mountDocs(platform, 'Starter Kit API — Platform')
 
 export default platform

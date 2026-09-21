@@ -1,6 +1,6 @@
 import { Link, Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 import { Group, Stack, Text, Title } from '@mantine/core'
-import { IconShoppingBag } from '@tabler/icons-react'
+import { IconRocket } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { features } from '#/lib/features'
 import { RouteError } from '#/components/layout/route-error'
@@ -36,7 +36,7 @@ function AuthLayout() {
         />
 
         <Link to="/" className="relative inline-flex w-fit items-center gap-2">
-          <IconShoppingBag size={28} stroke={1.5} />
+          <IconRocket size={28} stroke={1.5} />
           <Text fw={700} size="lg" c="white">
             {tCommon('app.name')}
           </Text>
@@ -82,7 +82,7 @@ function AuthLayout() {
       <div className="flex items-center justify-center p-6 sm:p-10">
         <div className="w-full max-w-sm">
           <div className="mb-8 flex items-center gap-2 lg:hidden">
-            <IconShoppingBag size={24} stroke={1.75} />
+            <IconRocket size={24} stroke={1.75} />
             <Text fw={700} size="lg">
               {tCommon('app.name')}
             </Text>

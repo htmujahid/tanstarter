@@ -2,19 +2,18 @@ import type { SiteTranslations } from '#/lib/i18n/locales/types'
 
 export const site: SiteTranslations = {
   landing: {
-    badge: 'Built for modern storefronts',
-    heroTitle: 'Sell online without',
-    heroHighlight: 'the overhead',
+    badge: 'A TanStack Start starter kit',
+    heroTitle: 'Build your next app',
+    heroHighlight: 'without the boilerplate',
     subtitle:
-      'Launch a fast, secure storefront your customers will love. Built to get out of your way, so you can focus on selling.',
+      'Authentication, role-based permissions, offline-first data, and a Cloudflare-native API — all wired up, so you can focus on your product.',
     getHelp: 'Get help',
     announcementsLink: 'Announcements',
     contactLink: 'Contact us',
   },
   help: {
     title: 'Help & FAQ',
-    subtitle:
-      'Answers to common questions about running your store from this dashboard.',
+    subtitle: 'Answers to common questions about using this dashboard.',
     faqs: [
       {
         question: 'How do I add a new product?',

@@ -163,7 +163,7 @@ export function AdminSidebar({
 
           <Stack gap={4} align="center">
             <Tooltip
-              label={tCommon('sidebar.backToStore')}
+              label={tCommon('sidebar.backToHome')}
               position="right"
               withArrow
             >
@@ -249,7 +249,7 @@ export function AdminSidebar({
             <NavLink
               component={Link}
               to="/home"
-              label={tCommon('sidebar.backToStore')}
+              label={tCommon('sidebar.backToHome')}
               leftSection={
                 <IconArrowLeft size={18} stroke={1.75} className="icon-rtl-flip" />
               }

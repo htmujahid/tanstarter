@@ -2,9 +2,10 @@ import type { AuthTranslations } from '#/lib/i18n/locales/types'
 
 export const auth: AuthTranslations = {
   layout: {
-    title: 'Everything you need to sell online.',
-    subtitle: 'Launch a fast, secure storefront and manage it all from one place.',
-    copyright: '© {{year}} Commerce',
+    title: 'Everything you need to ship your next app.',
+    subtitle:
+      'Authentication, permissions, and an admin dashboard — wired up and ready to build on.',
+    copyright: '© {{year}} Starter Kit',
   },
   signIn: {
     title: 'Welcome back',
@@ -20,7 +21,7 @@ export const auth: AuthTranslations = {
   },
   setup: {
     title: 'Get started',
-    subtitle: 'Create the first account to set up your store',
+    subtitle: 'Create the first account to get started',
     nameLabel: 'Name',
     namePlaceholder: 'Jane Doe',
     nameRequired: 'Name is required',

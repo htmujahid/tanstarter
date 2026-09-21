@@ -4,8 +4,8 @@ import { Anchor, Avatar, Button, Group, Menu, Text } from '@mantine/core'
 import {
   IconHome,
   IconLogout,
+  IconRocket,
   IconShieldLock,
-  IconShoppingBag,
   IconUserCircle,
 } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
@@ -26,7 +26,7 @@ export function Header() {
       <Group justify="space-between" px="md" py="sm" wrap="nowrap">
         <Anchor component={Link} to="/" underline="never" c="inherit">
           <Group gap={8} wrap="nowrap">
-            <IconShoppingBag size={24} stroke={1.75} />
+            <IconRocket size={24} stroke={1.75} />
             <Text fw={700} size="lg">
               {t('app.name')}
             </Text>

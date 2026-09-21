@@ -8,7 +8,7 @@ import { Scalar } from '@scalar/hono-api-reference'
  * relative to this page's own URL, not to where each spec is mounted.
  */
 export const apiReferencePage = Scalar({
-  pageTitle: 'Commerce API Reference',
+  pageTitle: 'Starter Kit API Reference',
   sources: [
     { url: '/api/auth/open-api/generate-schema', title: 'Auth' },
     { url: '/api/v1/doc', title: 'v1' },

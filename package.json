@@ -1,5 +1,6 @@
 {
-  "name": "use-commerce",
+  "name": "starter-kit",
+  "description": "A batteries-included TanStack Start admin panel starter kit.",
   "private": true,
   "type": "module",
   "imports": {
@@ -15,8 +16,8 @@
     "check": "prettier --check .",
     "deploy": "npm run build && wrangler deploy",
     "db:generate": "drizzle-kit generate",
-    "db:migrate:local": "wrangler d1 migrations apply commerce-db --local",
-    "db:migrate:remote": "wrangler d1 migrations apply commerce-db --remote",
+    "db:migrate:local": "wrangler d1 migrations apply starter-kit-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply starter-kit-db --remote",
     "db:seed": "tsx scripts/seed-users.ts"
   },
   "dependencies": {

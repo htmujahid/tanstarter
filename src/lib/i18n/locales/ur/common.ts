@@ -2,7 +2,7 @@ import type { CommonTranslations } from '#/lib/i18n/locales/types'
 
 export const common: CommonTranslations = {
   app: {
-    name: 'کامرس',
+    name: 'سٹارٹر کٹ',
   },
   actions: {
     getStarted: 'شروع کریں',
@@ -79,23 +79,24 @@ export const common: CommonTranslations = {
   },
   features: {
     trust: {
-      title: 'صارفین کا بھروسہ',
-      description: 'ہر خریدار کے لیے محفوظ سائن ان اور محفوظ اکاؤنٹس۔',
+      title: 'پہلے سے محفوظ',
+      description:
+        'محفوظ سائن ان اور محفوظ اکاؤنٹس، رول کی بنیاد پر اجازتوں کے ساتھ۔',
     },
     speed: {
       title: 'ہر جگہ تیز رفتار',
-      description: 'ہر آلے پر ہر خریدار کے لیے صفحات فوری لوڈ ہوتے ہیں۔',
+      description: 'ہر آلے پر ہر صارف کے لیے صفحات فوری لوڈ ہوتے ہیں۔',
     },
     design: {
       title: 'دن ہو یا رات، شاندار نظر آئے',
-      description: 'ایک صاف ستھرا اسٹور فرنٹ جو لائٹ اور ڈارک موڈ کے مطابق ڈھل جاتا ہے۔',
+      description: 'ایک صاف ستھرا انٹرفیس جو لائٹ اور ڈارک موڈ کے مطابق ڈھل جاتا ہے۔',
     },
   },
   sidebar: {
     collapse: 'سائیڈبار سکیڑیں',
     expand: 'سائیڈبار پھیلائیں',
     close: 'سائیڈبار بند کریں',
-    backToStore: 'اسٹور پر واپس جائیں',
+    backToHome: 'ہوم پر واپس جائیں',
   },
   statCard: {
     vsLastPeriod: 'پچھلی مدت کے مقابلے میں',

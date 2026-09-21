@@ -4,7 +4,7 @@ import type {
   PersistedCollectionPersistence,
 } from '@tanstack/browser-db-sqlite-persistence'
 
-const DATABASE_NAME = 'commerce-app.sqlite'
+const DATABASE_NAME = 'starter-kit-app.sqlite'
 
 let browserDatabase: BrowserWASQLiteDatabase | undefined
 let browserCoordinator: BrowserCollectionCoordinatorType | undefined

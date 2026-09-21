@@ -1,7 +1,7 @@
 {
-  "name": "Commerce",
-  "short_name": "Commerce",
-  "description": "Launch a fast, secure storefront your customers will love.",
+  "name": "Starter Kit",
+  "short_name": "Starter",
+  "description": "A batteries-included TanStack Start admin panel starter kit.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

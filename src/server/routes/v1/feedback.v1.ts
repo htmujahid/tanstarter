@@ -17,7 +17,7 @@ import {
 } from '#/server/services/feedback.service'
 
 /**
- * Storefront feedback — signed-in visitors submitting and reviewing their
+ * Public site feedback — signed-in visitors submitting and reviewing their
  * own feedback, matching `src/routes/site/feedback`. Status updates and
  * deletion are admin-only and stay out of this public contract.
  */

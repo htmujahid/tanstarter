@@ -14,8 +14,8 @@ import {
   IconChevronRight,
   IconLayoutDashboard,
   IconNotes,
+  IconRocket,
   IconSettings,
-  IconShoppingBag,
   IconX,
 } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
@@ -86,7 +86,7 @@ export function Sidebar({
           onClick={onNavigate}
         >
           <Group gap={8} wrap="nowrap">
-            <IconShoppingBag size={22} stroke={1.75} />
+            <IconRocket size={22} stroke={1.75} />
             {!collapsed && <Text fw={700}>{tCommon('app.name')}</Text>}
           </Group>
         </Anchor>

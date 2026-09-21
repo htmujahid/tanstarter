@@ -60,12 +60,12 @@ export const Route = createRootRouteWithContext<{
           content: 'width=device-width, initial-scale=1',
         },
         {
-          title: 'Commerce | Sell online without the overhead',
+          title: 'Starter Kit | A batteries-included TanStack Start admin panel',
         },
         {
           name: 'description',
           content:
-            'Launch a fast, secure storefront your customers will love. Built to get out of your way, so you can focus on selling.',
+            'A production-ready starter kit for TanStack Start — authentication, role-based permissions, offline-first data, and a Cloudflare-native API, ready to build on.',
         },
         {
           name: 'theme-color',
@@ -73,11 +73,11 @@ export const Route = createRootRouteWithContext<{
         },
         {
           name: 'application-name',
-          content: 'Commerce',
+          content: 'Starter Kit',
         },
         {
           name: 'apple-mobile-web-app-title',
-          content: 'Commerce',
+          content: 'Starter Kit',
         },
         {
           name: 'apple-mobile-web-app-capable',

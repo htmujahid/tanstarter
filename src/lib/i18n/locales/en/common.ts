@@ -2,7 +2,7 @@ import type { CommonTranslations } from '#/lib/i18n/locales/types'
 
 export const common: CommonTranslations = {
   app: {
-    name: 'Commerce',
+    name: 'Starter Kit',
   },
   actions: {
     getStarted: 'Get started',
@@ -79,23 +79,24 @@ export const common: CommonTranslations = {
   },
   features: {
     trust: {
-      title: 'Trusted by customers',
-      description: 'Secure sign-in and protected accounts for every shopper.',
+      title: 'Secure by default',
+      description:
+        'Secure sign-in and protected accounts, with role-based permissions out of the box.',
     },
     speed: {
       title: 'Blazing fast, everywhere',
-      description: 'Pages load instantly for every customer, on any device.',
+      description: 'Pages load instantly for every user, on any device.',
     },
     design: {
       title: 'Looks great, day or night',
-      description: 'A clean storefront that adapts to light and dark mode.',
+      description: 'A clean interface that adapts to light and dark mode.',
     },
   },
   sidebar: {
     collapse: 'Collapse sidebar',
     expand: 'Expand sidebar',
     close: 'Close sidebar',
-    backToStore: 'Back to store',
+    backToHome: 'Back to home',
   },
   statCard: {
     vsLastPeriod: 'vs last period',

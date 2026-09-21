@@ -49,7 +49,7 @@ Four layers, each with a narrow job. New domains add one file per layer.
 server/services/<domain>.service.ts        pure drizzle queries, no auth, no framework
 server/actions/<domain>.action.ts          createServerFn — used by src/routes/** (frontend)
 server/routes/platform/<domain>.platform.ts Hono+OpenAPI — 1:1 REST mirror of actions, for automation
-server/routes/v1/<domain>.v1.ts            Hono+OpenAPI — public/versioned storefront API
+server/routes/v1/<domain>.v1.ts            Hono+OpenAPI — public/versioned site API
 ```
 
 ### `server/services/*`
@@ -99,7 +99,7 @@ Hono + `@hono/zod-openapi`, mounted at `/api/platform`. Doc comment in
 > Internal automation API — a 1:1 REST mirror of every `createServerFn` in
 > `src/server/actions/`. Meant for programmatic/agent consumers acting on
 > behalf of a signed-in user (session cookie or API key — both work here since
-> `requireAuth` resolves either transparently), not for the storefront.
+> `requireAuth` resolves either transparently), not for the public site.
 
 Concretely, for every domain that has actions meant to be automatable
 (`notes`, `contact`, `feedback`, `announcements`, `setup`), there's a
@@ -133,9 +133,9 @@ bundle.
 Hono + OpenAPI, mounted at `/api/v1`. Doc comment in
 `server/routes/v1/index.ts`:
 
-> Public storefront-facing REST API. Stable, versioned contract mirroring
+> Public site-facing REST API. Stable, versioned contract mirroring
 > `src/routes/site/` (contact, announcements, feedback) for any external
-> consumer (a storefront frontend, third-party integration, etc).
+> consumer (a public frontend, third-party integration, etc).
 
 This is the one meant for **third parties using an API key** (the
 `apiKey`/`@better-auth/api-key` plugin), separate from `platform`'s
@@ -148,9 +148,9 @@ endpoints (anyone can submit a contact message or feedback), not the admin
 read/manage side — that admin side only exists as actions +
 `server/routes/platform` (auth'd, permission-checked), never in `v1`.
 
-**Adding a new domain**: if it has an admin-manageable + storefront-visible
+**Adding a new domain**: if it has an admin-manageable + publicly-visible
 shape like announcements, you'll likely want actions (frontend), a
-`platform` mirror (automation), and a `v1` public slice (storefront/3rd
+`platform` mirror (automation), and a `v1` public slice (public site/3rd
 party) — but only build the `v1` slice if the data is actually meant to be
 public/external. Purely internal domains (e.g. `notes`, which is per-user
 private data) only need actions + `platform`, no `v1`.
@@ -199,7 +199,7 @@ src/lib/**           framework-agnostic frontend logic: collections, queries, mu
 ### `routes/`
 
 Mirrors the site's information architecture: `home/**` (signed-in user
-area), `admin/**` (admin area), `site/**` (public storefront), `auth/**`.
+area), `admin/**` (admin area), `site/**` (public-facing pages), `auth/**`.
 A route file's job is `validateSearch`, `loader` (usually just
 `collection.preload()` or nothing — data reads happen via `useLiveQuery`/
 `useQuery` in the component), `staticData.breadcrumb`, and rendering a

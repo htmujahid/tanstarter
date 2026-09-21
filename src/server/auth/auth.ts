@@ -36,11 +36,11 @@ export function createAuth(bindings: Env) {
         ac,
         roles: { admin: adminRole, user: userRole },
       }),
-      passkey({ rpName: 'Commerce' }),
+      passkey({ rpName: 'Starter Kit' }),
       apiKey({
         enableSessionForAPIKeys: true,
         requireName: true,
-        defaultPrefix: 'commerce_',
+        defaultPrefix: 'starter_',
         // `defaultPrefix` is 9 chars; capture past it so `start` actually
         // distinguishes keys instead of just echoing the shared prefix.
         startingCharactersConfig: { charactersLength: 15 },

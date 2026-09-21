@@ -2,9 +2,10 @@ import type { AuthTranslations } from '#/lib/i18n/locales/types'
 
 export const auth: AuthTranslations = {
   layout: {
-    title: 'آن لائن فروخت کے لیے آپ کو ہر چیز میسر ہے۔',
-    subtitle: 'ایک تیز، محفوظ اسٹور فرنٹ لانچ کریں اور اسے ایک ہی جگہ سے منظم کریں۔',
-    copyright: '© {{year}} کامرس',
+    title: 'اپنی اگلی ایپ بنانے کے لیے آپ کو ہر چیز میسر ہے۔',
+    subtitle:
+      'تصدیق، اجازتیں، اور ایک ایڈمن ڈیش بورڈ — سب تیار، بنانے کے لیے۔',
+    copyright: '© {{year}} سٹارٹر کٹ',
   },
   signIn: {
     title: 'خوش آمدید',
@@ -20,7 +21,7 @@ export const auth: AuthTranslations = {
   },
   setup: {
     title: 'شروع کریں',
-    subtitle: 'اپنا اسٹور سیٹ اپ کرنے کے لیے پہلا اکاؤنٹ بنائیں',
+    subtitle: 'شروع کرنے کے لیے پہلا اکاؤنٹ بنائیں',
     nameLabel: 'نام',
     namePlaceholder: 'جین ڈو',
     nameRequired: 'نام درکار ہے',

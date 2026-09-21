@@ -1,16 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <rect width="512" height="512" rx="96" fill="#228be6" />
-  <path
-    d="M208 210v-26c0-26.51 21.49-48 48-48s48 21.49 48 48v26"
-    fill="none"
-    stroke="#ffffff"
-    stroke-width="18"
-    stroke-linecap="round"
-  />
-  <path
-    d="M180 210h152l14 156a20 20 0 0 1-20 22H186a20 20 0 0 1-20-22z"
-    fill="#ffffff"
-  />
-  <circle cx="222" cy="256" r="12" fill="#228be6" />
-  <circle cx="290" cy="256" r="12" fill="#228be6" />
+  <g fill="#ffffff">
+    <path
+      d="M256 108c40 34 62 80 62 130v88h-124v-88c0-50 22-96 62-130z"
+    />
+    <path d="M194 292l-40 66 40-14z" />
+    <path d="M318 292l40 66-40-14z" />
+    <path d="M256 326l-26 56h52z" />
+  </g>
+  <circle cx="256" cy="240" r="22" fill="#228be6" />
 </svg>
