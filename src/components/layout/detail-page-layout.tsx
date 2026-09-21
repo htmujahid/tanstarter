@@ -1,11 +1,12 @@
-import { Container, Grid, Group, Stack, Text, Title } from '@mantine/core'
+import { Container, Group, Stack, Text, Title } from '@mantine/core'
 import type { ReactNode } from 'react'
 
 /**
  * Shared shell for "detail" pages (a single record's view/edit screen):
  * back link + page-level actions on one row, title/description/badges below,
- * and a two-column body. Keep page-specific content in `main`/`sidebar` so
- * new detail pages (products, orders, ...) stay visually consistent.
+ * then `children` rendered as-is. Body layout (single column, two-column
+ * with a sidebar, etc.) is the page's own concern — compose it in `children`
+ * (e.g. a `Grid`/`Grid.Col` pair) so this shell stays generic.
  */
 export function DetailPageLayout({
   backLink,
@@ -13,16 +14,14 @@ export function DetailPageLayout({
   description,
   badges,
   actions,
-  main,
-  sidebar,
+  children,
 }: {
   backLink?: ReactNode
   title?: ReactNode
   description?: ReactNode
   badges?: ReactNode
   actions?: ReactNode
-  main: ReactNode
-  sidebar?: ReactNode
+  children: ReactNode
 }) {
   return (
     <Container size="lg" px={0}>
@@ -46,16 +45,7 @@ export function DetailPageLayout({
           </Stack>
         )}
 
-        <Grid gap="md">
-          <Grid.Col span={{ base: 12, md: sidebar ? 8 : 12 }}>
-            <Stack gap="md">{main}</Stack>
-          </Grid.Col>
-          {sidebar && (
-            <Grid.Col span={{ base: 12, md: 4 }}>
-              <Stack gap="md">{sidebar}</Stack>
-            </Grid.Col>
-          )}
-        </Grid>
+        {children}
       </Stack>
     </Container>
   )

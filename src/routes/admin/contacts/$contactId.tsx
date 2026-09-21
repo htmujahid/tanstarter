@@ -120,27 +120,26 @@ function ContactDetailPage() {
     <DetailPageLayout
       backLink={<BackLink />}
       actions={<ContactDetailActions contactId={contact.id} />}
-      main={
-        <Card withBorder radius="md" padding="lg">
-          <Stack gap="md">
-            <Stack gap={2}>
-              <Title order={4}>{contact.name}</Title>
-              <Text c="dimmed" size="sm">
-                {contact.email}
-              </Text>
-            </Stack>
-
-            <Text style={{ whiteSpace: 'pre-wrap' }}>{contact.message}</Text>
-
+    >
+      <Card withBorder radius="md" padding="lg">
+        <Stack gap="md">
+          <Stack gap={2}>
+            <Title order={4}>{contact.name}</Title>
             <Text c="dimmed" size="sm">
-              {t('contacts.detail.submittedLabel')}{' '}
-              {new Date(
-                contact.createdAt.replace(' ', 'T') + 'Z',
-              ).toLocaleString()}
+              {contact.email}
             </Text>
           </Stack>
-        </Card>
-      }
-    />
+
+          <Text style={{ whiteSpace: 'pre-wrap' }}>{contact.message}</Text>
+
+          <Text c="dimmed" size="sm">
+            {t('contacts.detail.submittedLabel')}{' '}
+            {new Date(
+              contact.createdAt.replace(' ', 'T') + 'Z',
+            ).toLocaleString()}
+          </Text>
+        </Stack>
+      </Card>
+    </DetailPageLayout>
   )
 }

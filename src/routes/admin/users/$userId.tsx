@@ -135,21 +135,24 @@ function UserDetailPage() {
     <DetailPageLayout
       backLink={<BackLink />}
       actions={<UserDetailActions userId={userId} onChanged={invalidate} />}
-      main={
-        <>
-          <UserDetailsForm userId={userId} onSaved={invalidate} />
-          <UserSessionsCard
-            userId={userId}
-            currentSessionToken={session.session.token}
-          />
-        </>
-      }
-      sidebar={
-        <>
-          <UserRoleForm userId={userId} onSaved={invalidate} />
-          <SetUserPasswordForm userId={userId} />
-        </>
-      }
-    />
+    >
+      <Grid gap="md">
+        <Grid.Col span={{ base: 12, md: 8 }}>
+          <Stack gap="md">
+            <UserDetailsForm userId={userId} onSaved={invalidate} />
+            <UserSessionsCard
+              userId={userId}
+              currentSessionToken={session.session.token}
+            />
+          </Stack>
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, md: 4 }}>
+          <Stack gap="md">
+            <UserRoleForm userId={userId} onSaved={invalidate} />
+            <SetUserPasswordForm userId={userId} />
+          </Stack>
+        </Grid.Col>
+      </Grid>
+    </DetailPageLayout>
   )
 }

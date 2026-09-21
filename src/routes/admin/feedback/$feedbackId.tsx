@@ -123,7 +123,8 @@ function FeedbackDetailPage() {
     <DetailPageLayout
       backLink={<BackLink />}
       actions={<FeedbackDetailActions feedbackId={id} />}
-      main={<FeedbackDetailForm feedbackId={id} onSaved={invalidate} />}
-    />
+    >
+      <FeedbackDetailForm feedbackId={id} onSaved={invalidate} />
+    </DetailPageLayout>
   )
 }

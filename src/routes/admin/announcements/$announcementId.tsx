@@ -123,9 +123,8 @@ function AnnouncementDetailPage() {
     <DetailPageLayout
       backLink={<BackLink />}
       actions={<AnnouncementDetailActions announcementId={id} />}
-      main={
-        <AnnouncementDetailsForm announcementId={id} onSaved={invalidate} />
-      }
-    />
+    >
+      <AnnouncementDetailsForm announcementId={id} onSaved={invalidate} />
+    </DetailPageLayout>
   )
 }

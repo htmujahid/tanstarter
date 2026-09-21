@@ -118,7 +118,8 @@ function NoteDetailPage() {
     <DetailPageLayout
       backLink={<BackLink />}
       actions={<NoteDetailActions noteId={id} />}
-      main={<NoteDetailsForm noteId={id} onSaved={invalidate} />}
-    />
+    >
+      <NoteDetailsForm noteId={id} onSaved={invalidate} />
+    </DetailPageLayout>
   )
 }
