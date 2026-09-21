@@ -141,7 +141,7 @@ This is the one meant for **third parties using an API key** (the
 `apiKey`/`@better-auth/api-key` plugin), separate from `platform`'s
 "automation acting as the signed-in user" purpose. Endpoints here mirror
 whatever's public in `src/routes/site/**` — e.g.
-`server/routes/v1/announcements.ts` only exposes published announcements and
+`server/routes/v1/announcements.v1.ts` only exposes published announcements and
 sets `security: []` on the OpenAPI route since no auth is required for those
 GETs. `contact` and `feedback` under `v1` are the public *submission*
 endpoints (anyone can submit a contact message or feedback), not the admin
@@ -240,12 +240,14 @@ domain-specific piece of UI state.
 
 Framework-agnostic frontend logic, split by what kind of thing it is:
 
-- `lib/collections/<domain>.ts` — TanStack DB collection definitions (one
-  file per collection, mirroring `lib/queries/`'s one-file-per-domain
-  layout — see the memory note on this convention).
-- `lib/queries/<domain>.ts` — plain TanStack Query `queryOptions` factories.
-- `lib/mutations/<domain>.ts` — `OfflineConfig['mutationFns']` for domains
-  wired through `@tanstack/offline-transactions` (currently just `notes`).
+- `lib/collections/<domain>.collection.ts` — TanStack DB collection
+  definitions (one file per collection, mirroring `lib/queries/`'s
+  one-file-per-domain layout — see the memory note on this convention).
+- `lib/queries/<domain>.query.ts` — plain TanStack Query `queryOptions`
+  factories.
+- `lib/mutations/<domain>.mutation.ts` — `OfflineConfig['mutationFns']` for
+  domains wired through `@tanstack/offline-transactions` (currently just
+  `notes`).
 - `lib/db/` — the app's own DB client plumbing: `client-persistence.ts`
   (the browser OPFS/SQLite persistence backing `persistedCollectionOptions`,
   browser-only, no-ops on the server) and `offline-executor.ts` (the
@@ -264,10 +266,10 @@ a refresh with local durability**?
 
 | Pattern | Use when | Example domains | Where |
 |---|---|---|---|
-| Plain TanStack Query `queryOptions` | List needs server-side pagination/sort/search, or the data changes too often / is too large to hold client-side as a full synced set | `contact`, `feedback`, `admin` users | `lib/queries/contact.ts`, `lib/queries/admin.ts` — `queryOptions({ queryKey: [...], queryFn: () => listXFn({ data: { limit, offset, ... } }) })`, mutations call `createServerFn`s directly from the component (no collection) |
-| TanStack DB query collection (`collectionOptions` + `queryCollectionOptions`) | Whole table fits comfortably client-side (no server pagination needed), and it doesn't change often/fast enough to need offline durability — just needs live, reactive, optimistic CRUD in memory | `announcements` | `lib/collections/announcements.ts` — `queryFn` loads everything up to a generous cap (`ANNOUNCEMENTS_COLLECTION_LIMIT = 1000`), `onInsert`/`onUpdate`/`onDelete` call the server actions directly and inline (no offline queue — if the request fails, the mutation just fails) |
-| TanStack DB query collection + browser persistence + offline-transactions | Same "fits client-side, no server pagination" shape as above, but the data needs to survive being offline (create/update/delete while disconnected, sync later) | `notes` | `lib/collections/notes.ts` wraps the same `queryCollectionOptions` in `persistedCollectionOptions({ persistence, schemaVersion })` (this app's own `client-persistence.ts`, OPFS/SQLite-backed) for durability; `lib/mutations/notes.ts` + `lib/db/offline-executor.ts` provide the `OfflineConfig['mutationFns']` an `OfflineExecutor` drains once back online. Components use `executor.createOfflineTransaction({ mutationFnName }).mutate(() => collection.insert/update/delete(...))` instead of calling the collection directly, and must not assume `tx.isPersisted.promise` settles promptly while offline — see `lib/db/offline-executor.ts`'s `waitForTransaction` helper |
-| `localStorageCollectionOptions` | Purely client-side state that never touches the server — form drafts, no sync, no server round-trip at all | `contact` and `feedback` form drafts | `lib/collections/contact-draft.ts`, `lib/collections/feedback-draft.ts` |
+| Plain TanStack Query `queryOptions` | List needs server-side pagination/sort/search, or the data changes too often / is too large to hold client-side as a full synced set | `contact`, `feedback`, `admin` users | `lib/queries/contact.query.ts`, `lib/queries/admin.query.ts` — `queryOptions({ queryKey: [...], queryFn: () => listXFn({ data: { limit, offset, ... } }) })`, mutations call `createServerFn`s directly from the component (no collection) |
+| TanStack DB query collection (`collectionOptions` + `queryCollectionOptions`) | Whole table fits comfortably client-side (no server pagination needed), and it doesn't change often/fast enough to need offline durability — just needs live, reactive, optimistic CRUD in memory | `announcements` | `lib/collections/announcements.collection.ts` — `queryFn` loads everything up to a generous cap (`ANNOUNCEMENTS_COLLECTION_LIMIT = 1000`), `onInsert`/`onUpdate`/`onDelete` call the server actions directly and inline (no offline queue — if the request fails, the mutation just fails) |
+| TanStack DB query collection + browser persistence + offline-transactions | Same "fits client-side, no server pagination" shape as above, but the data needs to survive being offline (create/update/delete while disconnected, sync later) | `notes` | `lib/collections/notes.collection.ts` wraps the same `queryCollectionOptions` in `persistedCollectionOptions({ persistence, schemaVersion })` (this app's own `client-persistence.ts`, OPFS/SQLite-backed) for durability; `lib/mutations/notes.mutation.ts` + `lib/db/offline-executor.ts` provide the `OfflineConfig['mutationFns']` an `OfflineExecutor` drains once back online. Components use `executor.createOfflineTransaction({ mutationFnName }).mutate(() => collection.insert/update/delete(...))` instead of calling the collection directly, and must not assume `tx.isPersisted.promise` settles promptly while offline — see `lib/db/offline-executor.ts`'s `waitForTransaction` helper |
+| `localStorageCollectionOptions` | Purely client-side state that never touches the server — form drafts, no sync, no server round-trip at all | `contact` and `feedback` form drafts | `lib/collections/contact-draft.collection.ts`, `lib/collections/feedback-draft.collection.ts` |
 
 Rule of thumb when adding a new domain:
 
@@ -283,4 +285,48 @@ Rule of thumb when adding a new domain:
    via `executor.createOfflineTransaction(...).mutate(...)`.
 4. Is the data never meant to reach the server at all (a scratch draft)? →
    **`localStorageCollectionOptions`**.
+
+## PWA (installability + offline app shell)
+
+This is a separate concern from the data-access matrix above — it's about
+the app shell (pages, assets, install prompt) working offline, not about any
+one domain's data. Everything lives behind a normal production build; there
+is no dev-time service worker.
+
+- `public/site.webmanifest` + `public/icon-*.png`/`favicon.svg`/
+  `apple-touch-icon.png` — the web app manifest and icon set. Regenerate the
+  icons from `scripts/icon-source.svg` (regular) and
+  `scripts/icon-maskable-source.svg` (full-bleed background, glyph kept
+  inside the ~80% "safe zone" Android applies its own mask to) via
+  `node scripts/generate-pwa-icons.mjs` — it shells out to `sharp`, a
+  devDependency kept around specifically so re-branding the icon later is a
+  one-file edit + one command, not a manual re-export in an image editor.
+- `src/routes/__root.tsx`'s `head()` links the manifest and icons and sets
+  the `apple-mobile-web-app-capable`/`mobile-web-app-capable`/
+  `application-name` meta needed for "Add to Home Screen" to treat this as
+  an installable app rather than a bookmark.
+- The `pwaServiceWorker` Vite plugin in `vite.config.ts` runs
+  `workbox-build`'s `generateSW` in a `closeBundle` hook, gated to
+  `this.environment.name === 'client'` (Vite/the Cloudflare plugin build
+  client and SSR bundles as separate environments in the same `vite build`
+  run; the precache manifest only makes sense once, against the finished
+  client output). It precaches every built JS/CSS/font/image/icon/manifest
+  file and adds two runtime-caching rules: `NetworkFirst` for page
+  navigations (so a previously-visited page still renders offline, falling
+  back to the network first with a 3s timeout) and `StaleWhileRevalidate`
+  for images. The output (`dist/client/sw.js`) is picked up automatically by
+  Cloudflare's static-assets binding (`dist/server/wrangler.json`'s
+  generated `assets.directory` points at `dist/client`) — no server-side
+  route needed to serve it.
+- `src/components/pwa/register-service-worker.tsx` registers `/sw.js` from a
+  `useEffect` in the root document, but only when `import.meta.env.PROD` —
+  there's no generated `sw.js` in dev, so registering there would just 404.
+- `src/components/layout/route-error.tsx` (the shared `errorComponent` for
+  the root route and every section layout) checks `useNetwork()` from
+  `@mantine/hooks` and swaps in an "you're offline" message instead of the
+  generic error screen when a loader/render throws while offline — that's
+  almost always "this route wasn't precached / hasn't been visited before,"
+  not a real bug. `src/components/dashboard/offline-status-badge.tsx` (the
+  header badge, already existed before this) uses the same hook for the
+  persistent "Offline" indicator while browsing.
 
