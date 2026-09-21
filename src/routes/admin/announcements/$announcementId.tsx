@@ -16,19 +16,19 @@ import { useTranslation } from 'react-i18next'
 import { DetailPageLayout } from '#/components/layout/detail-page-layout'
 import { AnnouncementDetailActions } from '#/components/admin/announcements/announcement-detail-actions'
 import { AnnouncementDetailsForm } from '#/components/admin/announcements/announcement-details-form'
-import { announcementsCollection } from '#/lib/collections/announcements'
+import { announcementsCollectionOptions } from '#/lib/collections/announcements'
 
 export const Route = createFileRoute('/admin/announcements/$announcementId')({
-  ssr: false,
-  loader: async ({ params }) => {
+  loader: async ({ context, params }) => {
     const id = Number(params.announcementId)
     if (!Number.isInteger(id)) {
       throw notFound()
     }
 
-    await announcementsCollection.preload()
+    const collection = context.dbClient.collection(announcementsCollectionOptions)
+    await collection.preload()
 
-    if (!announcementsCollection.has(id)) {
+    if (!collection.has(id)) {
       throw notFound()
     }
   },

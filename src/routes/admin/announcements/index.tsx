@@ -8,7 +8,7 @@ import { AnnouncementsTableSkeleton } from '#/components/admin/announcements/ann
 import { CreateAnnouncementForm } from '#/components/admin/announcements/create-announcement-form'
 import { SORTABLE_FIELDS } from '#/components/admin/announcements/announcements-table-column'
 import type { SortableField } from '#/components/admin/announcements/announcements-table-column'
-import { announcementsCollection } from '#/lib/collections/announcements'
+import { announcementsCollectionOptions } from '#/lib/collections/announcements'
 
 type AnnouncementsSearch = {
   q?: string
@@ -19,7 +19,6 @@ type AnnouncementsSearch = {
 }
 
 export const Route = createFileRoute('/admin/announcements/')({
-  ssr: false,
   validateSearch: (search: Record<string, unknown>): AnnouncementsSearch => ({
     q: typeof search.q === 'string' && search.q ? search.q : undefined,
     published:
@@ -35,7 +34,8 @@ export const Route = createFileRoute('/admin/announcements/')({
         : undefined,
     page: typeof search.page === 'number' && search.page > 0 ? search.page : 1,
   }),
-  loader: () => announcementsCollection.preload(),
+  loader: ({ context }) =>
+    context.dbClient.collection(announcementsCollectionOptions).preload(),
   pendingComponent: () => <AnnouncementsTableSkeleton />,
   staticData: { breadcrumb: 'Announcements' },
   component: AnnouncementsPage,

@@ -23,8 +23,12 @@ import { currentSessionQueryOptions } from '#/lib/queries/session'
 import { createI18nInstance } from '#/lib/i18n/create-instance'
 import { isRtl } from '#/lib/i18n/config'
 import type { QueryClient } from '@tanstack/react-query'
+import type { DbClient } from '@tanstack/react-db'
 
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
+export const Route = createRootRouteWithContext<{
+  queryClient: QueryClient
+  dbClient: DbClient
+}>()(
   {
     beforeLoad: async ({ context }) => {
       const [session, locale] = await Promise.all([

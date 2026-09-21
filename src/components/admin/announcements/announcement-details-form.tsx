@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { eq, useLiveQuery } from '@tanstack/react-db'
+import { eq, useDbClient, useLiveQuery } from '@tanstack/react-db'
 import { useForm } from '@tanstack/react-form'
 import {
   Alert,
@@ -15,7 +15,7 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { announcementsCollection } from '#/lib/collections/announcements'
+import { announcementsCollectionOptions } from '#/lib/collections/announcements'
 
 export function AnnouncementDetailsForm({
   announcementId,
@@ -23,10 +23,11 @@ export function AnnouncementDetailsForm({
   announcementId: number
 }) {
   const { t } = useTranslation('admin')
+  const dbClient = useDbClient()
   const { data } = useLiveQuery({
     query: (q) =>
       q
-        .from({ announcement: announcementsCollection })
+        .from({ announcement: announcementsCollectionOptions })
         .where(({ announcement }) => eq(announcement.id, announcementId)),
   })
   // The delete action removes this row from the collection immediately
@@ -47,11 +48,13 @@ export function AnnouncementDetailsForm({
       setFormError(null)
       setSuccess(false)
 
-      const tx = announcementsCollection.update(announcement.id, (draft) => {
-        draft.title = value.title
-        draft.body = value.body || null
-        draft.published = value.published
-      })
+      const tx = dbClient
+        .collection(announcementsCollectionOptions)
+        .update(announcement.id, (draft) => {
+          draft.title = value.title
+          draft.body = value.body || null
+          draft.published = value.published
+        })
 
       try {
         await tx.isPersisted.promise

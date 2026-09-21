@@ -40,6 +40,7 @@
     "@tanstack/react-router": "^1.170.38",
     "@tanstack/react-router-devtools": "^1.167.2",
     "@tanstack/react-router-ssr-query": "^1.167.3",
+    "@tanstack/react-router-with-db": "0.1.0",
     "@tanstack/react-start": "^1.168.56",
     "@tanstack/react-table": "^9.2.4",
     "better-auth": "^1.7.5",

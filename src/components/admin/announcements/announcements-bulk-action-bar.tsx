@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useDbClient } from '@tanstack/react-db'
 import {
   ActionBar,
   Alert,
@@ -10,7 +11,7 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { announcementsCollection } from '#/lib/collections/announcements'
+import { announcementsCollectionOptions } from '#/lib/collections/announcements'
 import type { Announcement } from '#/server/db'
 
 export function AnnouncementsBulkActionBar({
@@ -22,6 +23,7 @@ export function AnnouncementsBulkActionBar({
 }) {
   const { t } = useTranslation('admin')
   const { t: tCommon } = useTranslation('common')
+  const dbClient = useDbClient()
   const [actionError, setActionError] = useState<string | null>(null)
   const [deleteAnnouncements, setDeleteAnnouncements] = useState<
     Announcement[]
@@ -32,9 +34,10 @@ export function AnnouncementsBulkActionBar({
     setActionError(null)
     setPending(true)
 
+    const collection = dbClient.collection(announcementsCollectionOptions)
     const results = await Promise.allSettled(
-      deleteAnnouncements.map((announcement) =>
-        announcementsCollection.delete(announcement.id).isPersisted.promise,
+      deleteAnnouncements.map(
+        (announcement) => collection.delete(announcement.id).isPersisted.promise,
       ),
     )
     setPending(false)

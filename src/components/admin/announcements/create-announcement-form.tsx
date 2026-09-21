@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useForm } from '@tanstack/react-form'
+import { useDbClient } from '@tanstack/react-db'
 import {
   Alert,
   Button,
@@ -12,7 +13,7 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { announcementsCollection } from '#/lib/collections/announcements'
+import { announcementsCollectionOptions } from '#/lib/collections/announcements'
 
 export function CreateAnnouncementForm({
   opened,
@@ -25,6 +26,7 @@ export function CreateAnnouncementForm({
 }) {
   const { t } = useTranslation('admin')
   const { t: tCommon } = useTranslation('common')
+  const dbClient = useDbClient()
   const [formError, setFormError] = useState<string | null>(null)
 
   const form = useForm({
@@ -33,7 +35,7 @@ export function CreateAnnouncementForm({
       setFormError(null)
 
       const now = new Date().toISOString()
-      const tx = announcementsCollection.insert({
+      const tx = dbClient.collection(announcementsCollectionOptions).insert({
         id: -Date.now(),
         title: value.title,
         body: value.body || null,

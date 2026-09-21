@@ -19,7 +19,7 @@ import {
 } from '#/components/admin/announcements/announcements-table-column'
 import type { SortableField } from '#/components/admin/announcements/announcements-table-column'
 import { ANNOUNCEMENTS_PAGE_SIZE } from '#/lib/queries/announcements'
-import { announcementsCollection } from '#/lib/collections/announcements'
+import { announcementsCollectionOptions } from '#/lib/collections/announcements'
 
 export function AnnouncementsTable({
   q,
@@ -47,7 +47,7 @@ export function AnnouncementsTable({
 
   const { data } = useLiveQuery({
     query: (query) => {
-      let liveQuery = query.from({ announcement: announcementsCollection })
+      let liveQuery = query.from({ announcement: announcementsCollectionOptions })
 
       if (published !== undefined) {
         liveQuery = liveQuery.where(({ announcement }) =>

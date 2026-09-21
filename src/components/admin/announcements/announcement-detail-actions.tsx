@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import { eq, useLiveQuery } from '@tanstack/react-db'
+import { eq, useDbClient, useLiveQuery } from '@tanstack/react-db'
 import { Alert, Button, Group, Modal, Stack, Text } from '@mantine/core'
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { announcementsCollection } from '#/lib/collections/announcements'
+import { announcementsCollectionOptions } from '#/lib/collections/announcements'
 
 export function AnnouncementDetailActions({
   announcementId,
@@ -13,10 +13,11 @@ export function AnnouncementDetailActions({
 }) {
   const { t } = useTranslation('admin')
   const { t: tCommon } = useTranslation('common')
+  const dbClient = useDbClient()
   const { data } = useLiveQuery({
     query: (q) =>
       q
-        .from({ announcement: announcementsCollection })
+        .from({ announcement: announcementsCollectionOptions })
         .where(({ announcement }) => eq(announcement.id, announcementId)),
   })
   const navigate = useNavigate()
@@ -35,7 +36,9 @@ export function AnnouncementDetailActions({
     setPending(true)
 
     try {
-      await announcementsCollection.delete(announcement.id).isPersisted.promise
+      await dbClient
+        .collection(announcementsCollectionOptions)
+        .delete(announcement.id).isPersisted.promise
     } catch (error) {
       setPending(false)
       setActionError(
