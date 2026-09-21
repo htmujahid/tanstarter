@@ -1,4 +1,4 @@
-import { Link, createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { Accordion, Anchor, Container, Stack, Text, Title } from '@mantine/core'
 import { useTranslation } from 'react-i18next'
 

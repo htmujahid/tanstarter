@@ -12,8 +12,9 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { authClient } from '#/lib/auth-client'
+
 import { useSession } from '#/hooks/use-session'
+import { authClient } from '#/lib/auth-client'
 import { userQueryOptions } from '#/lib/queries/admin.query'
 
 export function UserRoleForm({

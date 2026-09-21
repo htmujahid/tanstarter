@@ -1,7 +1,5 @@
 import type { TranslationDictionary } from '@better-auth/i18n'
 
-// `@better-auth/i18n`'s bundled `locales` export ships 22 languages but not
-// Urdu, so this covers the same base error codes those dictionaries define.
 export const ur: TranslationDictionary = {
   USER_NOT_FOUND: 'صارف نہیں ملا',
   FAILED_TO_CREATE_USER: 'صارف بنانے میں ناکامی',

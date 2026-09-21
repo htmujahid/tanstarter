@@ -1,7 +1,9 @@
 import { createServerFn } from '@tanstack/react-start'
+
 import { authMiddleware } from '#/server/auth/middleware'
 import { requirePermission } from '#/server/auth/require-permission'
 import { getDb } from '#/server/db'
+import type { FeedbackStatus } from '#/server/db'
 import {
   createFeedback,
   deleteFeedback,
@@ -13,7 +15,6 @@ import type {
   CreateFeedbackInput,
   ListFeedbackInput,
 } from '#/server/services/feedback.service'
-import type { FeedbackStatus } from '#/server/db'
 
 export const listFeedbackFn = createServerFn({ method: 'GET' })
   .middleware([authMiddleware])

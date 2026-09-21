@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
+import { ilike, useLiveQuery } from '@tanstack/react-db'
 import { flexRender, functionalUpdate, useTable } from '@tanstack/react-table'
 import type { RowSelectionState, SortingState } from '@tanstack/react-table'
-import { ilike, useLiveQuery } from '@tanstack/react-db'
 import {
   Button,
   EmptyState,
@@ -12,6 +12,7 @@ import {
 } from '@mantine/core'
 import { IconNotes, IconPlus } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { NotesBulkActionBar } from '#/components/home/notes/notes-bulk-action-bar'
 import {
   getNotesTableColumns,

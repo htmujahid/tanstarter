@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
+import { Link } from '@tanstack/react-router'
 import {
   createColumnHelper,
   rowSelectionFeature,
   rowSortingFeature,
   tableFeatures,
 } from '@tanstack/react-table'
-import { Link } from '@tanstack/react-router'
 import { Checkbox, Text, UnstyledButton } from '@mantine/core'
 import {
   IconChevronDown,
@@ -13,6 +13,7 @@ import {
   IconSelector,
 } from '@tabler/icons-react'
 import type { TFunction } from 'i18next'
+
 import type { Note } from '#/server/db'
 
 export const SORTABLE_FIELDS = ['title', 'createdAt', 'updatedAt'] as const

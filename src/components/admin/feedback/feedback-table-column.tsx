@@ -1,10 +1,10 @@
+import { Link } from '@tanstack/react-router'
 import {
   createColumnHelper,
   rowSelectionFeature,
   rowSortingFeature,
   tableFeatures,
 } from '@tanstack/react-table'
-import { Link } from '@tanstack/react-router'
 import { Badge, Checkbox, Text, UnstyledButton } from '@mantine/core'
 import {
   IconChevronDown,
@@ -12,6 +12,7 @@ import {
   IconSelector,
 } from '@tabler/icons-react'
 import type { TFunction } from 'i18next'
+
 import type { listFeedback } from '#/server/services/feedback.service'
 
 export const SORTABLE_FIELDS = ['createdAt', 'updatedAt'] as const
@@ -45,10 +46,6 @@ const STATUS_COLORS: Record<string, string> = {
   resolved: 'teal',
 }
 
-// `category`/`status` come from a free-text DB column, so they're typed as
-// `string` rather than the narrower `FeedbackCategory`/`FeedbackStatus`
-// unions — switch on the known values to translate, falling back to the raw
-// value for anything unexpected.
 export function categoryLabel(t: TFunction<'admin'>, category: string) {
   switch (category) {
     case 'bug':

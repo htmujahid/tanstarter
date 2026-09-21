@@ -85,7 +85,8 @@ export const admin: AdminTranslations = {
       submittedColumn: 'ارسال شدہ',
       emptyTitle: 'ابھی تک کوئی رابطہ پیغام نہیں',
       emptyTitleFiltered: 'کوئی پیغام نہیں ملا',
-      emptyDescription: 'رابطہ فارم کے ذریعے بھیجے گئے پیغامات یہاں نظر آئیں گے۔',
+      emptyDescription:
+        'رابطہ فارم کے ذریعے بھیجے گئے پیغامات یہاں نظر آئیں گے۔',
       emptyDescriptionFiltered:
         'جو آپ تلاش کر رہے ہیں اسے ڈھونڈنے کے لیے اپنی تلاش کو ایڈجسٹ کریں۔',
       clearFilters: 'فلٹرز صاف کریں',
@@ -96,7 +97,8 @@ export const admin: AdminTranslations = {
     deleteModal: {
       title: 'پیغام حذف کریں',
       titleBulk: '{{count}} پیغامات حذف کریں',
-      confirmMessage: 'یہ رابطہ پیغام مستقل طور پر حذف کریں؟ اسے واپس نہیں لایا جا سکتا۔',
+      confirmMessage:
+        'یہ رابطہ پیغام مستقل طور پر حذف کریں؟ اسے واپس نہیں لایا جا سکتا۔',
       confirmPrefix: 'مستقل طور پر حذف کریں',
       confirmSuffix: '؟ اسے واپس نہیں لایا جا سکتا۔',
       itemsCount: '{{count}} پیغامات',
@@ -146,7 +148,8 @@ export const admin: AdminTranslations = {
     deleteModal: {
       title: 'رائے حذف کریں',
       titleBulk: '{{count}} رائے کی اندراجات حذف کریں',
-      confirmSingle: 'یہ رائے مستقل طور پر حذف کریں؟ اسے واپس نہیں لایا جا سکتا۔',
+      confirmSingle:
+        'یہ رائے مستقل طور پر حذف کریں؟ اسے واپس نہیں لایا جا سکتا۔',
       confirmBulk:
         '{{count}} رائے کی اندراجات مستقل طور پر حذف کریں؟ اسے واپس نہیں لایا جا سکتا۔',
     },
@@ -190,7 +193,8 @@ export const admin: AdminTranslations = {
       backLink: 'صارفین کی طرف واپس جائیں',
       notFound: {
         title: 'صارف نہیں ملا',
-        description: 'یہ صارف ڈیلیٹ کیا جا چکا ہو سکتا ہے، یا لنک اب درست نہیں ہے۔',
+        description:
+          'یہ صارف ڈیلیٹ کیا جا چکا ہو سکتا ہے، یا لنک اب درست نہیں ہے۔',
       },
       detailsForm: {
         title: 'صارف کی تفصیلات',

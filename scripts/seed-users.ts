@@ -1,8 +1,9 @@
-import { getPlatformProxy } from 'wrangler'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { admin, username } from 'better-auth/plugins'
 import { drizzle } from 'drizzle-orm/d1'
+import { getPlatformProxy } from 'wrangler'
+
 import * as schema from '../src/server/db/schemas'
 
 const SEED_PASSWORD = 'Password123!'

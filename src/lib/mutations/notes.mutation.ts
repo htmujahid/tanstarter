@@ -1,11 +1,12 @@
 import { NonRetriableError } from '@tanstack/offline-transactions'
+import type { OfflineConfig } from '@tanstack/offline-transactions'
+
+import type { NotesCollection } from '#/lib/collections/notes.collection'
 import {
   createNoteFn,
   deleteNoteFn,
   updateNoteFn,
 } from '#/server/actions/notes.action'
-import type { OfflineConfig } from '@tanstack/offline-transactions'
-import type { NotesCollection } from '#/lib/collections/notes.collection'
 import type { Note } from '#/server/db'
 
 async function callOrNonRetriable<T>(fn: () => Promise<T>): Promise<T> {
@@ -33,10 +34,6 @@ export const notesMutationFns: OfflineConfig['mutationFns'] = {
       }),
     )
 
-    // The temporary negative id only ever exists in the transaction's
-    // optimistic overlay, never in syncedData, so there's nothing to
-    // writeDelete — it's dropped automatically once this transaction
-    // commits. Only the server-confirmed row needs writing.
     collection.utils.writeInsert(note)
   },
   updateNote: async ({ transaction }) => {

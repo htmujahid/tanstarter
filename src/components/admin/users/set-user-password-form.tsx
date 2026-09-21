@@ -12,6 +12,7 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { authClient } from '#/lib/auth-client'
 
 export function SetUserPasswordForm({ userId }: { userId: string }) {
@@ -36,7 +37,9 @@ export function SetUserPasswordForm({ userId }: { userId: string }) {
       })
 
       if (error) {
-        setFormError(error.message ?? t('users.detail.passwordForm.genericError'))
+        setFormError(
+          error.message ?? t('users.detail.passwordForm.genericError'),
+        )
         return
       }
 
@@ -86,7 +89,9 @@ export function SetUserPasswordForm({ userId }: { userId: string }) {
             {(field) => (
               <PasswordInput
                 label={t('users.detail.passwordForm.newPasswordLabel')}
-                placeholder={t('users.detail.passwordForm.newPasswordPlaceholder')}
+                placeholder={t(
+                  'users.detail.passwordForm.newPasswordPlaceholder',
+                )}
                 autoComplete="new-password"
                 required
                 value={field.state.value}

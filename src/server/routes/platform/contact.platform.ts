@@ -1,27 +1,22 @@
 import { createRoute } from '@hono/zod-openapi'
+
 import { requireAuth } from '#/server/auth/auth'
 import { requirePermissionRoute } from '#/server/auth/require-permission'
 import { createDb } from '#/server/db'
 import { createAuthOpenApiApp } from '#/server/openapi/factory'
-import { idParam, idParamHook } from '#/server/openapi/params'
-import { errorResponse, jsonResponse } from '#/server/openapi/responses'
 import {
   ContactSubmissionListSchema,
   ContactSubmissionSchema,
   CreateContactSubmissionSchema,
 } from '#/server/openapi/models/contact.model'
+import { idParam, idParamHook } from '#/server/openapi/params'
+import { errorResponse, jsonResponse } from '#/server/openapi/responses'
 import {
   createContactSubmission,
   deleteContactSubmission,
   getContactSubmissionById,
   listContactSubmissions,
 } from '#/server/services/contact.service'
-
-/**
- * Mirrors `src/server/actions/contact.ts` 1:1. `POST /` deliberately stays
- * public — it mirrors `createContactSubmissionFn`, which has no
- * `authMiddleware` so anyone can submit the contact form.
- */
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 

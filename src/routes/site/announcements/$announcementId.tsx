@@ -1,4 +1,4 @@
-import { Link, createFileRoute, notFound } from '@tanstack/react-router'
+import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import {
   Anchor,
   Button,
@@ -12,6 +12,7 @@ import {
 } from '@mantine/core'
 import { IconArrowLeft, IconBellOff } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { AnnouncementDetail } from '#/components/site/announcements/announcement-detail'
 import { siteAnnouncementQueryOptions } from '#/lib/queries/announcements.query'
 

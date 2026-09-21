@@ -10,7 +10,8 @@ export const profile: ProfileTranslations = {
     namePlaceholder: 'جین ڈو',
     nameRequired: 'نام درکار ہے',
     usernameLabel: 'صارف نام',
-    usernameDescription: 'صرف حروف، ہندسے اور انڈر اسکور۔ سائن ان کے لیے استعمال ہوتا ہے۔',
+    usernameDescription:
+      'صرف حروف، ہندسے اور انڈر اسکور۔ سائن ان کے لیے استعمال ہوتا ہے۔',
     usernamePlaceholder: 'janedoe',
     usernameRequired: 'صارف نام درکار ہے',
     usernameTooShort: 'صارف نام کم از کم 3 حروف کا ہونا چاہیے',

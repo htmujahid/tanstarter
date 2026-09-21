@@ -14,8 +14,6 @@ export const ContactSubmissionListSchema = z
   .array(ContactSubmissionSchema)
   .openapi('ContactSubmissionList')
 
-/** Fields stay loose strings — the route keeps its own hand-written
- * required-field check and the exact `EMAIL_PATTERN` regex, unchanged. */
 export const CreateContactSubmissionSchema = z
   .object({
     name: z.string().optional(),

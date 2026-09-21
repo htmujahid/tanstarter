@@ -1,4 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
+
 import { authMiddleware } from '#/server/auth/middleware'
 import { requirePermission } from '#/server/auth/require-permission'
 import { getDb } from '#/server/db'
@@ -15,10 +16,6 @@ import type {
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-/**
- * Deliberately has no `authMiddleware` — this is the public "Contact us"
- * form, submittable by anyone without a session.
- */
 export const createContactSubmissionFn = createServerFn({ method: 'POST' })
   .validator((data: CreateContactSubmissionInput) => {
     if (!data.name || !data.email || !data.message) {

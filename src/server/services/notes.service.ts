@@ -1,4 +1,5 @@
 import { and, asc, count, desc, eq, like, sql } from 'drizzle-orm'
+
 import type { Database } from '#/server/db'
 import { notes } from '#/server/db'
 

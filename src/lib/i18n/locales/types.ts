@@ -1,8 +1,3 @@
-// Single source of truth for every translation namespace's shape. Each
-// locale (en/, ur/) only supplies values against these interfaces — add or
-// change a key here first, then update every locale's file for that
-// namespace; TypeScript will flag any locale left out of sync.
-
 export interface CommonTranslations {
   app: {
     name: string
@@ -48,8 +43,6 @@ export interface CommonTranslations {
     title: string
     description: string
   }
-  // Shown by the root and section-level `errorComponent`s when a loader or
-  // render throws; kept generic since the underlying error is unpredictable.
   error: {
     title: string
     description: string
@@ -82,14 +75,11 @@ export interface CommonTranslations {
     requiredField: string
     invalidEmail: string
   }
-  // Keyed by the `id` exported from src/lib/features.ts; shown on both the
-  // public landing page and the /auth layout's marketing panel.
   features: {
     trust: { title: string; description: string }
     speed: { title: string; description: string }
     design: { title: string; description: string }
   }
-  // Chrome shared by the /home and /admin collapsible sidebars.
   sidebar: {
     collapse: string
     expand: string
@@ -99,7 +89,6 @@ export interface CommonTranslations {
   statCard: {
     vsLastPeriod: string
   }
-  // Header badge shown when the browser reports it has no network connection.
   offline: {
     label: string
     title: string
@@ -566,9 +555,6 @@ export interface AdminTranslations {
       confirmBulk: string
     }
   }
-  // Admin user-management screens (/admin/users/**) — merged into this
-  // namespace rather than a separate `adminUsers` one; it's still just
-  // "the admin section" from a translator's point of view.
   users: {
     roles: {
       admin: string

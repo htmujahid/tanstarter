@@ -1,16 +1,17 @@
 import { createRoute } from '@hono/zod-openapi'
+
 import { requireAuth } from '#/server/auth/auth'
 import { requirePermissionRoute } from '#/server/auth/require-permission'
 import { createDb } from '#/server/db'
 import { createAuthOpenApiApp } from '#/server/openapi/factory'
-import { idParam, idParamHook } from '#/server/openapi/params'
-import { errorResponse, jsonResponse } from '#/server/openapi/responses'
 import {
   CreateNoteSchema,
   NoteListSchema,
   NoteSchema,
   UpdateNoteSchema,
 } from '#/server/openapi/models/notes.model'
+import { idParam, idParamHook } from '#/server/openapi/params'
+import { errorResponse, jsonResponse } from '#/server/openapi/responses'
 import {
   createNote,
   deleteNote,
@@ -18,8 +19,6 @@ import {
   listNotes,
   updateNote,
 } from '#/server/services/notes.service'
-
-/** Mirrors `src/server/actions/notes.ts` 1:1. */
 
 const app = createAuthOpenApiApp()
 

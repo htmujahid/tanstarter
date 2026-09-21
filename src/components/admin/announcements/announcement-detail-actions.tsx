@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { useNavigate } from '@tanstack/react-router'
 import { eq, useDbClient, useLiveQuery } from '@tanstack/react-db'
+import { useNavigate } from '@tanstack/react-router'
 import { Alert, Button, Group, Modal, Stack, Text } from '@mantine/core'
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { announcementsCollectionOptions } from '#/lib/collections/announcements.collection'
 
 export function AnnouncementDetailActions({
@@ -25,9 +26,6 @@ export function AnnouncementDetailActions({
   const [pending, setPending] = useState(false)
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
 
-  // The delete mutation removes this row from the collection immediately
-  // (before the post-delete navigation away from this page finishes), so
-  // `data` can briefly go empty while this component is still mounted.
   if (data.length === 0) return null
   const announcement = data[0]
 

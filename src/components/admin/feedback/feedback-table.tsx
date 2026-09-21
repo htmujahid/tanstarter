@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { flexRender, functionalUpdate, useTable } from '@tanstack/react-table'
 import type { RowSelectionState, SortingState } from '@tanstack/react-table'
-import { useSuspenseQuery } from '@tanstack/react-query'
 import {
   Button,
   EmptyState,
@@ -12,10 +12,11 @@ import {
 } from '@mantine/core'
 import { IconMessageCircle } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { FeedbackBulkActionBar } from '#/components/admin/feedback/feedback-bulk-action-bar'
 import {
-  getFeedbackTableColumns,
   feedbackTableFeatures,
+  getFeedbackTableColumns,
 } from '#/components/admin/feedback/feedback-table-column'
 import type { SortableField } from '#/components/admin/feedback/feedback-table-column'
 import {

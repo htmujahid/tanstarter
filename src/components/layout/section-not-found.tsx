@@ -1,15 +1,9 @@
 import { Link } from '@tanstack/react-router'
+import type { LinkProps } from '@tanstack/react-router'
 import { Button, Card, Container, Stack, Text, Title } from '@mantine/core'
 import { IconError404 } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import type { LinkProps } from '@tanstack/react-router'
 
-/**
- * Shared `notFoundComponent` for each section layout (admin/home/site). A
- * bare `notFound()` bubbles to the nearest ancestor route that defines one;
- * without this, an unmatched URL under e.g. /admin/* would fall through to
- * the root's full-page NotFound and drop the sidebar/header chrome.
- */
 export function SectionNotFound({
   backTo,
   backLabel,

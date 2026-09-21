@@ -14,16 +14,14 @@ import {
   Tooltip,
 } from '@mantine/core'
 import { IconAlertCircle, IconDeviceDesktop, IconX } from '@tabler/icons-react'
-import { useTranslation } from 'react-i18next'
 import type { TFunction } from 'i18next'
+import { useTranslation } from 'react-i18next'
+
 import { authClient } from '#/lib/auth-client'
 import { formatDateTime } from '#/lib/format-date'
 import { userSessionsQueryOptions } from '#/lib/queries/admin.query'
 
-function describeUserAgent(
-  t: TFunction<'admin'>,
-  userAgent?: string | null,
-) {
+function describeUserAgent(t: TFunction<'admin'>, userAgent?: string | null) {
   if (!userAgent) return t('users.detail.sessions.unknownDevice')
 
   const browser = /edg\//i.test(userAgent)
@@ -80,7 +78,9 @@ export function UserSessionsCard({
     setPendingToken(null)
 
     if (error) {
-      setActionError(error.message ?? t('users.detail.sessions.genericRevokeError'))
+      setActionError(
+        error.message ?? t('users.detail.sessions.genericRevokeError'),
+      )
       return
     }
 
@@ -149,7 +149,9 @@ export function UserSessionsCard({
                 <Table.Tr>
                   <Table.Th>{t('users.detail.sessions.deviceColumn')}</Table.Th>
                   <Table.Th>{t('users.detail.sessions.ipColumn')}</Table.Th>
-                  <Table.Th>{t('users.detail.sessions.expiresColumn')}</Table.Th>
+                  <Table.Th>
+                    {t('users.detail.sessions.expiresColumn')}
+                  </Table.Th>
                   <Table.Th />
                 </Table.Tr>
               </Table.Thead>
@@ -178,7 +180,8 @@ export function UserSessionsCard({
                       </Table.Td>
                       <Table.Td>
                         <Text size="sm" c="dimmed">
-                          {session.ipAddress || t('users.detail.sessions.unknownIp')}
+                          {session.ipAddress ||
+                            t('users.detail.sessions.unknownIp')}
                         </Text>
                       </Table.Td>
                       <Table.Td>
@@ -187,7 +190,9 @@ export function UserSessionsCard({
                         </Text>
                       </Table.Td>
                       <Table.Td ta="right">
-                        <Tooltip label={t('users.detail.sessions.revokeTooltip')}>
+                        <Tooltip
+                          label={t('users.detail.sessions.revokeTooltip')}
+                        >
                           <ActionIcon
                             variant="subtle"
                             color="red"

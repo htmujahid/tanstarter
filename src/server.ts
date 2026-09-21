@@ -4,20 +4,18 @@ import {
 } from '@tanstack/react-start/server'
 import { Hono } from 'hono'
 import { languageDetector } from 'hono/language'
-import api from './server/routes'
+
 import {
   DEFAULT_LOCALE,
   LOCALE_COOKIE_NAME,
   SUPPORTED_LOCALES,
 } from './lib/i18n/config'
+import api from './server/routes'
 
 const startHandler = createStartHandler(defaultStreamHandler)
 
 const app = new Hono<{ Bindings: Env }>()
 
-// Detects the caller's locale (cookie, then Accept-Language) and persists it
-// back as a cookie so the SSR shell (src/routes/__root.tsx) and this app's
-// API/auth routes stay in agreement on locale across requests.
 app.use(
   '*',
   languageDetector({
@@ -30,7 +28,7 @@ app.use(
 
 app.route('/api', api)
 
-app.all('/api/*', (c) => c.notFound() )
+app.all('/api/*', (c) => c.notFound())
 
 app.all('*', (c) => startHandler(c.req.raw))
 

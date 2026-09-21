@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { useRouter } from '@tanstack/react-router'
-import { useQueryClient } from '@tanstack/react-query'
 import { useForm } from '@tanstack/react-form'
+import { useQueryClient } from '@tanstack/react-query'
+import { useRouter } from '@tanstack/react-router'
 import {
   Alert,
   Button,
@@ -14,6 +14,7 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { authClient } from '#/lib/auth-client'
 import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session.query'
 import type { Session } from '#/server/auth/auth'

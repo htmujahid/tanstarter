@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useForm } from '@tanstack/react-form'
 import { useDbClient } from '@tanstack/react-db'
+import { useForm } from '@tanstack/react-form'
 import {
   Alert,
   Button,
@@ -13,6 +13,7 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { announcementsCollectionOptions } from '#/lib/collections/announcements.collection'
 
 export function CreateAnnouncementForm({

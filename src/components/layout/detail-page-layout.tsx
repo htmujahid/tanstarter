@@ -1,13 +1,6 @@
-import { Container, Group, Stack, Text, Title } from '@mantine/core'
 import type { ReactNode } from 'react'
+import { Container, Group, Stack, Text, Title } from '@mantine/core'
 
-/**
- * Shared shell for "detail" pages (a single record's view/edit screen):
- * back link + page-level actions on one row, title/description/badges below,
- * then `children` rendered as-is. Body layout (single column, two-column
- * with a sidebar, etc.) is the page's own concern — compose it in `children`
- * (e.g. a `Grid`/`Grid.Col` pair) so this shell stays generic.
- */
 export function DetailPageLayout({
   backLink,
   title,

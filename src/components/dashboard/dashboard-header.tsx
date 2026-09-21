@@ -1,5 +1,5 @@
-import { Link, useRouter } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
+import { Link, useRouter } from '@tanstack/react-router'
 import { Avatar, Burger, Group, Menu, Text } from '@mantine/core'
 import {
   IconHome,
@@ -9,10 +9,11 @@ import {
   IconUserCircle,
 } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { HeaderBreadcrumbs } from '#/components/dashboard/header-breadcrumbs'
 import { OfflineStatusBadge } from '#/components/dashboard/offline-status-badge'
-import { ThemeToggle } from '#/components/theme-toggle'
 import { LocaleToggle } from '#/components/locale-toggle'
+import { ThemeToggle } from '#/components/theme-toggle'
 import { signOut } from '#/lib/auth-client'
 import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session.query'
 import type { Session } from '#/server/auth/auth'

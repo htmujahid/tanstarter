@@ -17,6 +17,8 @@ export function isRtl(locale: Locale) {
   return RTL_LOCALES.includes(locale)
 }
 
-export function isSupportedLocale(value: string | null | undefined): value is Locale {
+export function isSupportedLocale(
+  value: string | null | undefined,
+): value is Locale {
   return !!value && (SUPPORTED_LOCALES as readonly string[]).includes(value)
 }

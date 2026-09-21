@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useNavigate } from '@tanstack/react-router'
 import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
 import { Alert, Button, Group, Modal, Stack, Text } from '@mantine/core'
 import {
   IconAlertCircle,
@@ -10,9 +10,10 @@ import {
   IconUserShield,
 } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { authClient } from '#/lib/auth-client'
+
 import { BanUserModal } from '#/components/admin/users/ban-user-modal'
 import { useSession } from '#/hooks/use-session'
+import { authClient } from '#/lib/auth-client'
 import { userQueryOptions } from '#/lib/queries/admin.query'
 import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session.query'
 

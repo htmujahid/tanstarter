@@ -1,13 +1,13 @@
 import { Suspense } from 'react'
-import { Link, createFileRoute } from '@tanstack/react-router'
 import { useSuspenseQuery } from '@tanstack/react-query'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import {
   Button,
   Card,
   Container,
   Group,
-  Skeleton,
   SimpleGrid,
+  Skeleton,
   Stack,
   Text,
   ThemeIcon,
@@ -18,15 +18,13 @@ import {
   IconUserOff,
   IconUsers,
 } from '@tabler/icons-react'
-import { useTranslation } from 'react-i18next'
 import type { Icon } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
+
 import { adminStatsQueryOptions } from '#/lib/queries/admin.query'
 
 export const Route = createFileRoute('/admin/')({
   loader: ({ context }) => {
-    // Fire-and-forget: the overview shell renders immediately and the stat
-    // cards stream in via the <Suspense> boundary below instead of blocking
-    // navigation on this query.
     void context.queryClient
       .query(adminStatsQueryOptions())
       .catch(() => undefined)

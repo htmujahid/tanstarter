@@ -1,10 +1,10 @@
+import { Link } from '@tanstack/react-router'
 import {
   createColumnHelper,
   rowSelectionFeature,
   rowSortingFeature,
   tableFeatures,
 } from '@tanstack/react-table'
-import { Link } from '@tanstack/react-router'
 import { Checkbox, Text, UnstyledButton } from '@mantine/core'
 import {
   IconChevronDown,
@@ -12,6 +12,7 @@ import {
   IconSelector,
 } from '@tabler/icons-react'
 import type { TFunction } from 'i18next'
+
 import type { ContactSubmission } from '#/server/db/schemas'
 
 export const SORTABLE_FIELDS = ['name', 'createdAt'] as const
@@ -92,7 +93,10 @@ export function getContactsTableColumns(t: TFunction<'admin'>) {
     }),
     columnHelper.accessor('name', {
       header: ({ column }) => (
-        <SortableHeader label={t('contacts.table.nameColumn')} column={column} />
+        <SortableHeader
+          label={t('contacts.table.nameColumn')}
+          column={column}
+        />
       ),
       cell: ({ row }) => (
         <div>

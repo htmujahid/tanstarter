@@ -1,6 +1,7 @@
-import { Link, createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { Anchor, Container, Stack, Text, Title } from '@mantine/core'
 import { useTranslation } from 'react-i18next'
+
 import { ContactForm } from '#/components/site/contact/contact-form'
 
 export const Route = createFileRoute('/site/contact')({

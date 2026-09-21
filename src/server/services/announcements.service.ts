@@ -1,4 +1,5 @@
 import { and, asc, count, desc, eq, like, sql } from 'drizzle-orm'
+
 import type { Database } from '#/server/db'
 import { announcements } from '#/server/db'
 
@@ -22,7 +23,6 @@ const SORTABLE_COLUMNS = {
 
 export interface ListAnnouncementsInput {
   onlyPublished: boolean
-  /** Admin-only voluntary filter; ignored (forced to `true`) when `onlyPublished`. */
   published?: boolean
   q?: string
   sortBy?: keyof typeof SORTABLE_COLUMNS

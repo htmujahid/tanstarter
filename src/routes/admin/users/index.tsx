@@ -1,14 +1,15 @@
 import { useState } from 'react'
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { Button, Group, Select, Stack, TextInput } from '@mantine/core'
 import { IconPlus, IconSearch } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { CreateUserForm } from '#/components/admin/users/create-user-form'
 import { UsersTable } from '#/components/admin/users/users-table'
-import { UsersTableSkeleton } from '#/components/admin/users/users-table-skeleton'
 import { SORTABLE_FIELDS } from '#/components/admin/users/users-table-column'
 import type { SortableField } from '#/components/admin/users/users-table-column'
+import { UsersTableSkeleton } from '#/components/admin/users/users-table-skeleton'
 import { usersQueryOptions } from '#/lib/queries/admin.query'
 
 type UsersSearch = {

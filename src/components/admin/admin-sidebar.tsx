@@ -176,7 +176,11 @@ export function AdminSidebar({
                 size={40}
                 radius="md"
               >
-                <IconArrowLeft size={18} stroke={1.75} className="icon-rtl-flip" />
+                <IconArrowLeft
+                  size={18}
+                  stroke={1.75}
+                  className="icon-rtl-flip"
+                />
               </ActionIcon>
             </Tooltip>
 
@@ -192,7 +196,11 @@ export function AdminSidebar({
                 radius="md"
                 onClick={onToggleCollapse}
               >
-                <IconChevronRight size={18} stroke={1.75} className="icon-rtl-flip" />
+                <IconChevronRight
+                  size={18}
+                  stroke={1.75}
+                  className="icon-rtl-flip"
+                />
               </ActionIcon>
             </Tooltip>
           </Stack>
@@ -251,14 +259,22 @@ export function AdminSidebar({
               to="/home"
               label={tCommon('sidebar.backToHome')}
               leftSection={
-                <IconArrowLeft size={18} stroke={1.75} className="icon-rtl-flip" />
+                <IconArrowLeft
+                  size={18}
+                  stroke={1.75}
+                  className="icon-rtl-flip"
+                />
               }
               onClick={onNavigate}
             />
             <NavLink
               label={tCommon('sidebar.collapse')}
               leftSection={
-                <IconChevronLeft size={18} stroke={1.75} className="icon-rtl-flip" />
+                <IconChevronLeft
+                  size={18}
+                  stroke={1.75}
+                  className="icon-rtl-flip"
+                />
               }
               onClick={onToggleCollapse}
               visibleFrom="sm"

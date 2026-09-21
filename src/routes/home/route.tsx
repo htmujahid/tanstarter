@@ -1,14 +1,15 @@
+import { useQueryClient } from '@tanstack/react-query'
 import {
-  Outlet,
   createFileRoute,
+  Outlet,
   redirect,
   useRouter,
 } from '@tanstack/react-router'
-import { useQueryClient } from '@tanstack/react-query'
 import { AppShell, Button, Group, Text } from '@mantine/core'
 import { useDisclosure, useLocalStorage } from '@mantine/hooks'
 import { IconUserShield } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { DashboardHeader } from '#/components/dashboard/dashboard-header'
 import { Sidebar } from '#/components/dashboard/sidebar'
 import { RouteError } from '#/components/layout/route-error'
@@ -36,9 +37,7 @@ export const Route = createFileRoute('/home')({
 function HomeNotFound() {
   const { t } = useTranslation('home')
 
-  return (
-    <SectionNotFound backTo="/home" backLabel={t('sidebar.dashboard')} />
-  )
+  return <SectionNotFound backTo="/home" backLabel={t('sidebar.dashboard')} />
 }
 
 function HomeLayout() {

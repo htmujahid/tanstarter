@@ -40,7 +40,8 @@ export const home: HomeTranslations = {
     },
     revealModal: {
       title: 'API کلید بن گئی',
-      description: 'ابھی یہ کلید کاپی کر لیں — آپ اسے دوبارہ نہیں دیکھ سکیں گے۔',
+      description:
+        'ابھی یہ کلید کاپی کر لیں — آپ اسے دوبارہ نہیں دیکھ سکیں گے۔',
       copyTooltip: 'کاپی کریں',
       copiedTooltip: 'کاپی ہو گئی',
       done: 'مکمل',

@@ -10,8 +10,9 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { authClient } from '#/lib/auth-client'
+
 import type { AdminUser } from '#/components/admin/users/users-table-column'
+import { authClient } from '#/lib/auth-client'
 
 export function BanUserModal({
   users,
@@ -95,7 +96,9 @@ export function BanUserModal({
 
               const failed = results.find((result) => result.error)
               if (failed?.error) {
-                setError(failed.error.message ?? t('users.banModal.genericError'))
+                setError(
+                  failed.error.message ?? t('users.banModal.genericError'),
+                )
                 return
               }
 
@@ -104,7 +107,9 @@ export function BanUserModal({
           >
             {users.length === 1
               ? t('users.banModal.confirmButtonSingle')
-              : t('users.banModal.confirmButtonMultiple', { count: users.length })}
+              : t('users.banModal.confirmButtonMultiple', {
+                  count: users.length,
+                })}
           </Button>
         </Group>
       </Stack>

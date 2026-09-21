@@ -1,10 +1,10 @@
+import { Link } from '@tanstack/react-router'
 import {
   createColumnHelper,
   rowSelectionFeature,
   rowSortingFeature,
   tableFeatures,
 } from '@tanstack/react-table'
-import { Link } from '@tanstack/react-router'
 import { Badge, Checkbox, Text, UnstyledButton } from '@mantine/core'
 import {
   IconChevronDown,
@@ -12,6 +12,7 @@ import {
   IconSelector,
 } from '@tabler/icons-react'
 import type { TFunction } from 'i18next'
+
 import type { Session } from '#/server/auth/auth'
 
 export type AdminUser = NonNullable<Session>['user']
@@ -87,7 +88,10 @@ export function getUsersTableColumns(t: TFunction<'admin'>) {
     }),
     columnHelper.accessor('name', {
       header: ({ column }) => (
-        <SortableHeader label={t('users.list.table.userColumn')} column={column} />
+        <SortableHeader
+          label={t('users.list.table.userColumn')}
+          column={column}
+        />
       ),
       cell: ({ row }) => (
         <div>
@@ -106,7 +110,10 @@ export function getUsersTableColumns(t: TFunction<'admin'>) {
     }),
     columnHelper.accessor('role', {
       header: ({ column }) => (
-        <SortableHeader label={t('users.list.table.roleColumn')} column={column} />
+        <SortableHeader
+          label={t('users.list.table.roleColumn')}
+          column={column}
+        />
       ),
       cell: ({ getValue }) => {
         const role = getValue() ?? 'user'

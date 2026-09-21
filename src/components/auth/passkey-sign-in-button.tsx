@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
 import { Alert, Button, Divider, Stack } from '@mantine/core'
 import { IconAlertCircle, IconFingerprint } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { signIn } from '#/lib/auth-client'
 import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session.query'
 
@@ -29,16 +30,16 @@ export function PasskeySignInButton() {
 
     void isConditionalMediationAvailable().then((available) => {
       if (available && !cancelled) {
-        void signIn.passkey({ autoFill: true }).then(
-          async ({ error: signInError }) => {
+        void signIn
+          .passkey({ autoFill: true })
+          .then(async ({ error: signInError }) => {
             if (!cancelled && !signInError) {
               await queryClient.invalidateQueries({
                 queryKey: CURRENT_SESSION_QUERY_KEY,
               })
               void navigate({ to: '/home' })
             }
-          },
-        )
+          })
       }
     })
 

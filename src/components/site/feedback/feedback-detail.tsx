@@ -1,6 +1,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { Badge, Card, Group, Stack, Text } from '@mantine/core'
 import { useTranslation } from 'react-i18next'
+
 import { formatDateTime } from '#/lib/format-date'
 import { feedbackQueryOptions } from '#/lib/queries/feedback.query'
 import type { FeedbackCategory, FeedbackStatus } from '#/server/db'
@@ -30,7 +31,9 @@ export function FeedbackDetail({ feedbackId }: { feedbackId: number }) {
               color={CATEGORY_COLORS[feedback.category] ?? 'gray'}
               variant="light"
             >
-              {t(`feedback.categories.${feedback.category as FeedbackCategory}`)}
+              {t(
+                `feedback.categories.${feedback.category as FeedbackCategory}`,
+              )}
             </Badge>
             <Badge
               color={STATUS_COLORS[feedback.status] ?? 'gray'}
@@ -42,7 +45,9 @@ export function FeedbackDetail({ feedbackId }: { feedbackId: number }) {
         </Group>
 
         <Text c="dimmed" size="sm">
-          {t('feedback.submittedAt', { date: formatDateTime(feedback.createdAt) })}
+          {t('feedback.submittedAt', {
+            date: formatDateTime(feedback.createdAt),
+          })}
         </Text>
 
         <Text style={{ whiteSpace: 'pre-wrap' }}>{feedback.message}</Text>

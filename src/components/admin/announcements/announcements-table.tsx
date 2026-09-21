@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
+import { eq, ilike, useLiveQuery } from '@tanstack/react-db'
 import { flexRender, functionalUpdate, useTable } from '@tanstack/react-table'
 import type { RowSelectionState, SortingState } from '@tanstack/react-table'
-import { eq, ilike, useLiveQuery } from '@tanstack/react-db'
 import {
   Button,
   EmptyState,
@@ -12,14 +12,15 @@ import {
 } from '@mantine/core'
 import { IconPlus, IconSpeakerphone } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { AnnouncementsBulkActionBar } from '#/components/admin/announcements/announcements-bulk-action-bar'
 import {
-  getAnnouncementsTableColumns,
   announcementsTableFeatures,
+  getAnnouncementsTableColumns,
 } from '#/components/admin/announcements/announcements-table-column'
 import type { SortableField } from '#/components/admin/announcements/announcements-table-column'
-import { ANNOUNCEMENTS_PAGE_SIZE } from '#/lib/queries/announcements.query'
 import { announcementsCollectionOptions } from '#/lib/collections/announcements.collection'
+import { ANNOUNCEMENTS_PAGE_SIZE } from '#/lib/queries/announcements.query'
 
 export function AnnouncementsTable({
   q,
@@ -47,7 +48,9 @@ export function AnnouncementsTable({
 
   const { data } = useLiveQuery({
     query: (query) => {
-      let liveQuery = query.from({ announcement: announcementsCollectionOptions })
+      let liveQuery = query.from({
+        announcement: announcementsCollectionOptions,
+      })
 
       if (published !== undefined) {
         liveQuery = liveQuery.where(({ announcement }) =>

@@ -1,5 +1,6 @@
-import { Outlet, createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
+
 import { Header } from '#/components/header'
 import { RouteError } from '#/components/layout/route-error'
 import { SectionNotFound } from '#/components/layout/section-not-found'

@@ -19,6 +19,7 @@ import {
   IconTrash,
 } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { authClient } from '#/lib/auth-client'
 import { apiKeysQueryOptions } from '#/lib/queries/api-key.query'
 

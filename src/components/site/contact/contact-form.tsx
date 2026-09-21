@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useForm } from '@tanstack/react-form'
 import { useLiveQuery } from '@tanstack/react-db'
+import { useForm } from '@tanstack/react-form'
 import {
   Alert,
   Button,
@@ -14,9 +14,10 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { createContactSubmissionFn } from '#/server/actions/contact.action'
+
 import { contactDraftCollection } from '#/lib/collections/contact-draft.collection'
 import type { ContactDraft } from '#/lib/collections/contact-draft.collection'
+import { createContactSubmissionFn } from '#/server/actions/contact.action'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -31,10 +32,6 @@ export function ContactForm() {
     query: (q) => q.from({ draft: contactDraftCollection }),
   })
 
-  // Wait for the local-storage collection to sync before mounting the form,
-  // so `useForm`'s defaultValues (captured once at hook-call time) already
-  // reflect any restored draft instead of needing a later form.reset(values)
-  // — which doesn't reliably update bound field values after the fact.
   if (!isReady) {
     return <Card withBorder radius="md" padding="lg" mih={340} />
   }

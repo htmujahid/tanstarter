@@ -1,6 +1,7 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { Stack, Text, Title } from '@mantine/core'
 import { useTranslation } from 'react-i18next'
+
 import { SetupForm } from '#/components/auth/setup-form'
 import { getSetupStatusFn } from '#/server/actions/setup.action'
 

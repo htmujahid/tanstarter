@@ -1,14 +1,18 @@
 import { useState } from 'react'
-import { useNavigate } from '@tanstack/react-router'
 import { eq, useLiveQuery } from '@tanstack/react-db'
+import { useNavigate } from '@tanstack/react-router'
 import { Alert, Button, Group, Modal, Stack, Text } from '@mantine/core'
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import {
   notesCollectionOptions,
   useNotesCollection,
 } from '#/lib/collections/notes.collection'
-import { useOfflineExecutor, waitForTransaction } from '#/lib/db/offline-executor'
+import {
+  useOfflineExecutor,
+  waitForTransaction,
+} from '#/lib/db/offline-executor'
 
 export function NoteDetailActions({ noteId }: { noteId: number }) {
   const { t } = useTranslation('home')

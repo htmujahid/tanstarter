@@ -1,4 +1,5 @@
 import { queryOptions } from '@tanstack/react-query'
+
 import { listPasskeysFn } from '#/server/actions/passkey.action'
 
 export function passkeysQueryOptions() {

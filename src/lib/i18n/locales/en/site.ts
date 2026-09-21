@@ -73,8 +73,7 @@ export const site: SiteTranslations = {
     submit: 'Send message',
     genericError: 'Unable to send message',
     successTitle: 'Message sent',
-    successDescription:
-      "Thanks for reaching out — we'll get back to you soon.",
+    successDescription: "Thanks for reaching out — we'll get back to you soon.",
     sendAnother: 'Send another message',
   },
   announcements: {

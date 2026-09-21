@@ -1,5 +1,5 @@
-import { Link, createFileRoute, notFound } from '@tanstack/react-router'
 import { useSuspenseQuery } from '@tanstack/react-query'
+import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import {
   Anchor,
   Button,
@@ -14,8 +14,9 @@ import {
 } from '@mantine/core'
 import { IconArrowLeft, IconMailOff } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { DetailPageLayout } from '#/components/layout/detail-page-layout'
+
 import { ContactDetailActions } from '#/components/admin/contacts/contact-detail-actions'
+import { DetailPageLayout } from '#/components/layout/detail-page-layout'
 import { contactQueryOptions } from '#/lib/queries/contact.query'
 
 export const Route = createFileRoute('/admin/contacts/$contactId')({

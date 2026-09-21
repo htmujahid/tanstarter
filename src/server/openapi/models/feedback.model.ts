@@ -1,9 +1,7 @@
 import { z } from '@hono/zod-openapi'
+
 import { FEEDBACK_CATEGORIES, FEEDBACK_STATUSES } from '#/server/db/schemas'
 
-/** Documentation-only enums for response fields — request bodies stay
- * loose strings so the handler's own `.includes()` checks keep producing
- * their exact legacy error strings (see platform/feedback.ts). */
 export const FeedbackCategorySchema = z
   .enum(FEEDBACK_CATEGORIES)
   .openapi('FeedbackCategory')

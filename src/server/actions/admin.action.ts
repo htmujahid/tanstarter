@@ -1,10 +1,11 @@
 import { createServerFn } from '@tanstack/react-start'
 import { getRequest } from '@tanstack/react-start/server'
+
 import { getAuth } from '#/server/auth/auth'
+import type { Session } from '#/server/auth/auth'
 import { authMiddleware } from '#/server/auth/middleware'
 import { getDb } from '#/server/db'
 import { getUserStats } from '#/server/services/users.service'
-import type { Session } from '#/server/auth/auth'
 
 export const listUsersFn = createServerFn({ method: 'GET' })
   .middleware([authMiddleware])
@@ -40,9 +41,6 @@ export const getUserFn = createServerFn({ method: 'GET' })
   .middleware([authMiddleware])
   .validator((data: { id: string }) => data)
   .handler(async ({ data }): Promise<NonNullable<Session>['user']> => {
-    // better-auth's admin `getUser` return type doesn't reflect fields
-    // added by other plugins (e.g. `username`), though they're present
-    // at runtime since every plugin extends the same `user` table.
     return getAuth().api.getUser({
       query: { id: data.id },
       headers: getRequest().headers,

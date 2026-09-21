@@ -1,12 +1,13 @@
-import { collectionOptions } from '@tanstack/react-db'
 import { queryCollectionOptions } from '@tanstack/query-db-collection'
+import { collectionOptions } from '@tanstack/react-db'
+import type { QueryClient } from '@tanstack/react-query'
+
 import {
   createAnnouncementFn,
   deleteAnnouncementFn,
   listAnnouncementsFn,
   updateAnnouncementFn,
 } from '#/server/actions/announcements.action'
-import type { QueryClient } from '@tanstack/react-query'
 import type { Announcement } from '#/server/db'
 
 const ANNOUNCEMENTS_COLLECTION_LIMIT = 1000

@@ -1,12 +1,13 @@
 import { ActionIcon, Menu } from '@mantine/core'
 import { IconLanguage } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
+import { useLocale } from '#/hooks/use-locale'
 import {
   LOCALE_COOKIE_NAME,
   LOCALE_LABELS,
   SUPPORTED_LOCALES,
 } from '#/lib/i18n/config'
-import { useLocale } from '#/hooks/use-locale'
 import type { Locale } from '#/lib/i18n/config'
 
 export function LocaleToggle() {
@@ -17,9 +18,6 @@ export function LocaleToggle() {
     if (next === locale) return
 
     document.cookie = `${LOCALE_COOKIE_NAME}=${next}; path=/; max-age=31536000; samesite=lax`
-    // Locale isn't part of the URL, so a full reload is what re-runs the
-    // root route's beforeLoad against the new cookie and re-renders the
-    // SSR shell (html lang/dir, Mantine direction, i18next resources).
     window.location.reload()
   }
 

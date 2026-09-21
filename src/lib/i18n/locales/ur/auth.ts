@@ -3,8 +3,7 @@ import type { AuthTranslations } from '#/lib/i18n/locales/types'
 export const auth: AuthTranslations = {
   layout: {
     title: 'اپنی اگلی ایپ بنانے کے لیے آپ کو ہر چیز میسر ہے۔',
-    subtitle:
-      'تصدیق، اجازتیں، اور ایک ایڈمن ڈیش بورڈ — سب تیار، بنانے کے لیے۔',
+    subtitle: 'تصدیق، اجازتیں، اور ایک ایڈمن ڈیش بورڈ — سب تیار، بنانے کے لیے۔',
     copyright: '© {{year}} سٹارٹر کٹ',
   },
   signIn: {

@@ -30,7 +30,6 @@ export const user = ac.newRole({
   feedback: ['create', 'read'],
 })
 
-/** A permissions check keyed by resource, e.g. `{ notes: ['create'] }`. */
 export type PermissionCheck = {
   [K in keyof typeof statement]?: (typeof statement)[K][number][]
 }

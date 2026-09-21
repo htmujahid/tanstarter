@@ -1,17 +1,13 @@
 import { createRoute } from '@hono/zod-openapi'
+
 import { createDb } from '#/server/db'
 import { createAuthOpenApiApp } from '#/server/openapi/factory'
-import { errorResponse, jsonResponse } from '#/server/openapi/responses'
 import {
   ContactSubmissionSchema,
   CreateContactSubmissionSchema,
 } from '#/server/openapi/models/contact.model'
+import { errorResponse, jsonResponse } from '#/server/openapi/responses'
 import { createContactSubmission } from '#/server/services/contact.service'
-
-/**
- * Public "Contact us" form submission — mirrors `createContactSubmissionFn`,
- * which has no `authMiddleware` so anyone can submit it.
- */
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 

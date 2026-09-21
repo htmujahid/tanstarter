@@ -10,7 +10,8 @@ export const profile: ProfileTranslations = {
     namePlaceholder: 'Jane Doe',
     nameRequired: 'Name is required',
     usernameLabel: 'Username',
-    usernameDescription: 'Letters, numbers, and underscores only. Used to sign in.',
+    usernameDescription:
+      'Letters, numbers, and underscores only. Used to sign in.',
     usernamePlaceholder: 'janedoe',
     usernameRequired: 'Username is required',
     usernameTooShort: 'Username must be at least 3 characters',

@@ -1,5 +1,5 @@
-import { Link, createFileRoute, notFound } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
+import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import {
   Anchor,
   Button,
@@ -14,13 +14,17 @@ import {
 } from '@mantine/core'
 import { IconArrowLeft, IconUserOff } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { DetailPageLayout } from '#/components/layout/detail-page-layout'
+
 import { SetUserPasswordForm } from '#/components/admin/users/set-user-password-form'
 import { UserDetailActions } from '#/components/admin/users/user-detail-actions'
 import { UserDetailsForm } from '#/components/admin/users/user-details-form'
 import { UserRoleForm } from '#/components/admin/users/user-role-form'
 import { UserSessionsCard } from '#/components/admin/users/user-sessions-card'
-import { userQueryOptions, userSessionsQueryOptions } from '#/lib/queries/admin.query'
+import { DetailPageLayout } from '#/components/layout/detail-page-layout'
+import {
+  userQueryOptions,
+  userSessionsQueryOptions,
+} from '#/lib/queries/admin.query'
 
 export const Route = createFileRoute('/admin/users/$userId')({
   loader: async ({ context, params }) => {

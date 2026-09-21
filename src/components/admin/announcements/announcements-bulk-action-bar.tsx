@@ -11,6 +11,7 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { announcementsCollectionOptions } from '#/lib/collections/announcements.collection'
 import type { Announcement } from '#/server/db'
 
@@ -37,7 +38,8 @@ export function AnnouncementsBulkActionBar({
     const collection = dbClient.collection(announcementsCollectionOptions)
     const results = await Promise.allSettled(
       deleteAnnouncements.map(
-        (announcement) => collection.delete(announcement.id).isPersisted.promise,
+        (announcement) =>
+          collection.delete(announcement.id).isPersisted.promise,
       ),
     )
     setPending(false)

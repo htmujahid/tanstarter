@@ -1,4 +1,5 @@
 import { and, asc, count, desc, eq, like, sql } from 'drizzle-orm'
+
 import { feedback, user } from '#/server/db'
 import type { Database, FeedbackCategory, FeedbackStatus } from '#/server/db'
 
@@ -25,7 +26,6 @@ const SORTABLE_COLUMNS = {
 } as const
 
 export interface ListFeedbackInput {
-  /** Set for a non-admin caller so they only see their own feedback. */
   scopeToUserId?: string
   q?: string
   category?: FeedbackCategory

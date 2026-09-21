@@ -13,6 +13,7 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { authClient } from '#/lib/auth-client'
 
 export function ChangePasswordForm() {
@@ -85,7 +86,9 @@ export function ChangePasswordForm() {
             name="currentPassword"
             validators={{
               onChange: ({ value }) =>
-                value ? undefined : t('changePasswordForm.currentPasswordRequired'),
+                value
+                  ? undefined
+                  : t('changePasswordForm.currentPasswordRequired'),
             }}
           >
             {(field) => (
@@ -134,7 +137,9 @@ export function ChangePasswordForm() {
             name="confirmPassword"
             validators={{
               onChange: ({ value }) =>
-                value ? undefined : t('changePasswordForm.confirmPasswordRequired'),
+                value
+                  ? undefined
+                  : t('changePasswordForm.confirmPasswordRequired'),
             }}
           >
             {(field) => (

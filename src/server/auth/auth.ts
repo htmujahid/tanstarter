@@ -1,15 +1,14 @@
+import { apiKey } from '@better-auth/api-key'
+import { i18n, locales } from '@better-auth/i18n'
+import { passkey } from '@better-auth/passkey'
+import { APIError, betterAuth } from 'better-auth'
+import { drizzleAdapter } from 'better-auth/adapters/drizzle'
+import { createAuthMiddleware } from 'better-auth/api'
+import { admin as adminPlugin, openAPI, username } from 'better-auth/plugins'
 import { env } from 'cloudflare:workers'
 import { eq } from 'drizzle-orm'
-import { APIError, betterAuth } from 'better-auth'
-import { createAuthMiddleware } from 'better-auth/api'
-import { drizzleAdapter } from 'better-auth/adapters/drizzle'
-import { admin as adminPlugin, openAPI, username } from 'better-auth/plugins'
-import { apiKey } from '@better-auth/api-key'
-import { passkey } from '@better-auth/passkey'
-import { i18n, locales } from '@better-auth/i18n'
 import { createMiddleware } from 'hono/factory'
-import { createDb, user } from '#/server/db'
-import { hasAnyUser } from '#/server/services/users.service'
+
 import { LOCALE_COOKIE_NAME } from '#/lib/i18n/config'
 import { ur } from '#/server/auth/locales/ur'
 import {
@@ -17,6 +16,8 @@ import {
   admin as adminRole,
   user as userRole,
 } from '#/server/auth/permissions'
+import { createDb, user } from '#/server/db'
+import { hasAnyUser } from '#/server/services/users.service'
 
 export function createAuth(bindings: Env) {
   const db = createDb(bindings.DB)
@@ -41,8 +42,6 @@ export function createAuth(bindings: Env) {
         enableSessionForAPIKeys: true,
         requireName: true,
         defaultPrefix: 'starter_',
-        // `defaultPrefix` is 9 chars; capture past it so `start` actually
-        // distinguishes keys instead of just echoing the shared prefix.
         startingCharactersConfig: { charactersLength: 15 },
       }),
       openAPI(),

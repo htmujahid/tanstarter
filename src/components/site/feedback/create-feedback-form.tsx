@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
-import { useForm } from '@tanstack/react-form'
 import { useLiveQuery } from '@tanstack/react-db'
+import { useForm } from '@tanstack/react-form'
 import {
   Alert,
   Button,
@@ -12,10 +12,11 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { createFeedbackFn } from '#/server/actions/feedback.action'
-import { FEEDBACK_CATEGORIES } from '#/server/db/schemas'
+
 import { feedbackDraftCollection } from '#/lib/collections/feedback-draft.collection'
 import type { FeedbackDraft } from '#/lib/collections/feedback-draft.collection'
+import { createFeedbackFn } from '#/server/actions/feedback.action'
+import { FEEDBACK_CATEGORIES } from '#/server/db/schemas'
 
 const FEEDBACK_DRAFT_EMPTY: Omit<FeedbackDraft, 'id'> = {
   category: 'general',
@@ -36,10 +37,6 @@ export function CreateFeedbackForm({
     query: (q) => q.from({ draft: feedbackDraftCollection }),
   })
 
-  // The modal's content stays mounted across open/close (only `opened`
-  // toggles). Remount the form body on each open (via `key`) so `useForm`
-  // picks up whatever's currently in the draft collection as its initial
-  // values — more reliable than calling form.reset(values) after the fact.
   const openKeyRef = useRef(0)
   const wasOpenedRef = useRef(opened)
   if (opened && !wasOpenedRef.current) openKeyRef.current += 1
@@ -177,7 +174,11 @@ function FeedbackFormBody({
             selector={(state) => [state.canSubmit, state.isSubmitting] as const}
           >
             {([canSubmit, isSubmitting]) => (
-              <Button type="submit" loading={isSubmitting} disabled={!canSubmit}>
+              <Button
+                type="submit"
+                loading={isSubmitting}
+                disabled={!canSubmit}
+              >
                 {t('feedback.sendFeedback')}
               </Button>
             )}

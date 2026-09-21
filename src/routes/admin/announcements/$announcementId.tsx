@@ -1,4 +1,4 @@
-import { Link, createFileRoute, notFound } from '@tanstack/react-router'
+import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import {
   Anchor,
   Button,
@@ -13,9 +13,10 @@ import {
 } from '@mantine/core'
 import { IconArrowLeft, IconBellOff } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { DetailPageLayout } from '#/components/layout/detail-page-layout'
+
 import { AnnouncementDetailActions } from '#/components/admin/announcements/announcement-detail-actions'
 import { AnnouncementDetailsForm } from '#/components/admin/announcements/announcement-details-form'
+import { DetailPageLayout } from '#/components/layout/detail-page-layout'
 import { announcementsCollectionOptions } from '#/lib/collections/announcements.collection'
 
 export const Route = createFileRoute('/admin/announcements/$announcementId')({
@@ -25,7 +26,9 @@ export const Route = createFileRoute('/admin/announcements/$announcementId')({
       throw notFound()
     }
 
-    const collection = context.dbClient.collection(announcementsCollectionOptions)
+    const collection = context.dbClient.collection(
+      announcementsCollectionOptions,
+    )
     await collection.preload()
 
     if (!collection.has(id)) {

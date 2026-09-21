@@ -3,11 +3,12 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { Button, Group, Stack, TextInput } from '@mantine/core'
 import { IconPlus, IconSearch } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { CreateNoteForm } from '#/components/home/notes/create-note-form'
 import { NotesTable } from '#/components/home/notes/notes-table'
-import { NotesTableSkeleton } from '#/components/home/notes/notes-table-skeleton'
 import { SORTABLE_FIELDS } from '#/components/home/notes/notes-table-column'
 import type { SortableField } from '#/components/home/notes/notes-table-column'
+import { NotesTableSkeleton } from '#/components/home/notes/notes-table-skeleton'
 import { notesCollectionOptions } from '#/lib/collections/notes.collection'
 
 type NotesSearch = {

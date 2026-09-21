@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { useNavigate } from '@tanstack/react-router'
-import { useQueryClient } from '@tanstack/react-query'
 import { useForm } from '@tanstack/react-form'
+import { useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
 import { Alert, Button, PasswordInput, Stack, TextInput } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { PasskeySignInButton } from '#/components/auth/passkey-sign-in-button'
 import { signIn } from '#/lib/auth-client'
 import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session.query'
@@ -105,9 +106,7 @@ export function SignInForm() {
           </form.Field>
 
           <form.Subscribe
-            selector={(state) =>
-              [state.canSubmit, state.isSubmitting] as const
-            }
+            selector={(state) => [state.canSubmit, state.isSubmitting] as const}
           >
             {([canSubmit, isSubmitting]) => (
               <Button

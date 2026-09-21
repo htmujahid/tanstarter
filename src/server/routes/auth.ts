@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+
 import { createAuth } from '#/server/auth/auth'
 
 const auth = new Hono<{ Bindings: Env }>()

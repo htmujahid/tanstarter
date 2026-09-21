@@ -1,11 +1,9 @@
-import { defineConfig } from 'vite'
 import { devtools } from '@tanstack/devtools-vite'
-
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
-
-import viteReact from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
 import { cloudflare } from '@cloudflare/vite-plugin'
+import tailwindcss from '@tailwindcss/vite'
+import viteReact from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
 import type { Plugin } from 'vite'
 
 function pwaServiceWorker(): Plugin {
@@ -13,9 +11,6 @@ function pwaServiceWorker(): Plugin {
     name: 'pwa-service-worker',
     apply: 'build',
     async closeBundle() {
-      // Vite splits the build into per-environment bundles (client/ssr); this
-      // hook fires once per environment, but the precache manifest only
-      // makes sense once against the finished client output.
       if (this.environment.name !== 'client') return
 
       const { generateSW } = await import('workbox-build')

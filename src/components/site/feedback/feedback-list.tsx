@@ -1,5 +1,5 @@
-import { Link } from '@tanstack/react-router'
 import { useSuspenseQuery } from '@tanstack/react-query'
+import { Link } from '@tanstack/react-router'
 import {
   Badge,
   Button,
@@ -11,6 +11,7 @@ import {
 } from '@mantine/core'
 import { IconMessageCircle, IconPlus } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { formatDateTime } from '#/lib/format-date'
 import { feedbackListQueryOptions } from '#/lib/queries/feedback.query'
 import type { FeedbackCategory, FeedbackStatus } from '#/server/db'
@@ -78,7 +79,9 @@ export function FeedbackList({ onAddFeedback }: { onAddFeedback: () => void }) {
                     variant="light"
                     size="sm"
                   >
-                    {t(`feedback.categories.${item.category as FeedbackCategory}`)}
+                    {t(
+                      `feedback.categories.${item.category as FeedbackCategory}`,
+                    )}
                   </Badge>
                   <Badge
                     color={STATUS_COLORS[item.status] ?? 'gray'}

@@ -1,4 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
+
 import { authMiddleware } from '#/server/auth/middleware'
 import { requirePermission } from '#/server/auth/require-permission'
 import { getDb } from '#/server/db'

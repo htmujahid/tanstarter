@@ -1,17 +1,18 @@
 import { createRoute } from '@hono/zod-openapi'
+
 import { requireAuth } from '#/server/auth/auth'
 import { requirePermissionRoute } from '#/server/auth/require-permission'
 import { createDb } from '#/server/db'
 import { FEEDBACK_CATEGORIES, FEEDBACK_STATUSES } from '#/server/db/schemas'
 import { createAuthOpenApiApp } from '#/server/openapi/factory'
-import { idParam, idParamHook } from '#/server/openapi/params'
-import { errorResponse, jsonResponse } from '#/server/openapi/responses'
 import {
   CreateFeedbackSchema,
   FeedbackListSchema,
   FeedbackSchema,
   UpdateFeedbackStatusSchema,
 } from '#/server/openapi/models/feedback.model'
+import { idParam, idParamHook } from '#/server/openapi/params'
+import { errorResponse, jsonResponse } from '#/server/openapi/responses'
 import {
   createFeedback,
   deleteFeedback,
@@ -19,8 +20,6 @@ import {
   listFeedback,
   updateFeedbackStatus,
 } from '#/server/services/feedback.service'
-
-/** Mirrors `src/server/actions/feedback.ts` 1:1. */
 
 const app = createAuthOpenApiApp()
 

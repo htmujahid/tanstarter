@@ -1,4 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
+
 import { authMiddleware } from '#/server/auth/middleware'
 import { requirePermission } from '#/server/auth/require-permission'
 import { getDb } from '#/server/db'
@@ -42,11 +43,6 @@ export const getAnnouncementFn = createServerFn({ method: 'GET' })
     return announcement
   })
 
-/**
- * Public, unauthenticated reads — used by the `/site/announcements` pages.
- * Always published-only, mirroring the public `/api/v1/announcements` REST
- * route. No `authMiddleware`/permission check: there may be no session.
- */
 export const listPublicAnnouncementsFn = createServerFn({ method: 'GET' })
   .validator((data: Omit<ListAnnouncementsInput, 'onlyPublished'>) => data)
   .handler(async ({ data }) => {

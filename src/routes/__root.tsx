@@ -1,138 +1,137 @@
 import { useState } from 'react'
+import type { DbClient } from '@tanstack/react-db'
+import { TanStackDevtools } from '@tanstack/react-devtools'
+import type { QueryClient } from '@tanstack/react-query'
+import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools'
 import {
+  createRootRouteWithContext,
   HeadContent,
   Link,
   Scripts,
-  createRootRouteWithContext,
 } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools'
-import { TanStackDevtools } from '@tanstack/react-devtools'
 import {
   Button,
   Card,
   ColorSchemeScript,
   Container,
   DirectionProvider,
+  mantineHtmlProps,
   MantineProvider,
   Stack,
   Text,
   Title,
-  mantineHtmlProps,
 } from '@mantine/core'
+import mantineCss from '@mantine/core/styles.css?url'
 import { IconError404 } from '@tabler/icons-react'
 import { I18nextProvider, useTranslation } from 'react-i18next'
 
-import mantineCss from '@mantine/core/styles.css?url'
-import appCss from '../styles.css?url'
-import { theme } from '../theme'
-import { getLocaleFn } from '#/server/actions/locale.action'
-import { currentSessionQueryOptions } from '#/lib/queries/session.query'
-import { createI18nInstance } from '#/lib/i18n/create-instance'
-import { isRtl } from '#/lib/i18n/config'
 import { RouteError } from '#/components/layout/route-error'
 import { RegisterServiceWorker } from '#/components/pwa/register-service-worker'
-import type { QueryClient } from '@tanstack/react-query'
-import type { DbClient } from '@tanstack/react-db'
+import { isRtl } from '#/lib/i18n/config'
+import { createI18nInstance } from '#/lib/i18n/create-instance'
+import { currentSessionQueryOptions } from '#/lib/queries/session.query'
+import { getLocaleFn } from '#/server/actions/locale.action'
+
+import appCss from '../styles.css?url'
+import { theme } from '../theme'
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
   dbClient: DbClient
-}>()(
-  {
-    beforeLoad: async ({ context }) => {
-      const [session, locale] = await Promise.all([
-        context.queryClient.query({
-          ...currentSessionQueryOptions(),
-          staleTime: 'static',
-        }),
-        getLocaleFn(),
-      ])
-      return { session, locale }
-    },
-    head: () => ({
-      meta: [
-        {
-          charSet: 'utf-8',
-        },
-        {
-          name: 'viewport',
-          content: 'width=device-width, initial-scale=1',
-        },
-        {
-          title: 'Starter Kit | A batteries-included TanStack Start admin panel',
-        },
-        {
-          name: 'description',
-          content:
-            'A production-ready starter kit for TanStack Start — authentication, role-based permissions, offline-first data, and a Cloudflare-native API, ready to build on.',
-        },
-        {
-          name: 'theme-color',
-          content: '#228be6',
-        },
-        {
-          name: 'application-name',
-          content: 'Starter Kit',
-        },
-        {
-          name: 'apple-mobile-web-app-title',
-          content: 'Starter Kit',
-        },
-        {
-          name: 'apple-mobile-web-app-capable',
-          content: 'yes',
-        },
-        {
-          name: 'mobile-web-app-capable',
-          content: 'yes',
-        },
-      ],
-      links: [
-        {
-          rel: 'stylesheet',
-          href: mantineCss,
-        },
-        {
-          rel: 'stylesheet',
-          href: appCss,
-        },
-        {
-          rel: 'icon',
-          type: 'image/svg+xml',
-          href: '/favicon.svg',
-        },
-        {
-          rel: 'icon',
-          type: 'image/png',
-          sizes: '32x32',
-          href: '/favicon-32x32.png',
-        },
-        {
-          rel: 'icon',
-          type: 'image/png',
-          sizes: '16x16',
-          href: '/favicon-16x16.png',
-        },
-        {
-          rel: 'apple-touch-icon',
-          sizes: '180x180',
-          href: '/apple-touch-icon.png',
-        },
-        {
-          rel: 'manifest',
-          href: '/site.webmanifest',
-        },
-      ],
-    }),
-    shellComponent: RootDocument,
-    notFoundComponent: NotFound,
-    errorComponent: RouteError,
-    onCatch: (error) => {
-      console.error(error)
-    },
+}>()({
+  beforeLoad: async ({ context }) => {
+    const [session, locale] = await Promise.all([
+      context.queryClient.query({
+        ...currentSessionQueryOptions(),
+        staleTime: 'static',
+      }),
+      getLocaleFn(),
+    ])
+    return { session, locale }
   },
-)
+  head: () => ({
+    meta: [
+      {
+        charSet: 'utf-8',
+      },
+      {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1',
+      },
+      {
+        title: 'Starter Kit | A batteries-included TanStack Start admin panel',
+      },
+      {
+        name: 'description',
+        content:
+          'A production-ready starter kit for TanStack Start — authentication, role-based permissions, offline-first data, and a Cloudflare-native API, ready to build on.',
+      },
+      {
+        name: 'theme-color',
+        content: '#228be6',
+      },
+      {
+        name: 'application-name',
+        content: 'Starter Kit',
+      },
+      {
+        name: 'apple-mobile-web-app-title',
+        content: 'Starter Kit',
+      },
+      {
+        name: 'apple-mobile-web-app-capable',
+        content: 'yes',
+      },
+      {
+        name: 'mobile-web-app-capable',
+        content: 'yes',
+      },
+    ],
+    links: [
+      {
+        rel: 'stylesheet',
+        href: mantineCss,
+      },
+      {
+        rel: 'stylesheet',
+        href: appCss,
+      },
+      {
+        rel: 'icon',
+        type: 'image/svg+xml',
+        href: '/favicon.svg',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '32x32',
+        href: '/favicon-32x32.png',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '16x16',
+        href: '/favicon-16x16.png',
+      },
+      {
+        rel: 'apple-touch-icon',
+        sizes: '180x180',
+        href: '/apple-touch-icon.png',
+      },
+      {
+        rel: 'manifest',
+        href: '/site.webmanifest',
+      },
+    ],
+  }),
+  shellComponent: RootDocument,
+  notFoundComponent: NotFound,
+  errorComponent: RouteError,
+  onCatch: (error) => {
+    console.error(error)
+  },
+})
 
 function NotFound() {
   const { t } = useTranslation()

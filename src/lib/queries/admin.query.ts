@@ -1,11 +1,12 @@
 import { queryOptions } from '@tanstack/react-query'
+
+import type { SortableField } from '#/components/admin/users/users-table-column'
 import {
   getAdminStatsFn,
   getUserFn,
   listUserSessionsFn,
   listUsersFn,
 } from '#/server/actions/admin.action'
-import type { SortableField } from '#/components/admin/users/users-table-column'
 
 export const USERS_PAGE_SIZE = 10
 

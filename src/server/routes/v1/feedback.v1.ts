@@ -1,26 +1,21 @@
 import { createRoute } from '@hono/zod-openapi'
+
 import { requireAuth } from '#/server/auth/auth'
 import { createDb } from '#/server/db'
 import { FEEDBACK_CATEGORIES } from '#/server/db/schemas'
 import { createAuthOpenApiApp } from '#/server/openapi/factory'
-import { idParam, idParamHook } from '#/server/openapi/params'
-import { errorResponse, jsonResponse } from '#/server/openapi/responses'
 import {
   CreateFeedbackSchema,
   FeedbackListSchema,
   FeedbackSchema,
 } from '#/server/openapi/models/feedback.model'
+import { idParam, idParamHook } from '#/server/openapi/params'
+import { errorResponse, jsonResponse } from '#/server/openapi/responses'
 import {
   createFeedback,
   getFeedbackById,
   listFeedback,
 } from '#/server/services/feedback.service'
-
-/**
- * Public site feedback — signed-in visitors submitting and reviewing their
- * own feedback, matching `src/routes/site/feedback`. Status updates and
- * deletion are admin-only and stay out of this public contract.
- */
 
 const app = createAuthOpenApiApp()
 

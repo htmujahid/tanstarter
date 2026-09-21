@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { useNavigate } from '@tanstack/react-router'
-import { useQueryClient } from '@tanstack/react-query'
 import { useForm } from '@tanstack/react-form'
+import { useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
 import { Alert, Button, PasswordInput, Stack, TextInput } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { signUp } from '#/lib/auth-client'
 import { CURRENT_SESSION_QUERY_KEY } from '#/lib/queries/session.query'
 
@@ -60,7 +61,8 @@ export function SetupForm() {
         <form.Field
           name="name"
           validators={{
-            onChange: ({ value }) => (value ? undefined : t('setup.nameRequired')),
+            onChange: ({ value }) =>
+              value ? undefined : t('setup.nameRequired'),
           }}
         >
           {(field) => (
@@ -82,7 +84,8 @@ export function SetupForm() {
         <form.Field
           name="email"
           validators={{
-            onChange: ({ value }) => (value ? undefined : t('setup.emailRequired')),
+            onChange: ({ value }) =>
+              value ? undefined : t('setup.emailRequired'),
           }}
         >
           {(field) => (

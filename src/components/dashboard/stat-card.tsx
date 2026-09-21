@@ -1,7 +1,7 @@
 import { Card, Group, Text, ThemeIcon } from '@mantine/core'
 import { IconArrowDownRight, IconArrowUpRight } from '@tabler/icons-react'
-import { useTranslation } from 'react-i18next'
 import type { Icon } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 
 export function StatCard({
   label,

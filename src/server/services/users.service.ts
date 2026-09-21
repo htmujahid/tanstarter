@@ -1,4 +1,5 @@
 import { count, eq } from 'drizzle-orm'
+
 import type { Database } from '#/server/db'
 import { user } from '#/server/db'
 

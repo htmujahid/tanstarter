@@ -1,16 +1,17 @@
 import { createRoute } from '@hono/zod-openapi'
+
 import { requireAuth } from '#/server/auth/auth'
 import { requirePermissionRoute } from '#/server/auth/require-permission'
 import { createDb } from '#/server/db'
 import { createAuthOpenApiApp } from '#/server/openapi/factory'
-import { idParam, idParamHook } from '#/server/openapi/params'
-import { errorResponse, jsonResponse } from '#/server/openapi/responses'
 import {
   AnnouncementListSchema,
   AnnouncementSchema,
   CreateAnnouncementSchema,
   UpdateAnnouncementSchema,
 } from '#/server/openapi/models/announcements.model'
+import { idParam, idParamHook } from '#/server/openapi/params'
+import { errorResponse, jsonResponse } from '#/server/openapi/responses'
 import {
   createAnnouncement,
   deleteAnnouncement,
@@ -18,15 +19,6 @@ import {
   listAnnouncements,
   updateAnnouncement,
 } from '#/server/services/announcements.service'
-
-/**
- * Mirrors `src/server/actions/announcements.ts`'s authenticated functions
- * 1:1 (listAnnouncementsFn, getAnnouncementFn, create/update/deleteAnnouncementFn).
- * `listPublicAnnouncementsFn`/`getPublicAnnouncementFn` are deliberately not
- * mirrored here — they're already served unauthenticated at
- * `/api/v1/announcements`, and duplicating an identical public contract
- * under this namespace too would be pure redundancy.
- */
 
 const app = createAuthOpenApiApp()
 

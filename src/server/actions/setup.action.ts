@@ -1,4 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
+
 import { getDb } from '#/server/db'
 import { hasAnyUser } from '#/server/services/users.service'
 

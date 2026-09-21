@@ -1,20 +1,19 @@
 import { Link, useRouter } from '@tanstack/react-router'
-import { Button, Card, Code, Container, Group, Stack, Text, Title } from '@mantine/core'
+import type { ErrorComponentProps } from '@tanstack/react-router'
+import {
+  Button,
+  Card,
+  Code,
+  Container,
+  Group,
+  Stack,
+  Text,
+  Title,
+} from '@mantine/core'
 import { useNetwork } from '@mantine/hooks'
 import { IconAlertTriangle, IconWifiOff } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import type { ErrorComponentProps } from '@tanstack/react-router'
 
-/**
- * Shared `errorComponent` for the root route and each section layout
- * (admin/home/site/auth). Section layouts pass this as-is so a loader or
- * render error inside a section still leaves its shell (sidebar/header)
- * intact instead of falling back to the root's full-page boundary.
- *
- * A loader/render throw while offline is almost always "this page wasn't
- * cached by the service worker" rather than a real bug, so it gets its own
- * copy instead of the generic error message.
- */
 export function RouteError({ error, reset }: ErrorComponentProps) {
   const { t } = useTranslation()
   const router = useRouter()

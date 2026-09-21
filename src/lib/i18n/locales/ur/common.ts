@@ -89,7 +89,8 @@ export const common: CommonTranslations = {
     },
     design: {
       title: 'دن ہو یا رات، شاندار نظر آئے',
-      description: 'ایک صاف ستھرا انٹرفیس جو لائٹ اور ڈارک موڈ کے مطابق ڈھل جاتا ہے۔',
+      description:
+        'ایک صاف ستھرا انٹرفیس جو لائٹ اور ڈارک موڈ کے مطابق ڈھل جاتا ہے۔',
     },
   },
   sidebar: {

@@ -1,16 +1,13 @@
 import { queryOptions } from '@tanstack/react-query'
+
+import type { SortableField } from '#/components/admin/announcements/announcements-table-column'
 import {
   getPublicAnnouncementFn,
   listPublicAnnouncementsFn,
 } from '#/server/actions/announcements.action'
-import type { SortableField } from '#/components/admin/announcements/announcements-table-column'
 
 export const ANNOUNCEMENTS_PAGE_SIZE = 10
 
-/**
- * Public, unauthenticated variants for the `/site/announcements` pages —
- * always published-only, usable by anonymous visitors.
- */
 export type SiteAnnouncementsListParams = {
   q?: string
   sortBy?: SortableField

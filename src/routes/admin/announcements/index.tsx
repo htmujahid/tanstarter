@@ -3,11 +3,12 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { Button, Group, Select, Stack, TextInput } from '@mantine/core'
 import { IconPlus, IconSearch } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { AnnouncementsTable } from '#/components/admin/announcements/announcements-table'
-import { AnnouncementsTableSkeleton } from '#/components/admin/announcements/announcements-table-skeleton'
-import { CreateAnnouncementForm } from '#/components/admin/announcements/create-announcement-form'
 import { SORTABLE_FIELDS } from '#/components/admin/announcements/announcements-table-column'
 import type { SortableField } from '#/components/admin/announcements/announcements-table-column'
+import { AnnouncementsTableSkeleton } from '#/components/admin/announcements/announcements-table-skeleton'
+import { CreateAnnouncementForm } from '#/components/admin/announcements/create-announcement-form'
 import { announcementsCollectionOptions } from '#/lib/collections/announcements.collection'
 
 type AnnouncementsSearch = {

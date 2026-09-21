@@ -1,4 +1,4 @@
-import { Link, createFileRoute, notFound } from '@tanstack/react-router'
+import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import {
   Anchor,
   Button,
@@ -13,9 +13,10 @@ import {
 } from '@mantine/core'
 import { IconArrowLeft, IconNoteOff } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { DetailPageLayout } from '#/components/layout/detail-page-layout'
+
 import { NoteDetailActions } from '#/components/home/notes/note-detail-actions'
 import { NoteDetailsForm } from '#/components/home/notes/note-details-form'
+import { DetailPageLayout } from '#/components/layout/detail-page-layout'
 import { notesCollectionOptions } from '#/lib/collections/notes.collection'
 
 export const Route = createFileRoute('/home/notes/$noteId')({

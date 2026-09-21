@@ -11,8 +11,12 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { useNotesCollection } from '#/lib/collections/notes.collection'
-import { useOfflineExecutor, waitForTransaction } from '#/lib/db/offline-executor'
+import {
+  useOfflineExecutor,
+  waitForTransaction,
+} from '#/lib/db/offline-executor'
 
 export function CreateNoteForm({
   opened,

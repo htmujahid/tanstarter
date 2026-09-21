@@ -1,9 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { useQuery } from '@tanstack/react-query'
 import { useLiveQuery } from '@tanstack/react-db'
+import { useQuery } from '@tanstack/react-query'
+import { createFileRoute } from '@tanstack/react-router'
 import { Container, SimpleGrid, Skeleton } from '@mantine/core'
 import { IconKey, IconNotes } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { StatCard } from '#/components/dashboard/stat-card'
 import { notesCollectionOptions } from '#/lib/collections/notes.collection'
 import { apiKeysQueryOptions } from '#/lib/queries/api-key.query'

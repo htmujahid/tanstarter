@@ -1,4 +1,4 @@
-import { Link, createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import {
   Anchor,
   Badge,
@@ -15,8 +15,8 @@ import {
   IconMail,
   IconSparkles,
 } from '@tabler/icons-react'
-
 import { useTranslation } from 'react-i18next'
+
 import { Header } from '#/components/header'
 import { features } from '#/lib/features'
 
@@ -75,7 +75,9 @@ function App() {
               component={Link}
               to="/auth/setup"
               size="md"
-              rightSection={<IconArrowRight size={18} className="icon-rtl-flip" />}
+              rightSection={
+                <IconArrowRight size={18} className="icon-rtl-flip" />
+              }
             >
               {tCommon('actions.getStarted')}
             </Button>

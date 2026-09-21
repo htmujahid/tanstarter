@@ -15,6 +15,7 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { announcementsCollectionOptions } from '#/lib/collections/announcements.collection'
 
 export function AnnouncementDetailsForm({
@@ -30,9 +31,6 @@ export function AnnouncementDetailsForm({
         .from({ announcement: announcementsCollectionOptions })
         .where(({ announcement }) => eq(announcement.id, announcementId)),
   })
-  // The delete action removes this row from the collection immediately
-  // (before the post-delete navigation away from this page finishes), so
-  // `data` can briefly go empty while this component is still mounted.
   const announcement = data[0]
   const [formError, setFormError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)

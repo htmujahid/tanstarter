@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useSuspenseQuery } from '@tanstack/react-query'
 import { useForm } from '@tanstack/react-form'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import {
   Alert,
   Button,
@@ -13,6 +13,7 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { authClient } from '#/lib/auth-client'
 import { userQueryOptions } from '#/lib/queries/admin.query'
 
@@ -48,7 +49,9 @@ export function UserDetailsForm({
       })
 
       if (error) {
-        setFormError(error.message ?? t('users.detail.detailsForm.genericError'))
+        setFormError(
+          error.message ?? t('users.detail.detailsForm.genericError'),
+        )
         return
       }
 

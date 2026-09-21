@@ -1,17 +1,20 @@
 import { createRoute } from '@hono/zod-openapi'
+
 import { createDb } from '#/server/db'
 import { createAuthOpenApiApp } from '#/server/openapi/factory'
-import { idParam, idParamHook } from '#/server/openapi/params'
-import { errorResponse, jsonResponse } from '#/server/openapi/responses'
 import {
   AnnouncementListSchema,
   AnnouncementSchema,
 } from '#/server/openapi/models/announcements.model'
-import { getAnnouncementById, listAnnouncements } from '#/server/services/announcements.service'
+import { idParam, idParamHook } from '#/server/openapi/params'
+import { errorResponse, jsonResponse } from '#/server/openapi/responses'
+import {
+  getAnnouncementById,
+  listAnnouncements,
+} from '#/server/services/announcements.service'
 
 const app = createAuthOpenApiApp()
 
-// Public: no auth required. Only published announcements are visible.
 app.openapi(
   createRoute({
     method: 'get',

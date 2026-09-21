@@ -1,9 +1,10 @@
-import { Link, Outlet, createFileRoute, redirect } from '@tanstack/react-router'
+import { createFileRoute, Link, Outlet, redirect } from '@tanstack/react-router'
 import { Group, Stack, Text, Title } from '@mantine/core'
 import { IconRocket } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { features } from '#/lib/features'
+
 import { RouteError } from '#/components/layout/route-error'
+import { features } from '#/lib/features'
 
 export const Route = createFileRoute('/auth')({
   beforeLoad: ({ context }) => {
@@ -52,12 +53,7 @@ function AuthLayout() {
 
           <Stack gap="md">
             {features.map((feature) => (
-              <Group
-                key={feature.id}
-                gap="sm"
-                wrap="nowrap"
-                align="flex-start"
-              >
+              <Group key={feature.id} gap="sm" wrap="nowrap" align="flex-start">
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-white/15">
                   <feature.icon size={18} stroke={1.75} />
                 </div>
