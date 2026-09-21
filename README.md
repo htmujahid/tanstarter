@@ -6,15 +6,15 @@ For the full architecture writeup — server layering, the frontend data-access 
 
 ## Tech stack
 
-| Layer | Tools |
-|---|---|
+| Layer    | Tools                                                                                                                                                                                                                                              |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Frontend | React, [TanStack Router](https://tanstack.com/router) (file-based), [TanStack Query](https://tanstack.com/query), [TanStack DB](https://tanstack.com/db), [TanStack Form](https://tanstack.com/form), [Mantine](https://mantine.dev), Tailwind CSS |
-| Server | [TanStack Start](https://tanstack.com/start) (SSR), [Hono](https://hono.dev) + [`@hono/zod-openapi`](https://github.com/honojs/middleware/tree/main/packages/zod-openapi) for the REST API |
-| Data | [Drizzle ORM](https://orm.drizzle.team) + Cloudflare D1, [`@tanstack/browser-db-sqlite-persistence`](https://tanstack.com/db) (offline SQLite) + [`@tanstack/offline-transactions`](https://tanstack.com/db) |
-| Auth | [better-auth](https://www.better-auth.com) — email/password, passkeys, API keys, role-based permissions, i18n |
-| Infra | Cloudflare Workers, D1, Vite, Wrangler |
-| i18n | [i18next](https://www.i18next.com) (English + Urdu, RTL-aware) |
-| PWA | Installable manifest + service worker (`workbox-build`), offline app shell |
+| Server   | [TanStack Start](https://tanstack.com/start) (SSR), [Hono](https://hono.dev) + [`@hono/zod-openapi`](https://github.com/honojs/middleware/tree/main/packages/zod-openapi) for the REST API                                                         |
+| Data     | [Drizzle ORM](https://orm.drizzle.team) + Cloudflare D1, [`@tanstack/browser-db-sqlite-persistence`](https://tanstack.com/db) (offline SQLite) + [`@tanstack/offline-transactions`](https://tanstack.com/db)                                       |
+| Auth     | [better-auth](https://www.better-auth.com) — email/password, passkeys, API keys, role-based permissions, i18n                                                                                                                                      |
+| Infra    | Cloudflare Workers, D1, Vite, Wrangler                                                                                                                                                                                                             |
+| i18n     | [i18next](https://www.i18next.com) (English + Urdu, RTL-aware)                                                                                                                                                                                     |
+| PWA      | Installable manifest + service worker (`workbox-build`), offline app shell                                                                                                                                                                         |
 
 ## Quick start
 
@@ -80,17 +80,17 @@ Once the dev server is running, interactive OpenAPI docs are served at:
 
 ## Available scripts
 
-| Script | What it does |
-|---|---|
-| `pnpm dev` | Start the Vite dev server (port 3000) |
-| `pnpm build` | Production build (also generates the PWA service worker) |
-| `pnpm preview` | Preview the production build locally |
-| `pnpm deploy` | Build and deploy to Cloudflare Workers |
-| `pnpm lint` / `pnpm format` / `pnpm check` | Lint, auto-fix + format, or check formatting |
-| `pnpm db:generate` | Generate a new Drizzle migration from schema changes |
-| `pnpm db:migrate:local` / `pnpm db:migrate:remote` | Apply migrations to the local or remote D1 database |
-| `pnpm db:seed` | Seed demo users (local dev only) |
-| `pnpm generate-routes` | Regenerate `src/routeTree.gen.ts` |
+| Script                                             | What it does                                             |
+| -------------------------------------------------- | -------------------------------------------------------- |
+| `pnpm dev`                                         | Start the Vite dev server (port 3000)                    |
+| `pnpm build`                                       | Production build (also generates the PWA service worker) |
+| `pnpm preview`                                     | Preview the production build locally                     |
+| `pnpm deploy`                                      | Build and deploy to Cloudflare Workers                   |
+| `pnpm lint` / `pnpm format` / `pnpm check`         | Lint, auto-fix + format, or check formatting             |
+| `pnpm db:generate`                                 | Generate a new Drizzle migration from schema changes     |
+| `pnpm db:migrate:local` / `pnpm db:migrate:remote` | Apply migrations to the local or remote D1 database      |
+| `pnpm db:seed`                                     | Seed demo users (local dev only)                         |
+| `pnpm generate-routes`                             | Regenerate `src/routeTree.gen.ts`                        |
 
 ## Deploying
 
