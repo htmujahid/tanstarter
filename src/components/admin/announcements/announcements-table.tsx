@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { flexRender, functionalUpdate, useTable } from '@tanstack/react-table'
 import type { RowSelectionState, SortingState } from '@tanstack/react-table'
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { eq, ilike, useLiveQuery } from '@tanstack/react-db'
 import {
   Button,
   EmptyState,
@@ -18,10 +18,8 @@ import {
   announcementsTableFeatures,
 } from '#/components/admin/announcements/announcements-table-column'
 import type { SortableField } from '#/components/admin/announcements/announcements-table-column'
-import {
-  ANNOUNCEMENTS_PAGE_SIZE,
-  announcementsQueryOptions,
-} from '#/lib/queries/announcements'
+import { ANNOUNCEMENTS_PAGE_SIZE } from '#/lib/queries/announcements'
+import { announcementsCollection } from '#/lib/collections/announcements'
 
 export function AnnouncementsTable({
   q,
@@ -30,7 +28,6 @@ export function AnnouncementsTable({
   sortDirection,
   page,
   onSortChange,
-  onChanged,
   onAddAnnouncement,
   onClearFilters,
   onPageChange,
@@ -41,7 +38,6 @@ export function AnnouncementsTable({
   sortDirection?: 'asc' | 'desc'
   page: number
   onSortChange: (sortBy?: string, sortDirection?: 'asc' | 'desc') => void
-  onChanged: () => void
   onAddAnnouncement: () => void
   onClearFilters: () => void
   onPageChange: (page: number) => void
@@ -49,12 +45,40 @@ export function AnnouncementsTable({
   const { t } = useTranslation('admin')
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
-  const {
-    data: { announcements, total },
-  } = useSuspenseQuery(
-    announcementsQueryOptions({ q, published, sortBy, sortDirection, page }),
-  )
+  const { data } = useLiveQuery({
+    query: (query) => {
+      let liveQuery = query.from({ announcement: announcementsCollection })
+
+      if (published !== undefined) {
+        liveQuery = liveQuery.where(({ announcement }) =>
+          eq(announcement.published, published),
+        )
+      }
+      if (q) {
+        liveQuery = liveQuery.where(({ announcement }) =>
+          ilike(announcement.title, `%${q}%`),
+        )
+      }
+
+      return liveQuery.orderBy(({ announcement }) => {
+        switch (sortBy) {
+          case 'title':
+            return announcement.title
+          case 'updatedAt':
+            return announcement.updatedAt
+          default:
+            return announcement.createdAt
+        }
+      }, sortDirection ?? 'desc')
+    },
+  })
+
+  const total = data.length
   const totalPages = Math.max(1, Math.ceil(total / ANNOUNCEMENTS_PAGE_SIZE))
+  const announcements = data.slice(
+    (page - 1) * ANNOUNCEMENTS_PAGE_SIZE,
+    page * ANNOUNCEMENTS_PAGE_SIZE,
+  )
   const hasFilters = Boolean(q || published !== undefined)
 
   const columns = useMemo(() => getAnnouncementsTableColumns(t), [t])
@@ -170,7 +194,6 @@ export function AnnouncementsTable({
       <AnnouncementsBulkActionBar
         announcements={selectedAnnouncements}
         onClearSelection={() => setRowSelection({})}
-        onChanged={onChanged}
       />
 
       {totalPages > 1 && announcements.length > 0 && (

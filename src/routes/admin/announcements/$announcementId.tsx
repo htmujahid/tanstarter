@@ -1,5 +1,4 @@
 import { Link, createFileRoute, notFound } from '@tanstack/react-router'
-import { useQueryClient } from '@tanstack/react-query'
 import {
   Anchor,
   Button,
@@ -17,21 +16,19 @@ import { useTranslation } from 'react-i18next'
 import { DetailPageLayout } from '#/components/layout/detail-page-layout'
 import { AnnouncementDetailActions } from '#/components/admin/announcements/announcement-detail-actions'
 import { AnnouncementDetailsForm } from '#/components/admin/announcements/announcement-details-form'
-import { announcementQueryOptions } from '#/lib/queries/announcements'
+import { announcementsCollection } from '#/lib/collections/announcements'
 
 export const Route = createFileRoute('/admin/announcements/$announcementId')({
-  loader: async ({ context, params }) => {
+  ssr: false,
+  loader: async ({ params }) => {
     const id = Number(params.announcementId)
     if (!Number.isInteger(id)) {
       throw notFound()
     }
 
-    try {
-      await context.queryClient.query({
-        ...announcementQueryOptions(id),
-        staleTime: 'static',
-      })
-    } catch {
+    await announcementsCollection.preload()
+
+    if (!announcementsCollection.has(id)) {
       throw notFound()
     }
   },
@@ -114,17 +111,13 @@ function AnnouncementDetailPending() {
 function AnnouncementDetailPage() {
   const { announcementId } = Route.useParams()
   const id = Number(announcementId)
-  const queryClient = useQueryClient()
-
-  const invalidate = () =>
-    queryClient.invalidateQueries({ queryKey: ['announcements'] })
 
   return (
     <DetailPageLayout
       backLink={<BackLink />}
       actions={<AnnouncementDetailActions announcementId={id} />}
     >
-      <AnnouncementDetailsForm announcementId={id} onSaved={invalidate} />
+      <AnnouncementDetailsForm announcementId={id} />
     </DetailPageLayout>
   )
 }

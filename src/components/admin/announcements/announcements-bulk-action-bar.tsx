@@ -10,17 +10,15 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { deleteAnnouncementFn } from '#/server/actions/announcements'
+import { announcementsCollection } from '#/lib/collections/announcements'
 import type { Announcement } from '#/server/db'
 
 export function AnnouncementsBulkActionBar({
   announcements,
   onClearSelection,
-  onChanged,
 }: {
   announcements: Announcement[]
   onClearSelection: () => void
-  onChanged: () => void
 }) {
   const { t } = useTranslation('admin')
   const { t: tCommon } = useTranslation('common')
@@ -36,7 +34,7 @@ export function AnnouncementsBulkActionBar({
 
     const results = await Promise.allSettled(
       deleteAnnouncements.map((announcement) =>
-        deleteAnnouncementFn({ data: { id: announcement.id } }),
+        announcementsCollection.delete(announcement.id).isPersisted.promise,
       ),
     )
     setPending(false)
@@ -55,7 +53,6 @@ export function AnnouncementsBulkActionBar({
 
     setDeleteAnnouncements([])
     onClearSelection()
-    onChanged()
   }
 
   return (

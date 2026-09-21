@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { eq, useLiveQuery } from '@tanstack/react-db'
 import { useForm } from '@tanstack/react-form'
 import {
   Alert,
@@ -15,42 +15,46 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { updateAnnouncementFn } from '#/server/actions/announcements'
-import { announcementQueryOptions } from '#/lib/queries/announcements'
+import { announcementsCollection } from '#/lib/collections/announcements'
 
 export function AnnouncementDetailsForm({
   announcementId,
-  onSaved,
 }: {
   announcementId: number
-  onSaved: () => void
 }) {
   const { t } = useTranslation('admin')
-  const { data: announcement } = useSuspenseQuery(
-    announcementQueryOptions(announcementId),
-  )
+  const { data } = useLiveQuery({
+    query: (q) =>
+      q
+        .from({ announcement: announcementsCollection })
+        .where(({ announcement }) => eq(announcement.id, announcementId)),
+  })
+  // The delete action removes this row from the collection immediately
+  // (before the post-delete navigation away from this page finishes), so
+  // `data` can briefly go empty while this component is still mounted.
+  const announcement = data[0]
   const [formError, setFormError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 
   const form = useForm({
     defaultValues: {
-      title: announcement.title,
-      body: announcement.body ?? '',
-      published: announcement.published,
+      title: data.length === 0 ? '' : announcement.title,
+      body: data.length === 0 ? '' : (announcement.body ?? ''),
+      published: data.length === 0 ? false : announcement.published,
     },
     onSubmit: async ({ value }) => {
+      if (data.length === 0) return
       setFormError(null)
       setSuccess(false)
 
+      const tx = announcementsCollection.update(announcement.id, (draft) => {
+        draft.title = value.title
+        draft.body = value.body || null
+        draft.published = value.published
+      })
+
       try {
-        await updateAnnouncementFn({
-          data: {
-            id: announcement.id,
-            title: value.title,
-            body: value.body || undefined,
-            published: value.published,
-          },
-        })
+        await tx.isPersisted.promise
       } catch (error) {
         setFormError(
           error instanceof Error
@@ -61,7 +65,6 @@ export function AnnouncementDetailsForm({
       }
 
       setSuccess(true)
-      onSaved()
     },
   })
 

@@ -12,7 +12,7 @@ import {
 } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import { createAnnouncementFn } from '#/server/actions/announcements'
+import { announcementsCollection } from '#/lib/collections/announcements'
 
 export function CreateAnnouncementForm({
   opened,
@@ -32,14 +32,18 @@ export function CreateAnnouncementForm({
     onSubmit: async ({ value }) => {
       setFormError(null)
 
+      const now = new Date().toISOString()
+      const tx = announcementsCollection.insert({
+        id: -Date.now(),
+        title: value.title,
+        body: value.body || null,
+        published: value.published,
+        createdAt: now,
+        updatedAt: now,
+      })
+
       try {
-        await createAnnouncementFn({
-          data: {
-            title: value.title,
-            body: value.body || undefined,
-            published: value.published,
-          },
-        })
+        await tx.isPersisted.promise
       } catch (error) {
         setFormError(
           error instanceof Error
