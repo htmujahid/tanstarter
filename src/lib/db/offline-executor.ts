@@ -6,6 +6,42 @@ import { notesMutationFns } from '#/lib/mutations/notes'
 import type { OfflineExecutor } from '@tanstack/offline-transactions'
 import type { DbClient } from '@tanstack/react-db'
 
+interface PersistableTransaction {
+  isPersisted: { promise: Promise<unknown> }
+}
+
+export function waitForTransaction(tx: PersistableTransaction): Promise<void> {
+  if (typeof navigator !== 'undefined' && !navigator.onLine) {
+    return Promise.resolve()
+  }
+
+  return new Promise((resolve, reject) => {
+    let settled = false
+    const onOffline = () => {
+      if (settled) return
+      settled = true
+      window.removeEventListener('offline', onOffline)
+      resolve()
+    }
+    window.addEventListener('offline', onOffline)
+
+    tx.isPersisted.promise.then(
+      () => {
+        if (settled) return
+        settled = true
+        window.removeEventListener('offline', onOffline)
+        resolve()
+      },
+      (error: unknown) => {
+        if (settled) return
+        settled = true
+        window.removeEventListener('offline', onOffline)
+        reject(error)
+      },
+    )
+  })
+}
+
 let executorPromise: Promise<OfflineExecutor> | null = null
 
 async function createOfflineExecutor(

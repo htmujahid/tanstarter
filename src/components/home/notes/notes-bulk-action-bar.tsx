@@ -11,7 +11,7 @@ import {
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { useNotesCollection } from '#/lib/collections/notes'
-import { useOfflineExecutor } from '#/lib/db/offline-executor'
+import { useOfflineExecutor, waitForTransaction } from '#/lib/db/offline-executor'
 import type { Note } from '#/server/db'
 
 export function NotesBulkActionBar({
@@ -47,7 +47,7 @@ export function NotesBulkActionBar({
         const tx = offlineTx.mutate(() => {
           collection.delete(note.id)
         })
-        return tx.isPersisted.promise
+        return waitForTransaction(tx)
       }),
     )
     setPending(false)

@@ -18,7 +18,7 @@ import {
   notesCollectionOptions,
   useNotesCollection,
 } from '#/lib/collections/notes'
-import { useOfflineExecutor } from '#/lib/db/offline-executor'
+import { useOfflineExecutor, waitForTransaction } from '#/lib/db/offline-executor'
 
 export function NoteDetailsForm({ noteId }: { noteId: number }) {
   const { t } = useTranslation('home')
@@ -59,7 +59,7 @@ export function NoteDetailsForm({ noteId }: { noteId: number }) {
       })
 
       try {
-        await tx.isPersisted.promise
+        await waitForTransaction(tx)
       } catch (error) {
         setFormError(
           error instanceof Error

@@ -12,7 +12,7 @@ import {
 import { IconAlertCircle } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { useNotesCollection } from '#/lib/collections/notes'
-import { useOfflineExecutor } from '#/lib/db/offline-executor'
+import { useOfflineExecutor, waitForTransaction } from '#/lib/db/offline-executor'
 
 export function CreateNoteForm({
   opened,
@@ -55,7 +55,7 @@ export function CreateNoteForm({
       })
 
       try {
-        await tx.isPersisted.promise
+        await waitForTransaction(tx)
       } catch (error) {
         setFormError(
           error instanceof Error

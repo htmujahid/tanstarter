@@ -8,7 +8,7 @@ import {
   notesCollectionOptions,
   useNotesCollection,
 } from '#/lib/collections/notes'
-import { useOfflineExecutor } from '#/lib/db/offline-executor'
+import { useOfflineExecutor, waitForTransaction } from '#/lib/db/offline-executor'
 
 export function NoteDetailActions({ noteId }: { noteId: number }) {
   const { t } = useTranslation('home')
@@ -47,7 +47,7 @@ export function NoteDetailActions({ noteId }: { noteId: number }) {
     })
 
     try {
-      await tx.isPersisted.promise
+      await waitForTransaction(tx)
     } catch (error) {
       setPending(false)
       setActionError(
