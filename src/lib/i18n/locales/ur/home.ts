@@ -2,37 +2,9 @@ import type { HomeTranslations } from '#/lib/i18n/locales/types'
 
 export const home: HomeTranslations = {
   dashboard: {
-    revenueCard: {
-      title: 'آمدنی',
-      subtitle: 'پچھلے 14 دن',
-    },
-    categoryCard: {
-      title: 'زمرے کے لحاظ سے فروخت',
-      subtitle: 'کل آرڈرز کا حصہ',
-    },
-    topProductsCard: {
-      title: 'سرِفہرست مصنوعات',
-      subtitle: 'آمدنی کے لحاظ سے، پچھلے 14 دن',
-    },
-    recentOrdersCard: {
-      title: 'حالیہ آرڈرز',
-      subtitle: 'آپ کے اسٹور کی تازہ ترین سرگرمی',
-      orderColumn: 'آرڈر',
-      customerColumn: 'کسٹمر',
-      statusColumn: 'حیثیت',
-      amountColumn: 'رقم',
-    },
     stats: {
-      totalRevenue: 'کل آمدنی',
-      orders: 'آرڈرز',
-      newCustomers: 'نئے کسٹمرز',
-      conversionRate: 'تبدیلی کی شرح',
-    },
-    orderStatus: {
-      fulfilled: 'مکمل',
-      processing: 'زیر عمل',
-      pending: 'زیر التوا',
-      refunded: 'رقم واپس',
+      notes: 'نوٹس',
+      apiKeys: 'اے پی آئی کیز',
     },
   },
   apiKeys: {
@@ -124,29 +96,6 @@ export const home: HomeTranslations = {
   sidebar: {
     dashboard: 'ڈیش بورڈ',
     notes: 'نوٹس',
-    orders: {
-      label: 'آرڈرز',
-      allOrders: 'تمام آرڈرز',
-      drafts: 'ڈرافٹس',
-      abandonedCheckouts: 'چھوڑے گئے چیک آؤٹس',
-    },
-    products: {
-      label: 'مصنوعات',
-      allProducts: 'تمام مصنوعات',
-      collections: 'کلیکشنز',
-      inventory: 'انوینٹری',
-      categories: 'زمرہ جات',
-    },
-    customers: {
-      label: 'کسٹمرز',
-      allCustomers: 'تمام کسٹمرز',
-      segments: 'سیگمنٹس',
-    },
-    marketing: {
-      label: 'مارکیٹنگ',
-      discounts: 'رعایتیں',
-      campaigns: 'مہمات',
-    },
     analytics: {
       label: 'اینالیٹکس',
       reports: 'رپورٹس',
@@ -155,10 +104,9 @@ export const home: HomeTranslations = {
     settings: {
       label: 'ترتیبات',
       general: 'عمومی',
-      payments: 'ادائیگیاں',
-      shipping: 'ترسیل',
-      teamPermissions: 'ٹیم اور اجازتیں',
-      domains: 'ڈومینز',
+      notifications: 'اطلاعات',
+      security: 'سیکیورٹی',
+      members: 'اراکین',
     },
   },
 }

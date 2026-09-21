@@ -14,12 +14,8 @@ import {
   IconChevronRight,
   IconLayoutDashboard,
   IconNotes,
-  IconPackage,
-  IconReceipt2,
   IconSettings,
   IconShoppingBag,
-  IconSpeakerphone,
-  IconUsers,
   IconX,
 } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
@@ -38,41 +34,6 @@ function useNavItems(): NavItem[] {
     { label: t('sidebar.dashboard'), icon: IconLayoutDashboard, to: '/home' },
     { label: t('sidebar.notes'), icon: IconNotes, to: '/home/notes' },
     {
-      label: t('sidebar.orders.label'),
-      icon: IconReceipt2,
-      children: [
-        { label: t('sidebar.orders.allOrders') },
-        { label: t('sidebar.orders.drafts') },
-        { label: t('sidebar.orders.abandonedCheckouts') },
-      ],
-    },
-    {
-      label: t('sidebar.products.label'),
-      icon: IconPackage,
-      children: [
-        { label: t('sidebar.products.allProducts') },
-        { label: t('sidebar.products.collections') },
-        { label: t('sidebar.products.inventory') },
-        { label: t('sidebar.products.categories') },
-      ],
-    },
-    {
-      label: t('sidebar.customers.label'),
-      icon: IconUsers,
-      children: [
-        { label: t('sidebar.customers.allCustomers') },
-        { label: t('sidebar.customers.segments') },
-      ],
-    },
-    {
-      label: t('sidebar.marketing.label'),
-      icon: IconSpeakerphone,
-      children: [
-        { label: t('sidebar.marketing.discounts') },
-        { label: t('sidebar.marketing.campaigns') },
-      ],
-    },
-    {
       label: t('sidebar.analytics.label'),
       icon: IconChartBar,
       children: [
@@ -85,10 +46,9 @@ function useNavItems(): NavItem[] {
       icon: IconSettings,
       children: [
         { label: t('sidebar.settings.general') },
-        { label: t('sidebar.settings.payments') },
-        { label: t('sidebar.settings.shipping') },
-        { label: t('sidebar.settings.teamPermissions') },
-        { label: t('sidebar.settings.domains') },
+        { label: t('sidebar.settings.notifications') },
+        { label: t('sidebar.settings.security') },
+        { label: t('sidebar.settings.members') },
       ],
     },
   ]

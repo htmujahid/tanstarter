@@ -241,37 +241,9 @@ export interface SiteTranslations {
 
 export interface HomeTranslations {
   dashboard: {
-    revenueCard: {
-      title: string
-      subtitle: string
-    }
-    categoryCard: {
-      title: string
-      subtitle: string
-    }
-    topProductsCard: {
-      title: string
-      subtitle: string
-    }
-    recentOrdersCard: {
-      title: string
-      subtitle: string
-      orderColumn: string
-      customerColumn: string
-      statusColumn: string
-      amountColumn: string
-    }
     stats: {
-      totalRevenue: string
-      orders: string
-      newCustomers: string
-      conversionRate: string
-    }
-    orderStatus: {
-      fulfilled: string
-      processing: string
-      pending: string
-      refunded: string
+      notes: string
+      apiKeys: string
     }
   }
   apiKeys: {
@@ -362,29 +334,6 @@ export interface HomeTranslations {
   sidebar: {
     dashboard: string
     notes: string
-    orders: {
-      label: string
-      allOrders: string
-      drafts: string
-      abandonedCheckouts: string
-    }
-    products: {
-      label: string
-      allProducts: string
-      collections: string
-      inventory: string
-      categories: string
-    }
-    customers: {
-      label: string
-      allCustomers: string
-      segments: string
-    }
-    marketing: {
-      label: string
-      discounts: string
-      campaigns: string
-    }
     analytics: {
       label: string
       reports: string
@@ -393,10 +342,9 @@ export interface HomeTranslations {
     settings: {
       label: string
       general: string
-      payments: string
-      shipping: string
-      teamPermissions: string
-      domains: string
+      notifications: string
+      security: string
+      members: string
     }
   }
 }

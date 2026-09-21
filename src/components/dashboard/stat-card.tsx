@@ -11,11 +11,11 @@ export function StatCard({
 }: {
   label: string
   value: string
-  change: number
+  change?: number
   icon: Icon
 }) {
   const { t } = useTranslation('common')
-  const isPositive = change >= 0
+  const isPositive = (change ?? 0) >= 0
 
   return (
     <Card withBorder radius="md" padding="lg">
@@ -32,26 +32,28 @@ export function StatCard({
         {value}
       </Text>
 
-      <Group gap={4} mt={4}>
-        {isPositive ? (
-          <IconArrowUpRight
-            size={14}
-            className="text-[var(--mantine-color-teal-6)]"
-          />
-        ) : (
-          <IconArrowDownRight
-            size={14}
-            className="text-[var(--mantine-color-red-6)]"
-          />
-        )}
-        <Text size="xs" c={isPositive ? 'teal' : 'red'} fw={600}>
-          {isPositive ? '+' : ''}
-          {change}%
-        </Text>
-        <Text size="xs" c="dimmed">
-          {t('statCard.vsLastPeriod')}
-        </Text>
-      </Group>
+      {change !== undefined && (
+        <Group gap={4} mt={4}>
+          {isPositive ? (
+            <IconArrowUpRight
+              size={14}
+              className="text-[var(--mantine-color-teal-6)]"
+            />
+          ) : (
+            <IconArrowDownRight
+              size={14}
+              className="text-[var(--mantine-color-red-6)]"
+            />
+          )}
+          <Text size="xs" c={isPositive ? 'teal' : 'red'} fw={600}>
+            {isPositive ? '+' : ''}
+            {change}%
+          </Text>
+          <Text size="xs" c="dimmed">
+            {t('statCard.vsLastPeriod')}
+          </Text>
+        </Group>
+      )}
     </Card>
   )
 }

@@ -24,7 +24,6 @@
     "@better-auth/i18n": "^1.7.5",
     "@better-auth/passkey": "^1.7.5",
     "@hono/zod-openapi": "^1.6.3",
-    "@mantine/charts": "^9.6.1",
     "@mantine/core": "^9.6.1",
     "@mantine/hooks": "^9.6.1",
     "@scalar/hono-api-reference": "^0.12.2",

@@ -2,37 +2,9 @@ import type { HomeTranslations } from '#/lib/i18n/locales/types'
 
 export const home: HomeTranslations = {
   dashboard: {
-    revenueCard: {
-      title: 'Revenue',
-      subtitle: 'Last 14 days',
-    },
-    categoryCard: {
-      title: 'Sales by category',
-      subtitle: 'Share of total orders',
-    },
-    topProductsCard: {
-      title: 'Top products',
-      subtitle: 'By revenue, last 14 days',
-    },
-    recentOrdersCard: {
-      title: 'Recent orders',
-      subtitle: 'Latest activity across your store',
-      orderColumn: 'Order',
-      customerColumn: 'Customer',
-      statusColumn: 'Status',
-      amountColumn: 'Amount',
-    },
     stats: {
-      totalRevenue: 'Total revenue',
-      orders: 'Orders',
-      newCustomers: 'New customers',
-      conversionRate: 'Conversion rate',
-    },
-    orderStatus: {
-      fulfilled: 'Fulfilled',
-      processing: 'Processing',
-      pending: 'Pending',
-      refunded: 'Refunded',
+      notes: 'Notes',
+      apiKeys: 'API keys',
     },
   },
   apiKeys: {
@@ -125,29 +97,6 @@ export const home: HomeTranslations = {
   sidebar: {
     dashboard: 'Dashboard',
     notes: 'Notes',
-    orders: {
-      label: 'Orders',
-      allOrders: 'All orders',
-      drafts: 'Drafts',
-      abandonedCheckouts: 'Abandoned checkouts',
-    },
-    products: {
-      label: 'Products',
-      allProducts: 'All products',
-      collections: 'Collections',
-      inventory: 'Inventory',
-      categories: 'Categories',
-    },
-    customers: {
-      label: 'Customers',
-      allCustomers: 'All customers',
-      segments: 'Segments',
-    },
-    marketing: {
-      label: 'Marketing',
-      discounts: 'Discounts',
-      campaigns: 'Campaigns',
-    },
     analytics: {
       label: 'Analytics',
       reports: 'Reports',
@@ -156,10 +105,9 @@ export const home: HomeTranslations = {
     settings: {
       label: 'Settings',
       general: 'General',
-      payments: 'Payments',
-      shipping: 'Shipping',
-      teamPermissions: 'Team & permissions',
-      domains: 'Domains',
+      notifications: 'Notifications',
+      security: 'Security',
+      members: 'Members',
     },
   },
 }
