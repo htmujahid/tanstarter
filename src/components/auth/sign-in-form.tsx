@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useForm } from '@tanstack/react-form'
 import { useQueryClient } from '@tanstack/react-query'
-import { useNavigate } from '@tanstack/react-router'
+import { useNavigate, useSearch } from '@tanstack/react-router'
 import { Alert, Button, PasswordInput, Stack, TextInput } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
@@ -14,6 +14,7 @@ export function SignInForm() {
   const { t } = useTranslation('auth')
   const navigate = useNavigate()
   const queryClient = useQueryClient()
+  const { redirect } = useSearch({ from: '/auth/sign-in' })
   const [formError, setFormError] = useState<string | null>(null)
 
   const form = useForm({
@@ -39,7 +40,9 @@ export function SignInForm() {
       await queryClient.invalidateQueries({
         queryKey: CURRENT_SESSION_QUERY_KEY,
       })
-      await navigate({ to: '/home' })
+      await (redirect
+        ? navigate({ href: redirect })
+        : navigate({ to: '/home' }))
     },
   })
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { useNavigate } from '@tanstack/react-router'
+import { useNavigate, useSearch } from '@tanstack/react-router'
 import { Alert, Button, Divider, Stack } from '@mantine/core'
 import { IconAlertCircle, IconFingerprint } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
@@ -12,6 +12,7 @@ export function PasskeySignInButton() {
   const { t } = useTranslation('auth')
   const navigate = useNavigate()
   const queryClient = useQueryClient()
+  const { redirect } = useSearch({ from: '/auth/sign-in' })
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
@@ -37,7 +38,9 @@ export function PasskeySignInButton() {
               await queryClient.invalidateQueries({
                 queryKey: CURRENT_SESSION_QUERY_KEY,
               })
-              void navigate({ to: '/home' })
+              void (redirect
+                ? navigate({ href: redirect })
+                : navigate({ to: '/home' }))
             }
           })
       }
@@ -46,7 +49,7 @@ export function PasskeySignInButton() {
     return () => {
       cancelled = true
     }
-  }, [navigate, queryClient])
+  }, [navigate, queryClient, redirect])
 
   async function handleClick() {
     setError(null)
@@ -62,7 +65,7 @@ export function PasskeySignInButton() {
     await queryClient.invalidateQueries({
       queryKey: CURRENT_SESSION_QUERY_KEY,
     })
-    await navigate({ to: '/home' })
+    await (redirect ? navigate({ href: redirect }) : navigate({ to: '/home' }))
   }
 
   return (

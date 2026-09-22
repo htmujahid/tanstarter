@@ -4,7 +4,20 @@ import { useTranslation } from 'react-i18next'
 
 import { SignInForm } from '#/components/auth/sign-in-form'
 
-export const Route = createFileRoute('/auth/sign-in')({ component: SignIn })
+function isSafeRedirect(value: unknown): value is string {
+  return (
+    typeof value === 'string' &&
+    value.startsWith('/') &&
+    !value.startsWith('//')
+  )
+}
+
+export const Route = createFileRoute('/auth/sign-in')({
+  validateSearch: (search: Record<string, unknown>): { redirect?: string } => ({
+    redirect: isSafeRedirect(search.redirect) ? search.redirect : undefined,
+  }),
+  component: SignIn,
+})
 
 function SignIn() {
   const { t } = useTranslation('auth')

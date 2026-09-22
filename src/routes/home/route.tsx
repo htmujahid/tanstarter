@@ -21,9 +21,12 @@ const NAVBAR_WIDTH_EXPANDED = 260
 const NAVBAR_WIDTH_COLLAPSED = 80
 
 export const Route = createFileRoute('/home')({
-  beforeLoad: ({ context }) => {
+  beforeLoad: ({ context, location }) => {
     if (!context.session) {
-      throw redirect({ to: '/auth/sign-in' })
+      throw redirect({
+        to: '/auth/sign-in',
+        search: { redirect: location.href },
+      })
     }
 
     return { session: context.session }

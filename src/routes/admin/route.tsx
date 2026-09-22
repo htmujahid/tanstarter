@@ -12,9 +12,12 @@ const NAVBAR_WIDTH_EXPANDED = 260
 const NAVBAR_WIDTH_COLLAPSED = 80
 
 export const Route = createFileRoute('/admin')({
-  beforeLoad: ({ context }) => {
+  beforeLoad: ({ context, location }) => {
     if (!context.session) {
-      throw redirect({ to: '/auth/sign-in' })
+      throw redirect({
+        to: '/auth/sign-in',
+        search: { redirect: location.href },
+      })
     }
 
     if (context.session.user.role !== 'admin') {
