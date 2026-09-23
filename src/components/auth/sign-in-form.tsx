@@ -37,7 +37,7 @@ export function SignInForm() {
         return
       }
 
-      await queryClient.invalidateQueries({
+      await queryClient.refetchQueries({
         queryKey: CURRENT_SESSION_QUERY_KEY,
       })
       await (redirect

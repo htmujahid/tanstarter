@@ -65,7 +65,7 @@ export function UserDetailActions({
       authClient.admin.impersonateUser({ userId: user.id }),
     )
     if (ok) {
-      await queryClient.invalidateQueries({
+      await queryClient.refetchQueries({
         queryKey: CURRENT_SESSION_QUERY_KEY,
       })
       await navigate({ to: '/home' })

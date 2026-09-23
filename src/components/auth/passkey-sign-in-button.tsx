@@ -35,7 +35,7 @@ export function PasskeySignInButton() {
           .passkey({ autoFill: true })
           .then(async ({ error: signInError }) => {
             if (!cancelled && !signInError) {
-              await queryClient.invalidateQueries({
+              await queryClient.refetchQueries({
                 queryKey: CURRENT_SESSION_QUERY_KEY,
               })
               void (redirect
@@ -62,7 +62,7 @@ export function PasskeySignInButton() {
       return
     }
 
-    await queryClient.invalidateQueries({
+    await queryClient.refetchQueries({
       queryKey: CURRENT_SESSION_QUERY_KEY,
     })
     await (redirect ? navigate({ href: redirect }) : navigate({ to: '/home' }))

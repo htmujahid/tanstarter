@@ -42,10 +42,7 @@ export const Route = createRootRouteWithContext<{
 }>()({
   beforeLoad: async ({ context }) => {
     const [session, locale] = await Promise.all([
-      context.queryClient.query({
-        ...currentSessionQueryOptions(),
-        staleTime: 'static',
-      }),
+      context.queryClient.query(currentSessionQueryOptions()),
       getLocaleFn(),
     ])
     return { session, locale }

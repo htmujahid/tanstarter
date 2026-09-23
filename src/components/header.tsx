@@ -87,7 +87,7 @@ export function Header() {
                   leftSection={<IconLogout size={16} />}
                   onClick={async () => {
                     await signOut()
-                    await queryClient.invalidateQueries({
+                    await queryClient.refetchQueries({
                       queryKey: CURRENT_SESSION_QUERY_KEY,
                     })
                     await router.invalidate()

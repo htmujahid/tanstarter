@@ -103,7 +103,7 @@ function HomeLayout() {
               variant="white"
               onClick={async () => {
                 await authClient.admin.stopImpersonating()
-                await queryClient.invalidateQueries({
+                await queryClient.refetchQueries({
                   queryKey: CURRENT_SESSION_QUERY_KEY,
                 })
                 await router.invalidate()

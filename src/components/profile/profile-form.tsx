@@ -56,7 +56,7 @@ export function ProfileForm({ user }: { user: NonNullable<Session>['user'] }) {
       }
 
       setSuccess(true)
-      await queryClient.invalidateQueries({
+      await queryClient.refetchQueries({
         queryKey: CURRENT_SESSION_QUERY_KEY,
       })
       await router.invalidate()
